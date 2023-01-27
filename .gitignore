@@ -1,4 +1,11 @@
-experiments
-src/__pycache__
-data/cifs/
+# data
+data/cifs
 data/meta
+
+# experiment loggings
+experiments/supervised/lightning_logs
+experiments/unsupervised/lightning_logs
+
+# python cache
+dev/.ipynb_checkpoints
+src/mofgraph2vec/__pycache__
