@@ -30,11 +30,11 @@ def main(config: DictConfig):
         config.data.nn.embedding_path = os.path.join(wandb.run.dir, "../tmp/embedding.csv")
         config.model.nn.input_dim = config.model.gensim.vector_size
         logger.info(f"{config}")
-        percentage, accuracy = unsupervised_train(config, wandb.run.dir)
-        metrics = supervised_train(config)
+        unsupervised_metrics = unsupervised_train(config, wandb.run.dir)
+        supervised_metrics = supervised_train(config)
 
-        wandb.log({"percentage": percentage, "accuracy": "%.4f" %accuracy})
-        wandb.log(metrics)
+        wandb.log(unsupervised_metrics)
+        wandb.log(supervised_metrics)
 
 if __name__ == "__main__":
     main()

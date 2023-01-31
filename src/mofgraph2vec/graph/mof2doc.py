@@ -13,14 +13,18 @@ from gensim.models.doc2vec import TaggedDocument
 class MOF2doc:
     def __init__(
         self,
-        cif_path: str,
+        cif_path: List[str],
         wl_step: int = 5,
         subsample: Optional[int] = None,
         seed: Optional[int] = 1234,
     ) -> None:
         random.seed(seed)
-
-        self.files = glob(os.path.join(cif_path, "*.cif"))
+        
+        self.files = []
+        for pt in cif_path:
+            files_in_pt = glob(os.path.join(pt, "*.cif"))
+            self.files.append(files_in_pt)
+        self.files = [file for folder in self.files for file in folder]
         if subsample is not None and subsample < 1:
             self.files: List[str] = random.sample(self.files, int(subsample*len(self.files)))
 

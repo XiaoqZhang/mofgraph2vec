@@ -1,16 +1,12 @@
 import os
-from typing import List, Optional, Tuple
-
-import omegaconf
 from hydra.utils import instantiate
 from loguru import logger
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 
-from mofgraph2vec.utils.dict_helpers import get, put
-from mofgraph2vec.graph.mof2doc import MOF2doc
 from gensim.models.doc2vec import Doc2Vec
-from mofgraph2vec.utils.evaluation import evaluate_model
+from mofgraph2vec.utils.cv import cross_validation
 from mofgraph2vec.utils.saving import save_embedding
+from mofgraph2vec.utils.evaluation import evaluate_model
 
 def train(
     config: DictConfig,
@@ -27,14 +23,22 @@ def train(
         logger.info(f"Load trained model from {config.model_checkpoint}. ")
         model = Doc2Vec.load(config.model_checkpoint)
     else:
-        def cross_validation():
-            return mean, dev
+        model = Doc2Vec(**config.model.gensim)
+        model.build_vocab(documents)
+        cv_mean, cv_std = cross_validation(documents, model, k_foldes=5, epochs=config.model.gensim.epochs)
 
+    model.train(documents, total_examples=model.corpus_count, epochs=config.model.gensim.epochs)
     logger.info(f"Evaluating the model performance. ")
-    accuracy = evaluate_model(model, train_documents)
+    accuracy = evaluate_model(model, documents)
     model.save(os.path.join(wandb_run_dir, "../tmp/model.pt"))
 
     logger.info(f"Saving embedded vectors. ")
-    save_embedding(os.path.join(wandb_run_dir, "../tmp/embedding.csv"), model, train_documents, config.model.gensim.vector_size)
+    save_embedding(os.path.join(wandb_run_dir, "../tmp/embedding.csv"), model, documents, config.model.gensim.vector_size)
 
-    return word_percentage, accuracy
+    return {
+        "percentage": word_percentage,
+        "cv_mean": cv_mean,
+        "cv_std": cv_std,
+        "accuracy": accuracy
+    }
+

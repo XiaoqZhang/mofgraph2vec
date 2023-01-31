@@ -23,9 +23,9 @@ def main(config: DictConfig):
                 logger.debug("Completed overriding config for sweep.")
             except Exception as e:
                 logger.exception(f"Error {e} trying to set key {key}")
-        
-        percentage, accuracy = train(config, wandb.run.dir)
-        wandb.log({"percentage": percentage, "accuracy": "%.4f" %accuracy})
+
+        metrics = train(config, wandb.run.dir)
+        wandb.log(metrics)
 
 if __name__ == "__main__":
     main()

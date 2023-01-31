@@ -11,7 +11,7 @@ defaults:
 logger:
   project: mof2vec
   entity: xiaoqiz
-  mode: online
+  mode: offline
   tags:
 
 seed: 1234
