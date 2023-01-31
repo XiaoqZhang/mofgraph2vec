@@ -17,3 +17,4 @@ logger:
 seed: 1234
 load_model: false
 model_checkpoint: null
+sweep: false

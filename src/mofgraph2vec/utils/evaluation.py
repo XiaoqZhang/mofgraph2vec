@@ -1,4 +1,6 @@
 from collections import Counter
+import random
+import numpy as np
 
 def evaluate_model(model, documents):
     ranks = []

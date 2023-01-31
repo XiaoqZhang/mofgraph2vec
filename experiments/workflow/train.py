@@ -1,10 +1,13 @@
 import hydra
 from omegaconf import DictConfig
 import wandb
+import os
 from loguru import logger
 
-from mofgraph2vec.trainer.unsupervised import train
+from mofgraph2vec.trainer.unsupervised import train as unsupervised_train
+from mofgraph2vec.trainer.supervised import train as supervised_train
 from mofgraph2vec.utils.dict_helpers import get, put
+
 
 @hydra.main(config_path="../../conf", config_name="config.yaml", version_base=None)
 def main(config: DictConfig):
@@ -24,8 +27,14 @@ def main(config: DictConfig):
             except Exception as e:
                 logger.exception(f"Error {e} trying to set key {key}")
         
-        percentage, accuracy = train(config, wandb.run.dir)
+        config.data.nn.embedding_path = os.path.join(wandb.run.dir, "../tmp/embedding.csv")
+        config.model.nn.input_dim = config.model.gensim.vector_size
+        logger.info(f"{config}")
+        percentage, accuracy = unsupervised_train(config, wandb.run.dir)
+        metrics = supervised_train(config)
+
         wandb.log({"percentage": percentage, "accuracy": "%.4f" %accuracy})
+        wandb.log(metrics)
 
 if __name__ == "__main__":
     main()

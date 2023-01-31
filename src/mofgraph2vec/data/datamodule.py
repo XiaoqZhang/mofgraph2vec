@@ -37,15 +37,14 @@ class DataModuleFactory:
         df_feat = pd.read_csv(embedding_path)
         embedded_mofs = list(df_feat["type"])
         df_label = df_label[df_label[self.MOF_id].isin(embedded_mofs)].set_index(self.MOF_id)
-
-        assert len(df_label) == len(embedded_mofs)
+        df_label = df_label.dropna(subset=[self.task])
 
         train_valid_idx, test_idx = train_test_split(range(len(df_label)), test_size=test_frac, random_state=seed)
         train_idx, valid_idx = train_test_split(train_valid_idx, test_size=valid_frac, random_state=seed)
 
-        self.train_names = [embedded_mofs[i] for i in train_idx]
-        self.valid_names = [embedded_mofs[i] for i in valid_idx]
-        self.test_names = [embedded_mofs[i] for i in test_idx]
+        self.train_names = [df_label.iloc[i].name for i in train_idx]
+        self.valid_names = [df_label.iloc[i].name for i in valid_idx]
+        self.test_names = [df_label.iloc[i].name for i in test_idx]
 
         logger.info(
             f"Train: {len(self.train_names)} Valid: {len(self.valid_names)} Test: {len(self.test_names)}"
