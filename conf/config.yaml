@@ -1,0 +1,15 @@
+defaults:
+  - _self_
+  - data: data.yaml
+  - model: gensim.yaml
+  - sweep: gensim.yaml
+
+logger:
+  project: mof2vec
+  entity: xiaoqiz
+  mode: offline
+  tags:
+
+seed: 1234
+load_model: false
+model_checkpoint: null

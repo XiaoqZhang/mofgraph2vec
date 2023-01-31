@@ -1,0 +1,9 @@
+gensim: 
+  vector_size: 32
+  window: 10
+  min_count: 3
+  dm: 0
+  sample: 0.9
+  workers: 4
+  alpha: 0.001
+  epochs: 60

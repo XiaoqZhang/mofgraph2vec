@@ -1,0 +1,35 @@
+count: 100
+id: null
+config:
+  method: bayes
+  metric:
+    name: Accuracy
+    goal: maximize
+  early_terminate:
+    type: hyperband
+    min_iter: 5
+  parameters:
+    data.data.subsample: 
+      min: 0
+      max: 1
+      distribution: uniform
+    model.gensim.vector_size:
+      min: 8
+      max: 256
+      distribution: int_uniform
+    model.gensim.window:
+      min: 1
+      max: 20
+      distribution: int_uniform
+    model.gensim.dm:
+      values: [0, 1]
+    model.gensim.sample: 
+      min: 0.2
+      max: 1.0
+    model.gensim.alpha:
+      min: 1e-8
+      max: 1
+    model.gensim.epochs:
+      min: 40
+      max: 200
+      distribution: int_uniform

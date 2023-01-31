@@ -4,8 +4,11 @@ data/meta
 
 # experiment loggings
 experiments/supervised/lightning_logs
-experiments/unsupervised/lightning_logs
+experiments/unsupervised/outputs
+experiments/unsupervised/wandb
+
 
 # python cache
 dev/.ipynb_checkpoints
 src/mofgraph2vec/__pycache__
+src/*/__pycache__
