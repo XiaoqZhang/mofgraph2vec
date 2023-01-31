@@ -1,13 +1,17 @@
 defaults:
   - _self_
-  - data: data.yaml
-  - model: gensim.yaml
+  - data: 
+    - data.yaml
+    - nn.yaml
+  - model: 
+    - gensim.yaml 
+    - nn.yaml
   - sweep: gensim.yaml
 
 logger:
   project: mof2vec
   entity: xiaoqiz
-  mode: offline
+  mode: online
   tags:
 
 seed: 1234

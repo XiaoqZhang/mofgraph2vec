@@ -4,6 +4,8 @@ data/meta
 
 # experiment loggings
 experiments/supervised/lightning_logs
+experiments/supervised/outputs
+experiments/supervised/wandb
 experiments/unsupervised/outputs
 experiments/unsupervised/wandb
 

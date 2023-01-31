@@ -17,7 +17,6 @@ def train(
     config: DictConfig,
     sweep: bool = False
 ):
-
     with wandb.init(
         project=config.logger.project,
         entity=config.logger.entity,
@@ -53,7 +52,6 @@ def train(
             accuracy = evaluate_model(model, train_documents)
             wandb.log({"Accuracy": "%.4f" %accuracy})
             model.save(os.path.join(wandb.run.dir, "../tmp/model.pt"))
-
 
         logger.info(f"Saving embedded vectors. ")
         save_embedding(os.path.join(wandb.run.dir, "../tmp/embedding.csv"), model, train_documents, config.model.gensim.vector_size)

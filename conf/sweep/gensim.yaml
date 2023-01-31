@@ -1,4 +1,4 @@
-count: 100
+count: 300
 id: null
 config:
   method: bayes
@@ -10,9 +10,7 @@ config:
     min_iter: 5
   parameters:
     data.data.subsample: 
-      min: 0
-      max: 1
-      distribution: uniform
+      values: [0.6, 0.8, null]
     model.gensim.vector_size:
       min: 8
       max: 256
@@ -26,10 +24,12 @@ config:
     model.gensim.sample: 
       min: 0.2
       max: 1.0
+      distribution: uniform
     model.gensim.alpha:
-      min: 1e-8
-      max: 1
+      min: -8
+      max: 0
+      distribution: log_uniform
     model.gensim.epochs:
-      min: 40
-      max: 200
+      min: 30
+      max: 150
       distribution: int_uniform

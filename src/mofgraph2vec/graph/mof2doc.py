@@ -2,6 +2,7 @@ import os
 import random
 from glob import glob
 from tqdm import tqdm
+from loguru import logger
 from collections import Counter
 import numpy as np
 from typing import Optional, List
@@ -20,8 +21,8 @@ class MOF2doc:
         random.seed(seed)
 
         self.files = glob(os.path.join(cif_path, "*.cif"))
-        if subsample is not None and subsample < len(self.files):
-            self.files: List[str] = random.sample(self.files, subsample)
+        if subsample is not None and subsample < 1:
+            self.files: List[str] = random.sample(self.files, int(subsample*len(self.files)))
 
         self.wl_step = wl_step
 
@@ -37,7 +38,7 @@ class MOF2doc:
             doc = TaggedDocument(words=word, tags=[name])
 
             self.documents.append(doc)
-        
+
         return self.documents
     
     def distribution_analysis(self, threshold: int = 4) -> float:
