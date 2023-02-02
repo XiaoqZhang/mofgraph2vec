@@ -1,3 +1,4 @@
+import os
 import hydra
 from omegaconf import DictConfig
 import wandb
@@ -23,8 +24,9 @@ def main(config: DictConfig):
             except Exception as e:
                 logger.exception(f"Error {e} trying to set key {key}")
         
-        metrics = train(config)
+        model, metrics = train(config)
         wandb.log(metrics)
+        
 
 if __name__ == "__main__":
     main()

@@ -7,11 +7,13 @@ from gensim.models.doc2vec import Doc2Vec
 from mofgraph2vec.utils.cv import cross_validation
 from mofgraph2vec.utils.saving import save_embedding
 from mofgraph2vec.utils.evaluation import evaluate_model
+from mofgraph2vec.utils.seed import set_seed
 
 def train(
     config: DictConfig,
     wandb_run_dir: str
 ):
+    set_seed(config.seed)
 
     doc = instantiate(config.data.data, seed=config.seed)
     documents = doc.get_documents()

@@ -6,6 +6,7 @@ data/meta
 experiments/supervised/lightning_logs
 experiments/supervised/outputs
 experiments/supervised/wandb
+experiments/supervised/.lr_find*
 experiments/unsupervised/outputs
 experiments/unsupervised/wandb
 experiments/workflow/lightning_logs
@@ -14,5 +15,7 @@ experiments/workflow/wandb
 
 # python cache
 dev/.ipynb_checkpoints
+dev/lightning_logs
 src/mofgraph2vec/__pycache__
 src/mofgraph2vec/*/__pycache__
+src/mofgraph2vec.egg-info

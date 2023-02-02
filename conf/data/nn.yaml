@@ -2,7 +2,9 @@ nn:
   task: "logKH_CO2"
   MOF_id: "cif.label"
   label_path: "../../data/data.csv"
-  embedding_path: "../../experiments/unsupervised/wandb/run-20230131_154045-safrv3w9/tmp/embedding.csv" # same as gensim storage path
+  embedding_path: "../../experiments/unsupervised/wandb/offline-run-20230131_232505-mlil64hw/tmp/embedding.csv" # same as gensim storage path
   train_frac: 0.8
   valid_frac: 0.1
   test_frac: 0.1
+  batch_size: 64
+  num_workers: null

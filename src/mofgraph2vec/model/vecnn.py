@@ -1,6 +1,7 @@
 from typing import Optional
 import torch.nn as nn
 import torch.nn.functional as F
+import torch
 
 class VecModel(nn.Module):
     def __init__(
@@ -10,7 +11,8 @@ class VecModel(nn.Module):
         fcnn_n_layers: int=3,
         fcnn_hidden_size: int=128,
         fcnn_activation: str="relu",
-        dropout: Optional[float] = None
+        dropout: Optional[float] = None,
+        **kwargs
     ) -> None:
         super(VecModel, self).__init__()
 

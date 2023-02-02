@@ -6,8 +6,8 @@ import wandb
 from loguru import logger
 from omegaconf import OmegaConf
 
-from mofgraph2vec.trainer.unsupervised import train
-
+from mofgraph2vec.trainer.unsupervised import train as unsupervised_train
+from mofgraph2vec.trainer.supervised import train as supervised_train
 
 def sweep(config):
     sweep_config = OmegaConf.to_container(config.sweep.config)

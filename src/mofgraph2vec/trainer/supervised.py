@@ -1,39 +1,41 @@
-import wandb
 from loguru import logger
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 from hydra.utils import instantiate
-from typing import Optional
 
 import torch
-from torch.utils.data import DataLoader
-import pytorch_lightning as pl
 from mofgraph2vec.utils.dict_helpers import get, put
+from mofgraph2vec.utils.seed import set_seed
 from mofgraph2vec.data.datamodule import DataModuleFactory
 from mofgraph2vec.model.nn_lightning import VecLightningModule
 
 def train(
-    config: DictConfig,
-    sweep: bool = False,
+    config: DictConfig
 ):  
-    dm = DataModuleFactory(**config.data.nn)
+    set_seed(config.seed)
+    if torch.backends.mps.is_available():
+        device = torch.device("mps")
+    elif torch.cuda.is_available():
+        device = torch.device("cuda:0")
+    else:
+        device = torch.device("cpu")
 
-    train_ds = dm.get_train_dataset()
-    valid_ds = dm.get_valid_dataset()
-    test_ds = dm.get_test_dataset()
-    
-    train_loader = DataLoader(train_ds, batch_size=config.model.nn.batch_size)
-    valid_loader = DataLoader(valid_ds, batch_size=config.model.nn.batch_size)
-    test_loader = DataLoader(test_ds, batch_size=config.model.nn.batch_size)
+    dm = DataModuleFactory(**config.data.nn, device="cpu")
+    datamodule = dm.get_datamodule()
 
     logger.info(f"Instantiate neural network model. ")
-    pl_model = instantiate(config.model.nn)
+    vec_model = instantiate(config.model.nn).to(device)
+    pl_model = VecLightningModule(vec_model, loss=config.model.loss, lr=config.model.lr)
 
-    trainer = pl.Trainer(max_epochs=config.model.nn.max_epochs)
+    logger.info(f"config trainer: {config.trainer}")
+    trainer = instantiate(config.trainer)
+
+    if trainer.auto_lr_find:
+        trainer.tune(pl_model, datamodule=datamodule)
 
     logger.info(f"Start fitting")
-    trainer.fit(pl_model, train_loader, valid_loader)
+    trainer.fit(pl_model, datamodule=datamodule)
 
     logger.info(f"Start testing")
-    test_metrics = trainer.test(pl_model, test_loader)
+    test_metrics = trainer.test(pl_model, datamodule=datamodule)
     
-    return test_metrics[0]
+    return pl_model, test_metrics[0]

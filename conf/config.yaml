@@ -6,7 +6,12 @@ defaults:
   - model: 
     - gensim.yaml 
     - nn.yaml
-  - sweep: gensim.yaml
+  - trainer:
+    - default.yaml
+  - unsupervised_sweep: 
+    - gensim.yaml
+  - supervised_sweep: 
+    - nn.yaml
 
 logger:
   project: mof2vec

@@ -1,10 +1,10 @@
-import os
-import random
 from loguru import logger
+from typing import Optional
+import torch
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from mofgraph2vec.data.dataset import VecDataset
-
+from torch_geometric.data import LightningDataset
 
 class DataModuleFactory:
     def __init__(
@@ -17,8 +17,13 @@ class DataModuleFactory:
         valid_frac: float=0.1,
         test_frac: float=0.1,
         batch_size: int=64,
-        seed: int=2024
+        num_workers: Optional[int] = None,
+        device: Optional[torch.device] = "cpu",
+        **kwargs
     ):
+        self.device = device
+        self.num_workers = num_workers
+
         if not (train_frac + valid_frac + test_frac == 1.0):
             raise ValueError("Fractions must sum to 1.0")
 
@@ -39,8 +44,8 @@ class DataModuleFactory:
         df_label = df_label[df_label[self.MOF_id].isin(embedded_mofs)].set_index(self.MOF_id)
         df_label = df_label.dropna(subset=[self.task])
 
-        train_valid_idx, test_idx = train_test_split(range(len(df_label)), test_size=test_frac, random_state=seed)
-        train_idx, valid_idx = train_test_split(train_valid_idx, test_size=valid_frac, random_state=seed)
+        train_valid_idx, test_idx = train_test_split(range(len(df_label)), test_size=test_frac)
+        train_idx, valid_idx = train_test_split(train_valid_idx, test_size=valid_frac)
 
         self.train_names = [df_label.iloc[i].name for i in train_idx]
         self.valid_names = [df_label.iloc[i].name for i in valid_idx]
@@ -57,9 +62,9 @@ class DataModuleFactory:
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
             transform=None, 
-            target_transform=None
+            target_transform=None,
+            device=self.device
         )
-
 
     def get_valid_dataset(self, **kwargs):
         if self.valid_names is None:
@@ -70,7 +75,8 @@ class DataModuleFactory:
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
             transform=None, 
-            target_transform=None
+            target_transform=None,
+            device=self.device
         )
 
     def get_test_dataset(self, **kwargs):
@@ -82,5 +88,14 @@ class DataModuleFactory:
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
             transform=None, 
-            target_transform=None
+            target_transform=None,
+            device=self.device
+        )
+
+    def get_datamodule(self) -> LightningDataset:
+        return LightningDataset(
+            train_dataset=self.get_train_dataset(),
+            val_dataset=self.get_valid_dataset(),
+            test_dataset=self.get_test_dataset(),
+            batch_size=self.batch_size,
         )

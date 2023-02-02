@@ -1,16 +1,18 @@
 import os
+import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
 
 class VecDataset(Dataset):
-    def __init__(self, target, mofnames, vector_file, label_file, transform=None, target_transform=None):
+    def __init__(self, target, mofnames, vector_file, label_file, transform=None, target_transform=None, device="cpu"):
+
         self.target = target
         df_vectors = pd.read_csv(vector_file).set_index("type")
         df_labels = pd.read_csv(label_file).set_index("cif.label")
 
-        self.vectors = df_vectors.loc[mofnames].values
-        self.labels = df_labels.loc[mofnames][self.target].values
+        self.vectors = torch.from_numpy(df_vectors.loc[mofnames].values.astype(np.float32)).to(device)
+        self.labels = torch.from_numpy(df_labels.loc[mofnames][self.target].values.astype(np.float32)).to(device)
 
         self.transform = transform
         self.target_transform = target_transform
@@ -26,4 +28,4 @@ class VecDataset(Dataset):
     def __getitem__(self, idx):
         X = self.vectors[idx]
         y = self.labels[idx]
-        return torch.Tensor(X), torch.Tensor([y])
+        return X, y
