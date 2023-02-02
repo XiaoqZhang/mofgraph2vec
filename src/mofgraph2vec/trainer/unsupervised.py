@@ -27,7 +27,8 @@ def train(
     else:
         model = Doc2Vec(**config.model.gensim)
         model.build_vocab(documents)
-        #cv_mean, cv_std = cross_validation(documents, model, k_foldes=5, epochs=config.model.gensim.epochs)
+        if config.model.cv:
+            cv_mean, cv_std = cross_validation(documents, model, k_foldes=5, epochs=config.model.gensim.epochs)
 
     model.train(documents, total_examples=model.corpus_count, epochs=config.model.gensim.epochs)
     logger.info(f"Evaluating the model performance. ")
@@ -37,10 +38,16 @@ def train(
     logger.info(f"Saving embedded vectors. ")
     save_embedding(os.path.join(wandb_dir, "embedding.csv"), model, documents, config.model.gensim.vector_size)
 
-    return {
-        "percentage": word_percentage,
-        #"cv_mean": cv_mean,
-        #"cv_std": cv_std,
-        "accuracy": accuracy
-    }
+    if config.model.cv:
+        return {
+            "percentage": word_percentage,
+            "cv_mean": cv_mean,
+            "cv_std": cv_std,
+            "accuracy": accuracy
+        }
+    else:
+        return {
+            "percentage": word_percentage,
+            "accuracy": accuracy
+        }
 

@@ -3,6 +3,8 @@ from omegaconf import DictConfig
 from hydra.utils import instantiate
 
 import torch
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from pytorch_lightning.callbacks import ModelCheckpoint
 from mofgraph2vec.utils.dict_helpers import get, put
 from mofgraph2vec.utils.seed import set_seed
 from mofgraph2vec.data.datamodule import DataModuleFactory
@@ -27,7 +29,14 @@ def train(
     pl_model = VecLightningModule(vec_model, loss=config.model.loss, lr=config.model.lr)
 
     logger.info(f"config trainer: {config.trainer}")
-    trainer = instantiate(config.trainer)
+
+    callbacks = []
+    if config.model.patience >= 0:
+        callbacks.append(EarlyStopping(monitor="valid_loss", patience=config.model.patience))
+    if config.model.checkpoint:
+        callbacks.append(ModelCheckpoint(monitor="valid_loss"))
+    
+    trainer = instantiate(config.trainer, callbacks=callbacks)
 
     if trainer.auto_lr_find:
         trainer.tune(pl_model, datamodule=datamodule)

@@ -9,4 +9,5 @@ nn:
   
 loss: "mse"
 lr: 1e-4
-max_epochs: 100
+patience: 6
+checkpoint: true

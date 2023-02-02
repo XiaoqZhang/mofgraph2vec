@@ -1,6 +1,7 @@
 # data
 data/cifs
 data/meta
+data/embedding_example
 
 # experiment loggings
 experiments/supervised/lightning_logs

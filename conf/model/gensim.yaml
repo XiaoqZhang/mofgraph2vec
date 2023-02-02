@@ -7,3 +7,5 @@ gensim:
   workers: 4
   alpha: 0.001
   epochs: 20
+  
+cv: True
