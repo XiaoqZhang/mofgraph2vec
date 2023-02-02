@@ -3,8 +3,8 @@ id: null
 config:
   method: bayes
   metric:
-    name: Accuracy
-    goal: maximize
+    name: test_loss
+    goal: minimize
   early_terminate:
     type: hyperband
     min_iter: 5
@@ -21,6 +21,10 @@ config:
       min: 1
       max: 20
       distribution: int_uniform
+    model.gensim.min_count:
+      min: 1
+      max: 10
+      distribution: int_uniform
     model.gensim.dm:
       values: [0, 1]
     model.gensim.sample: 
@@ -35,4 +39,23 @@ config:
       min: 30
       max: 150
       distribution: int_uniform
-
+    data.nn.batch_size:
+      min: 32
+      max: 256
+      distribution: int_uniform
+    model.nn.fcnn_n_layers: 
+      min: 1
+      max: 10
+      distribution: int_uniform
+    model.nn.fcnn_hidden_size: 
+      min: 8
+      max: 256
+      distribution: int_uniform
+    model.nn.dropout: 
+      min: 0
+      max: 1
+      distribution: uniform
+    model.lr:
+      min: -8
+      max: 0
+      distribution: log_uniform

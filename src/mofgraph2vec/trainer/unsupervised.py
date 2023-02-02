@@ -11,7 +11,7 @@ from mofgraph2vec.utils.seed import set_seed
 
 def train(
     config: DictConfig,
-    wandb_run_dir: str
+    wandb_dir: str
 ):
     set_seed(config.seed)
 
@@ -27,20 +27,20 @@ def train(
     else:
         model = Doc2Vec(**config.model.gensim)
         model.build_vocab(documents)
-        cv_mean, cv_std = cross_validation(documents, model, k_foldes=5, epochs=config.model.gensim.epochs)
+        #cv_mean, cv_std = cross_validation(documents, model, k_foldes=5, epochs=config.model.gensim.epochs)
 
     model.train(documents, total_examples=model.corpus_count, epochs=config.model.gensim.epochs)
     logger.info(f"Evaluating the model performance. ")
     accuracy = evaluate_model(model, documents)
-    model.save(os.path.join(wandb_run_dir, "../tmp/model.pt"))
+    model.save(os.path.join(wandb_dir, "embedding_model.pt"))
 
     logger.info(f"Saving embedded vectors. ")
-    save_embedding(os.path.join(wandb_run_dir, "../tmp/embedding.csv"), model, documents, config.model.gensim.vector_size)
+    save_embedding(os.path.join(wandb_dir, "embedding.csv"), model, documents, config.model.gensim.vector_size)
 
     return {
         "percentage": word_percentage,
-        "cv_mean": cv_mean,
-        "cv_std": cv_std,
+        #"cv_mean": cv_mean,
+        #"cv_std": cv_std,
         "accuracy": accuracy
     }
 

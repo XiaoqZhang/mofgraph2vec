@@ -1,15 +1,12 @@
 import hydra
 from omegaconf import DictConfig
-import wandb
-import os
-from loguru import logger
 
-from mofgraph2vec.trainer.workflow import train
-
+from mofgraph2vec.trainer.sweep import sweep
 
 @hydra.main(config_path="../../conf", config_name="config.yaml", version_base=None)
 def main(config: DictConfig):
-    train(config)
+    sweep(config)
+
 
 if __name__ == "__main__":
     main()

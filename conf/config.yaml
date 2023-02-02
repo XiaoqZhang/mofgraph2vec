@@ -8,15 +8,13 @@ defaults:
     - nn.yaml
   - trainer:
     - default.yaml
-  - unsupervised_sweep: 
-    - gensim.yaml
-  - supervised_sweep: 
-    - nn.yaml
+  - sweep:
+    - default.yaml
 
 logger:
   project: mof2vec
   entity: xiaoqiz
-  mode: offline
+  mode: online
   tags:
 
 seed: 1234
