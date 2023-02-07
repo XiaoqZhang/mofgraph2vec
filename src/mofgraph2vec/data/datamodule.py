@@ -2,7 +2,8 @@ from loguru import logger
 from typing import Optional
 import torch
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import numpy as np
+from mofgraph2vec.data.spliter import train_valid_test_split
 from mofgraph2vec.data.dataset import VecDataset
 from torch_geometric.data import LightningDataset
 from sklearn.preprocessing import MinMaxScaler
@@ -20,6 +21,7 @@ class DataModuleFactory:
         batch_size: int=64,
         num_workers: Optional[int] = None,
         device: Optional[torch.device] = "cpu",
+        seed: Optional[int] = 2023,
         **kwargs
     ):
         self.device = device
@@ -45,8 +47,10 @@ class DataModuleFactory:
         df_label = df_label[df_label[self.MOF_id].isin(embedded_mofs)].set_index(self.MOF_id)
         df_label = df_label.dropna(subset=self.task)
 
-        train_valid_idx, test_idx = train_test_split(range(len(df_label)), test_size=test_frac)
-        train_idx, valid_idx = train_test_split(train_valid_idx, test_size=valid_frac)
+        train_idx, valid_idx, test_idx = train_valid_test_split(
+            df_label, self.train_frac, self.valid_frac, self.test_frac, self.task, seed
+        )
+        train_valid_idx = np.concatenate([train_idx, valid_idx])
 
         self.target_transform = MinMaxScaler().fit(df_label.iloc[train_valid_idx][self.task].values.reshape(-1,1))
 

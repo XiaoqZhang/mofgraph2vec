@@ -2,9 +2,9 @@ nn:
   task: ["outputs.pbe.bandgap"]
   MOF_id: "qmof_id"
   label_path: "../../data/qmof-data.csv"
-  embedding_path: ../../data/embedding_example/embedding.csv # same as gensim storage path
+  embedding_path: ../../experiments/workflow/wandb/run-20230206_195625-h50rl5oi/tmp/embedding.csv # same as gensim storage path
   train_frac: 0.8
   valid_frac: 0.1
   test_frac: 0.1
-  batch_size: 64
+  batch_size: 841
   num_workers: null

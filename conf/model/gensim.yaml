@@ -1,11 +1,11 @@
 gensim: 
-  vector_size: 53
-  window: 10
-  min_count: 3
+  vector_size: 255
+  window: 13
+  min_count: 8
   dm: 0
-  sample: 0.9
+  sample: 0.9268184366916388
   workers: 4
-  alpha: 0.001
-  epochs: 20
+  alpha: 0.0022303955294770464
+  epochs: 88
   
 cv: false

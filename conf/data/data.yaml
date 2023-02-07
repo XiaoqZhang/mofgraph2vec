@@ -1,5 +1,5 @@
 data:
   _target_: mofgraph2vec.graph.mof2doc.MOF2doc
   cif_path: ["../../data/cifs/qmof/"] #, "../../data/cifs/qmof/"]
-  subsample: 0.1
-  wl_step: 3
+  subsample: null
+  wl_step: 1

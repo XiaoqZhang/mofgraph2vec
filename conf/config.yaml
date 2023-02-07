@@ -15,7 +15,7 @@ logger:
   project: mof2vec
   entity: xiaoqiz
   mode: offline
-  tags: co2 uptake, rsm, xgb
+  tags: co2 henry, rsm, xgb, best model
 
 seed: 1234
 load_model: false
