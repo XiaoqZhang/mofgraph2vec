@@ -8,4 +8,4 @@ gensim:
   alpha: 0.001
   epochs: 20
   
-cv: True
+cv: false

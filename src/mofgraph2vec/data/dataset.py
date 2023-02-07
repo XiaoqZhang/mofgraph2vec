@@ -12,18 +12,18 @@ class VecDataset(Dataset):
         df_labels = pd.read_csv(label_file).set_index("cif.label")
 
         self.vectors = torch.from_numpy(df_vectors.loc[mofnames].values.astype(np.float32)).to(device)
-        self.labels = torch.from_numpy(df_labels.loc[mofnames][self.target].values.astype(np.float32)).to(device)
+        self.labels = torch.from_numpy(df_labels.loc[mofnames][self.target].values.astype(np.float32).reshape(-1,len(self.target))).to(device)
 
         self.transform = transform
         self.target_transform = target_transform
 
         if self.transform is not None:
-            self.vectors = transform(df_vectors)
+            self.vectors = transform.transform(self.vectors)
         if self.target_transform is not None:
-            self.labels = target_transform(df_labels)
+            self.labels = target_transform.transform(self.labels)
 
     def __len__(self):
-        return len(self.labels)
+        return self.labels.shape[0]
 
     def __getitem__(self, idx):
         X = self.vectors[idx]

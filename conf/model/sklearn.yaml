@@ -1,0 +1,11 @@
+sklearn:
+  _target_: mofgraph2vec.model.gbt.Regressor
+  n_estimators: 100
+  max_depth: 10
+  num_leaves: 50
+  reg_alpha: 0.00001
+  reg_lambda: 0.00001
+  subsample: 1.0
+  min_child_weight: 0.001
+  n_jobs: 4
+  learning_rate: 1e-3

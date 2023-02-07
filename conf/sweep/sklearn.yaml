@@ -1,0 +1,77 @@
+count: 100
+id: xiaoqiz/mof2vec/iaxwjfxp
+config:
+  method: bayes
+  metric:
+    name: test_mse
+    goal: minimize
+  early_terminate:
+    type: hyperband
+    min_iter: 5
+  parameters:
+    data.data.wl_step:
+      min: 1
+      max: 8
+      distribution: int_uniform
+    model.gensim.vector_size:
+      min: 8
+      max: 256
+      distribution: int_uniform
+    model.gensim.window:
+      min: 1
+      max: 20
+      distribution: int_uniform
+    model.gensim.min_count:
+      min: 1
+      max: 10
+      distribution: int_uniform
+    model.gensim.dm:
+      values: [0, 1]
+    model.gensim.sample: 
+      min: 0.2
+      max: 1.0
+      distribution: uniform
+    model.gensim.alpha:
+      min: -8
+      max: 0
+      distribution: log_uniform
+    model.gensim.epochs:
+      min: 20
+      max: 100
+      distribution: int_uniform
+    data.nn.batch_size:
+      min: 32
+      max: 1024
+      distribution: int_uniform
+    model.sklearn.n_estimators: 
+      min: 10
+      max: 5000
+      distribution: int_uniform
+    model.sklearn.max_depth: 
+      min: 5
+      max: 100
+      distribution: int_uniform
+    model.sklearn.num_leaves: 
+      min: 5
+      max: 500
+      distribution: int_uniform
+    model.sklearn.reg_alpha:
+      min: -6
+      max: 0
+      distribution: log_uniform
+    model.sklearn.reg_lambda:
+      min: -6
+      max: 0
+      distribution: log_uniform
+    model.sklearn.subsample:
+      min: 0.2
+      max: 1.0
+      distribution: uniform
+    model.sklearn.min_child_weight:
+      min: 0.001
+      max: 0.1
+      distribution: uniform
+    model.sklearn.learning_rate:
+      min: -8
+      max: 0
+      distribution: log_uniform

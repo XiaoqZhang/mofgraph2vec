@@ -5,17 +5,17 @@ defaults:
     - nn.yaml
   - model: 
     - gensim.yaml 
-    - nn.yaml
+    - sklearn.yaml
   - trainer:
     - default.yaml
   - sweep:
-    - default.yaml
+    - sklearn.yaml
 
 logger:
   project: mof2vec
   entity: xiaoqiz
   mode: online
-  tags:
+  tags: co2 uptake, rsm, xgb
 
 seed: 1234
 load_model: false

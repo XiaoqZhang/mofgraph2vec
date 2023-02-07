@@ -2,7 +2,7 @@ import os
 import random
 from glob import glob
 from tqdm import tqdm
-from loguru import logger
+from pathlib import Path
 from collections import Counter
 import numpy as np
 from typing import Optional, List
@@ -35,7 +35,7 @@ class MOF2doc:
 
         self.documents = []
         for cif in tqdm(self.files):
-            name = cif.split("/")[-1].rstrip(".cif")
+            name = Path(cif).stem
             graph, feature = ds_loader.to_WL_machine(cif)
             machine = WeisfeilerLehmanMachine(graph, feature, self.wl_step)
             word = machine.extracted_features

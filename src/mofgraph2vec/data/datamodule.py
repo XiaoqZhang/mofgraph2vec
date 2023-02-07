@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from mofgraph2vec.data.dataset import VecDataset
 from torch_geometric.data import LightningDataset
+from sklearn.preprocessing import MinMaxScaler
 
 class DataModuleFactory:
     def __init__(
@@ -42,10 +43,12 @@ class DataModuleFactory:
         df_feat = pd.read_csv(embedding_path)
         embedded_mofs = list(df_feat["type"])
         df_label = df_label[df_label[self.MOF_id].isin(embedded_mofs)].set_index(self.MOF_id)
-        df_label = df_label.dropna(subset=[self.task])
+        df_label = df_label.dropna(subset=self.task)
 
         train_valid_idx, test_idx = train_test_split(range(len(df_label)), test_size=test_frac)
         train_idx, valid_idx = train_test_split(train_valid_idx, test_size=valid_frac)
+
+        self.target_transform = MinMaxScaler().fit(df_label.iloc[train_valid_idx][self.task].values.reshape(-1,1))
 
         self.train_names = [df_label.iloc[i].name for i in train_idx]
         self.valid_names = [df_label.iloc[i].name for i in valid_idx]
@@ -62,7 +65,7 @@ class DataModuleFactory:
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
             transform=None, 
-            target_transform=None,
+            target_transform=self.target_transform,
             device=self.device
         )
 
@@ -75,7 +78,7 @@ class DataModuleFactory:
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
             transform=None, 
-            target_transform=None,
+            target_transform=self.target_transform,
             device=self.device
         )
 
@@ -88,7 +91,7 @@ class DataModuleFactory:
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
             transform=None, 
-            target_transform=None,
+            target_transform=self.target_transform,
             device=self.device
         )
 

@@ -4,7 +4,7 @@ import wandb
 import os
 from loguru import logger
 
-from mofgraph2vec.trainer.workflow import train
+from mofgraph2vec.trainer.sklearn_workflow import train
 
 
 @hydra.main(config_path="../../conf", config_name="config.yaml", version_base=None)
