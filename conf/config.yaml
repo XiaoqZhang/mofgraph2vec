@@ -14,7 +14,7 @@ defaults:
 logger:
   project: mof2vec
   entity: xiaoqiz
-  mode: online
+  mode: offline
   tags: co2 uptake, rsm, xgb
 
 seed: 1234

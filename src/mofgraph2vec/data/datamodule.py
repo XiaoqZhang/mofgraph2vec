@@ -60,7 +60,8 @@ class DataModuleFactory:
 
     def get_train_dataset(self, **kwargs):
         return VecDataset(
-            target=self.task, 
+            target=self.task,
+            MOF_id=self.MOF_id,  
             mofnames=self.train_names, 
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
@@ -73,7 +74,8 @@ class DataModuleFactory:
         if self.valid_names is None:
             return None
         return VecDataset(
-            target=self.task, 
+            target=self.task,
+            MOF_id=self.MOF_id, 
             mofnames=self.valid_names, 
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
@@ -87,6 +89,7 @@ class DataModuleFactory:
             return None
         return VecDataset(
             target=self.task, 
+            MOF_id=self.MOF_id, 
             mofnames=self.test_names, 
             vector_file=self.embedding_path, 
             label_file=self.label_path, 

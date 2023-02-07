@@ -5,11 +5,11 @@ import torch
 from torch.utils.data import Dataset
 
 class VecDataset(Dataset):
-    def __init__(self, target, mofnames, vector_file, label_file, transform=None, target_transform=None, device="cpu"):
+    def __init__(self, target, MOF_id, mofnames, vector_file, label_file, transform=None, target_transform=None, device="cpu"):
 
         self.target = target
         df_vectors = pd.read_csv(vector_file).set_index("type")
-        df_labels = pd.read_csv(label_file).set_index("cif.label")
+        df_labels = pd.read_csv(label_file).set_index(MOF_id)
 
         self.vectors = torch.from_numpy(df_vectors.loc[mofnames].values.astype(np.float32)).to(device)
         self.labels = torch.from_numpy(df_labels.loc[mofnames][self.target].values.astype(np.float32).reshape(-1,len(self.target))).to(device)
