@@ -58,6 +58,11 @@ class DataModuleFactory:
         self.valid_names = [df_label.iloc[i].name for i in valid_idx]
         self.test_names = [df_label.iloc[i].name for i in test_idx]
 
+        train_valid_names = np.concatenate([self.train_names, self.valid_names])
+        df_feat = df_feat.set_index("type")
+        x_to_transform = df_feat[df_feat.index.isin(train_valid_names)].values
+        self.transform = MinMaxScaler().fit(x_to_transform)
+
         logger.info(
             f"Train: {len(self.train_names)} Valid: {len(self.valid_names)} Test: {len(self.test_names)}"
         )
@@ -69,7 +74,7 @@ class DataModuleFactory:
             mofnames=self.train_names, 
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
-            transform=None, 
+            transform=self.transform, 
             target_transform=self.target_transform,
             device=self.device
         )
@@ -83,7 +88,7 @@ class DataModuleFactory:
             mofnames=self.valid_names, 
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
-            transform=None, 
+            transform=self.transform, 
             target_transform=self.target_transform,
             device=self.device
         )
@@ -97,7 +102,7 @@ class DataModuleFactory:
             mofnames=self.test_names, 
             vector_file=self.embedding_path, 
             label_file=self.label_path, 
-            transform=None, 
+            transform=self.transform, 
             target_transform=self.target_transform,
             device=self.device
         )

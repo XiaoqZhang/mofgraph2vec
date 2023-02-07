@@ -16,11 +16,11 @@ def train(
 
     train_ds = dm.get_train_dataset()
     valid_ds = dm.get_valid_dataset()
-    x_train = np.concatenate((train_ds.vectors.numpy(), valid_ds.vectors.numpy()), axis=0)
+    x_train = np.concatenate((train_ds.vectors, valid_ds.vectors), axis=0)
     y_train = np.concatenate((train_ds.labels, valid_ds.labels), axis=0)
 
     test_ds = dm.get_test_dataset()
-    x_test = test_ds.vectors.numpy()
+    x_test = test_ds.vectors
     y_test = test_ds.labels
 
     logger.info(f"Start fitting xgbt model. ")
