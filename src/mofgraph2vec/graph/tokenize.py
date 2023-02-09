@@ -1,5 +1,6 @@
 # update node hash by gathering information from neighborhoods
 import hashlib
+from collections import Counter
 
 class WeisfeilerLehmanMachine:
     """
@@ -8,7 +9,7 @@ class WeisfeilerLehmanMachine:
     def __init__(self, graph, features, iterations):
         """
         Initialization method which also executes feature extraction.
-        :param graph: The Nx graph object.
+        :param graph: The networkx graph object.
         :param features: Feature hash table.
         :param iterations: Number of WL iterations.
         """
@@ -17,6 +18,7 @@ class WeisfeilerLehmanMachine:
         self.features = features
         self.nodes = self.graph.nodes()
         self.extracted_features = [str(v) for k, v in features.items()]
+        self.length = len(Counter(self.extracted_features).values())
         self.do_recursions()
 
     def do_a_recursion(self):
@@ -33,7 +35,9 @@ class WeisfeilerLehmanMachine:
             hash_object = hashlib.md5(features.encode())
             hashing = hash_object.hexdigest()
             new_features[node] = hashing
-        self.extracted_features = self.extracted_features + list(new_features.values())
+        if len(Counter(new_features.values()).values()) > self.length:
+            self.extracted_features = self.extracted_features + list(new_features.values())
+            self.length = len(Counter(new_features.values()).values())
         return new_features
 
     def do_recursions(self):

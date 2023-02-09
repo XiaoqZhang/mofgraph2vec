@@ -18,7 +18,7 @@ class VecModel(nn.Module):
 
         self.dropout = dropout
 
-        self.embedding = nn.Linear(input_dim, fcnn_hidden_size)
+        self.embedding = nn.Embedding(input_dim, fcnn_hidden_size)
 
         self.convs = nn.ModuleList(
             [
