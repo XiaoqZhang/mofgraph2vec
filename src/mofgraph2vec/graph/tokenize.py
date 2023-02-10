@@ -1,6 +1,7 @@
 # update node hash by gathering information from neighborhoods
 import hashlib
 from collections import Counter
+from loguru import logger
 
 class WeisfeilerLehmanMachine:
     """
@@ -19,6 +20,7 @@ class WeisfeilerLehmanMachine:
         self.nodes = self.graph.nodes()
         self.extracted_features = [str(v) for k, v in features.items()]
         self.length = len(Counter(self.extracted_features).values())
+        self.step = 0
         self.do_recursions()
 
     def do_a_recursion(self):
@@ -37,7 +39,8 @@ class WeisfeilerLehmanMachine:
             new_features[node] = hashing
         if len(Counter(new_features.values()).values()) > self.length:
             self.extracted_features = self.extracted_features + list(new_features.values())
-            self.length = len(Counter(new_features.values()).values())
+        self.step += 1
+        self.length = len(Counter(new_features.values()).values())
         return new_features
 
     def do_recursions(self):

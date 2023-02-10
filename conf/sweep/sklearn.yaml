@@ -1,5 +1,5 @@
 count: 100
-id: xiaoqiz/mof2vec/iaxwjfxp
+id: xiaoqiz/mof2vec/27h0aav5
 config:
   method: bayes
   metric:
@@ -9,40 +9,30 @@ config:
     type: hyperband
     min_iter: 5
   parameters:
-    data.data.wl_step:
-      min: 1
-      max: 8
-      distribution: int_uniform
-    model.gensim.vector_size:
-      min: 8
-      max: 256
-      distribution: int_uniform
-    model.gensim.window:
-      min: 1
-      max: 20
-      distribution: int_uniform
-    model.gensim.min_count:
-      min: 1
-      max: 10
-      distribution: int_uniform
-    model.gensim.dm:
-      values: [0, 1]
-    model.gensim.sample: 
-      min: 0.2
-      max: 1.0
-      distribution: uniform
-    model.gensim.alpha:
-      min: -8
-      max: 0
-      distribution: log_uniform
-    model.gensim.epochs:
-      min: 20
-      max: 100
-      distribution: int_uniform
-    data.nn.batch_size:
-      min: 32
-      max: 1024
-      distribution: int_uniform
+    #model.gensim.vector_size:
+    #  min: 8
+    #  max: 256
+    #  distribution: int_uniform
+    #model.gensim.window:
+    #  min: 10
+    #  max: 20
+    #  distribution: int_uniform
+    #model.gensim.min_count:
+    #  min: 1
+    #  max: 10
+    #  distribution: int_uniform
+    #model.gensim.sample: 
+    #  min: 0.2
+    #  max: 1.0
+    #  distribution: uniform
+    #model.gensim.alpha:
+    #  min: -8
+    #  max: 0
+    #  distribution: log_uniform_values
+    #model.gensim.epochs:
+    #  min: 20
+    #  max: 100
+    #  distribution: int_uniform
     model.sklearn.n_estimators: 
       min: 10
       max: 5000
@@ -58,11 +48,11 @@ config:
     model.sklearn.reg_alpha:
       min: -6
       max: 0
-      distribution: log_uniform
+      distribution: log_uniform_values
     model.sklearn.reg_lambda:
       min: -6
       max: 0
-      distribution: log_uniform
+      distribution: log_uniform_values
     model.sklearn.subsample:
       min: 0.2
       max: 1.0
@@ -74,4 +64,4 @@ config:
     model.sklearn.learning_rate:
       min: -8
       max: 0
-      distribution: log_uniform
+      distribution: log_uniform_values

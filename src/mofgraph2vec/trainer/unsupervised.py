@@ -17,9 +17,8 @@ def train(
     set_seed(config.seed)
 
     doc = instantiate(config.data.data, seed=config.seed)
-    documents = doc.get_documents()
+    documents, train_documents, test_documents = doc.get_documents()
     word_percentage = doc.distribution_analysis(config.model.gensim.min_count)
-    train_documents, test_documents = documents[:len(documents)-100], documents[-100:]
 
     logger.info(f"Instantiate model. ")
     if config.load_model:
@@ -27,22 +26,21 @@ def train(
         logger.info(f"Load trained model from {config.model_checkpoint}. ")
         model = Doc2Vec.load(config.model_checkpoint)
     else:
-        accuracy_callback = AccuracyCallback(wandb_dir, train_documents)
+        accuracy_callback = AccuracyCallback(wandb_dir, test_documents, config.model.evaluate_patience)
         model = Doc2Vec(**config.model.gensim, seed=config.seed)
         model.build_vocab(documents)
         if config.model.cv:
-            cv_mean, cv_std = cross_validation(documents, model, k_foldes=5, epochs=config.model.gensim.epochs)
+            cv_mean, cv_std = cross_validation(train_documents, model, k_foldes=5, epochs=config.model.gensim.epochs, patience=config.model.evaluate_patience)
 
     model.train(
-        documents, 
+        train_documents, 
         total_examples=model.corpus_count, 
         epochs=config.model.gensim.epochs, 
         compute_loss=True, 
         callbacks=[accuracy_callback]
     )
-    logger.info(f"Model loss: {model.get_latest_training_loss()}")
     logger.info(f"Evaluating the model performance. ")
-    accuracy = evaluate_model(model, documents)
+    accuracy = evaluate_model(model, documents, config.model.evaluate_patience)
     model.save(os.path.join(wandb_dir, "embedding_model.pt"))
 
     logger.info(f"Saving embedded vectors. ")
