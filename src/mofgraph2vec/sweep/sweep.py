@@ -6,7 +6,7 @@ import wandb
 from loguru import logger
 from omegaconf import OmegaConf
 
-from mofgraph2vec.trainer.sklearn_workflow import train
+from mofgraph2vec.trainer.run_workflow import train
 
 
 def sweep(config):

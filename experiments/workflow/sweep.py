@@ -1,7 +1,7 @@
 import hydra
 from omegaconf import DictConfig
 
-from mofgraph2vec.trainer.sweep import sweep
+from mofgraph2vec.sweep.sweep import sweep
 
 @hydra.main(config_path="../../conf", config_name="config.yaml", version_base=None)
 def main(config: DictConfig):

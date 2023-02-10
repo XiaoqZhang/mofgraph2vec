@@ -21,7 +21,7 @@ class DataModuleFactory:
         batch_size: int=64,
         num_workers: Optional[int] = None,
         device: Optional[torch.device] = "cpu",
-        seed: Optional[int] = 2023,
+        seed: Optional[int] = 1234, 
         **kwargs
     ):
         self.device = device
@@ -29,10 +29,6 @@ class DataModuleFactory:
 
         if not (train_frac + valid_frac + test_frac == 1.0):
             raise ValueError("Fractions must sum to 1.0")
-
-        self.train_frac = train_frac
-        self.valid_frac = valid_frac
-        self.test_frac = test_frac
         
         self.task = task
         self.MOF_id = MOF_id
@@ -48,20 +44,20 @@ class DataModuleFactory:
         df_label = df_label.dropna(subset=self.task)
 
         train_idx, valid_idx, test_idx = train_valid_test_split(
-            df_label, self.train_frac, self.valid_frac, self.test_frac, self.task, seed
+            df_label, train_frac, valid_frac, test_frac, self.task, seed=seed
         )
         train_valid_idx = np.concatenate([train_idx, valid_idx])
-
-        self.target_transform = MinMaxScaler().fit(df_label.iloc[train_valid_idx][self.task].values.reshape(-1,1))
 
         self.train_names = [df_label.iloc[i].name for i in train_idx]
         self.valid_names = [df_label.iloc[i].name for i in valid_idx]
         self.test_names = [df_label.iloc[i].name for i in test_idx]
 
+        # fit transformers
         train_valid_names = np.concatenate([self.train_names, self.valid_names])
         df_feat = df_feat.set_index("type")
         x_to_transform = df_feat[df_feat.index.isin(train_valid_names)].values
         self.transform = MinMaxScaler().fit(x_to_transform)
+        self.target_transform = MinMaxScaler().fit(df_label.iloc[train_valid_idx][self.task].values.reshape(-1,1))
 
         logger.info(
             f"Train: {len(self.train_names)} Valid: {len(self.valid_names)} Test: {len(self.test_names)}"

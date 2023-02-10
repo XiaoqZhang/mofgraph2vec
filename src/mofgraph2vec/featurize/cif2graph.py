@@ -9,7 +9,6 @@ from pymatgen.analysis.graphs import StructureGraph
 from pymatgen.analysis.local_env import CutOffDictNN
 
 import torch
-import networkx as nx
 from torch_geometric.data import Data
 from torch_geometric.utils import to_networkx
 

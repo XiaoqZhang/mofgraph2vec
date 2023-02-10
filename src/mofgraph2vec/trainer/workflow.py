@@ -5,7 +5,7 @@ from omegaconf import DictConfig
 from loguru import logger
 from mofgraph2vec.utils.dict_helpers import get, put
 from mofgraph2vec.utils.seed import set_seed
-from mofgraph2vec.trainer.unsupervised import train as unsupervised_train
+from mofgraph2vec.mof2doc.unsupervised import train as unsupervised_train
 from mofgraph2vec.trainer.supervised import train as supervised_train
 
 def train(config: DictConfig, sweep: bool=False):

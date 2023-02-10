@@ -3,7 +3,7 @@ import hydra
 from omegaconf import DictConfig
 import wandb
 from loguru import logger
-from mofgraph2vec.trainer.sklearn_supervised import train
+from mofgraph2vec.model.regression import run_regression
 from mofgraph2vec.utils.dict_helpers import get, put
 
 @hydra.main(config_path="../../conf", config_name="config.yaml", version_base=None)
@@ -24,7 +24,7 @@ def main(config: DictConfig):
             except Exception as e:
                 logger.exception(f"Error {e} trying to set key {key}")
         
-        model, metrics = train(config)
+        model, metrics = run_regression(config)
         wandb.log(metrics)
         
 

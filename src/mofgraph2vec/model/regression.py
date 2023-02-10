@@ -3,16 +3,13 @@ from omegaconf import DictConfig
 from hydra.utils import instantiate
 
 import numpy as np
-from mofgraph2vec.utils.seed import set_seed
-from mofgraph2vec.utils.loss import get_numpy_regression_metrics
 from mofgraph2vec.data.datamodule import DataModuleFactory
 
-def train(
+def run_regression(
     config: DictConfig
-):  
-    set_seed(config.seed)
-
-    dm = DataModuleFactory(**config.data.nn, device="cpu")
+):
+    config.doc2label_model.random_state = config.seed
+    dm = DataModuleFactory(**config.doc2label_data, device="cpu")
 
     train_ds = dm.get_train_dataset()
     valid_ds = dm.get_valid_dataset()
@@ -24,7 +21,7 @@ def train(
     y_test = test_ds.labels
 
     logger.info(f"Start fitting xgbt model. ")
-    regressor = instantiate(config.model.sklearn)
+    regressor = instantiate(config.doc2label_model)
     regressor.fit(x_train, y_train)
     metrics = regressor.test(x_test, y_test, dm.target_transform)
 

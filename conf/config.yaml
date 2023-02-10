@@ -1,23 +1,24 @@
 defaults:
   - _self_
-  - data: 
+  - mof2vec_data: 
     - data.yaml
-    - nn.yaml
-  - model: 
-    - gensim.yaml 
-    - sklearn.yaml
+  - mof2vec_model:
+    - gensim.yaml
+  - doc2label_data: 
+    - rsm.yaml 
+  - doc2label_model:
+    - ensemble.yaml
   - trainer:
     - default.yaml
   - sweep:
-    - sklearn.yaml
+    - ensemble.yaml
 
 logger:
   project: mof2vec
   entity: xiaoqiz
-  mode: online
+  mode: offline
   tags: 
 
-seed: 1234
-load_model: false
-model_checkpoint: null
+seed: 5432
 sweep: false
+mode: doc2label # available choices: mof2vec, doc2label, workflow

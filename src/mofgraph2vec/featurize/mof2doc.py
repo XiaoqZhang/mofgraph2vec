@@ -6,8 +6,8 @@ from pathlib import Path
 from collections import Counter
 import numpy as np
 from typing import Optional, List
-from mofgraph2vec.graph.cif2graph import MOFDataset
-from mofgraph2vec.graph.tokenize import WeisfeilerLehmanMachine
+from mofgraph2vec.featurize.cif2graph import MOFDataset
+from mofgraph2vec.featurize.tokenize import WeisfeilerLehmanMachine
 from gensim.models.doc2vec import TaggedDocument
 from sklearn.model_selection import train_test_split
 
@@ -18,9 +18,8 @@ class MOF2doc:
         wl_step: int = 5,
         subsample: Optional[int] = None,
         seed: Optional[int] = 1234,
-    ) -> None:
-        random.seed(seed)
-        
+        **kwarg
+    ):     
         self.files = []
         for pt in cif_path:
             files_in_pt = glob(os.path.join(pt, "*.cif"))
@@ -30,8 +29,9 @@ class MOF2doc:
             self.files: List[str] = random.sample(self.files, int(subsample*len(self.files)))
 
         self.wl_step = wl_step
+        self.seed = seed
 
-    def get_documents(self): #-> List[TaggedDocument]:
+    def get_documents(self):
         ds_loader = MOFDataset(strategy="vesta")
 
         self.documents = []
@@ -43,8 +43,7 @@ class MOF2doc:
             doc = TaggedDocument(words=word, tags=[name])
 
             self.documents.append(doc)
-        train_doc, test_doc = train_test_split(self.documents, train_size=0.9, test_size=0.1)
-        #valid_documents = random.sample(self.documents, int(0.1*len(self.documents)))
+        train_doc, test_doc = train_test_split(self.documents, train_size=0.9, test_size=0.1, random_state=self.seed)
 
         return self.documents, train_doc, test_doc
     
