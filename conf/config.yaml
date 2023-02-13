@@ -11,7 +11,7 @@ defaults:
   - trainer:
     - default.yaml
   - sweep:
-    - ensemble.yaml
+    - workflow.yaml
 
 logger:
   project: mof2vec

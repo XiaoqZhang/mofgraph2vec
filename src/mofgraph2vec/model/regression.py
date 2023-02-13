@@ -3,6 +3,7 @@ from omegaconf import DictConfig
 from hydra.utils import instantiate
 
 import numpy as np
+from sklearn.model_selection import cross_val_score
 from mofgraph2vec.data.datamodule import DataModuleFactory
 
 def run_regression(
@@ -23,6 +24,11 @@ def run_regression(
     logger.info(f"Start fitting xgbt model. ")
     regressor = instantiate(config.doc2label_model)
     regressor.fit(x_train, y_train)
+    scores = cross_val_score(regressor, x_train, y_train, cv=5)
     metrics = regressor.test(x_test, y_test, dm.target_transform)
+    metrics.update({
+        "cv_mean": np.mean(scores),
+        "cv_std": np.std(scores)
+    })
 
     return regressor, metrics

@@ -1,0 +1,39 @@
+count: 100
+id: null
+config:
+  method: bayes
+  metric:
+    name: test_mse
+    goal: minimize
+  early_terminate:
+    type: hyperband
+    min_iter: 5
+  parameters:
+    doc2label_model.n_estimators: 
+      min: 10
+      max: 5000
+      distribution: int_uniform
+    doc2label_model.max_depth: 
+      min: 5
+      max: 100
+      distribution: int_uniform
+    doc2label_model.reg_alpha:
+      min: -6
+      max: 0
+      distribution: log_uniform
+    doc2label_model.reg_lambda:
+      min: -6
+      max: 0
+      distribution: log_uniform
+    doc2label_model.subsample:
+      min: 0.2
+      max: 1.0
+      distribution: uniform
+    doc2label_model.min_child_weight:
+      min: 0.001
+      max: 0.1
+      distribution: uniform
+    doc2label_model.learning_rate:
+      min: -8
+      max: 0
+      distribution: log_uniform

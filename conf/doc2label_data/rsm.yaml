@@ -5,5 +5,3 @@ embedding_path: ../../data/embedding_example/embedding-{rsm,qmof,hmof}.csv # sam
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1
-#batch_size: 1024
-#num_workers: null
