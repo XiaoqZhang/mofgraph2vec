@@ -3,8 +3,8 @@ id: null
 config:
   method: bayes
   metric:
-    name: test_mse
-    goal: minimize
+    name: test_r2
+    goal: maximize
   early_terminate:
     type: hyperband
     min_iter: 5
@@ -35,7 +35,7 @@ config:
       distribution: int_uniform
     doc2label_model.max_depth: 
       min: 5
-      max: 100
+      max: 20
       distribution: int_uniform
     doc2label_model.reg_alpha:
       min: -6

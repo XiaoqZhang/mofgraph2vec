@@ -56,10 +56,10 @@ class DataModuleFactory:
         train_valid_names = np.concatenate([self.train_names, self.valid_names])
         df_feat = df_feat.set_index("type")
         x_to_transform = df_feat[df_feat.index.isin(train_valid_names)].values
-        self.transform = MinMaxScaler().fit(x_to_transform)
-        self.target_transform = MinMaxScaler().fit(df_label.iloc[train_valid_idx][self.task].values.reshape(-1,1))
-        #self.transform = None
-        #self.target_transform = None
+        #self.transform = MinMaxScaler().fit(x_to_transform)
+        #self.target_transform = MinMaxScaler().fit(df_label.iloc[train_valid_idx][self.task].values.reshape(-1,1))
+        self.transform = None
+        self.target_transform = None
 
         logger.info(
             f"Train: {len(self.train_names)} Valid: {len(self.valid_names)} Test: {len(self.test_names)}"

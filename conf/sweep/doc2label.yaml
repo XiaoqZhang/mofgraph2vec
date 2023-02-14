@@ -1,5 +1,5 @@
 count: 100
-id: null
+id: xiaoqiz/mof2vec/esd6r4du
 config:
   method: bayes
   metric:
@@ -15,7 +15,7 @@ config:
       distribution: int_uniform
     doc2label_model.max_depth: 
       min: 5
-      max: 100
+      max: 20
       distribution: int_uniform
     doc2label_model.reg_alpha:
       min: -6
