@@ -6,4 +6,4 @@ reg_lambda: 1.9343058864538412
 subsample: 0.9980347080095472
 min_child_weight: 0.08459677153963636
 learning_rate: 1.019044321427076
-random_state: null
+random_state: 2234

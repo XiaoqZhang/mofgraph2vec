@@ -3,16 +3,12 @@ id: null
 config:
   method: bayes
   metric:
-    name: cv_mean
-    goal: maximize
+    name: test_mse
+    goal: minimize
   early_terminate:
     type: hyperband
     min_iter: 5
   parameters:
-    mof2vec_model.gensim.vector_size:
-      min: 8
-      max: 256
-      distribution: int_uniform
     mof2vec_model.gensim.window:
       min: 1
       max: 30

@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --no-requeue
-#SBATCH --job-name  sweep-kh-co2-{rsm,qmof}
+#SBATCH --job-name ch4+rsm,qmof
 #SBATCH --get-user-env
 #SBATCH --ntasks    1
 #SBATCH --cpus-per-task   8
