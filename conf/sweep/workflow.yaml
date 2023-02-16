@@ -1,14 +1,18 @@
 count: 100
-id: null
+id: xiaoqiz/mof2vec/qfk9yfta
 config:
   method: bayes
   metric:
-    name: test_r2
-    goal: maximize
+    name: test_mse
+    goal: minimize
   early_terminate:
     type: hyperband
     min_iter: 5
   parameters:
+    mof2vec_model.gensim.vector_size:
+      min: 100
+      max: 1000
+      distribution: int_uniform
     mof2vec_model.gensim.window:
       min: 1
       max: 30
@@ -25,10 +29,6 @@ config:
       min: -8
       max: 0
       distribution: log_uniform
-    mof2vec_model.gensim.epochs:
-      min: 5
-      max: 70
-      distribution: int_uniform
     doc2label_model.n_estimators: 
       min: 10
       max: 5000
