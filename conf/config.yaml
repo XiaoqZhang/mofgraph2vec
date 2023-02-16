@@ -11,14 +11,14 @@ defaults:
   - trainer:
     - default.yaml
   - sweep:
-    - workflow.yaml
+    - doc2label.yaml
 
 logger:
   project: mof2vec
   entity: xiaoqiz
   mode: online
-  tags: rsm, density
+  tags: rsm, co2
 
 seed: 5432
 sweep: false
-mode: workflow # available choices: mof2vec, doc2label, workflow
+mode: doc2label # available choices: mof2vec, doc2label, workflow

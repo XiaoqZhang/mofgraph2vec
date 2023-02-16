@@ -1,5 +1,5 @@
-count: 100
-id: xiaoqiz/mof2vec/esd6r4du
+count: 200
+id: null
 config:
   method: bayes
   metric:
@@ -13,23 +13,23 @@ config:
       min: 10
       max: 5000
       distribution: int_uniform
-    doc2label_model.max_depth: 
-      min: 5
+    doc2label_model.max_depth: # 1
+      min: 3
       max: 20
       distribution: int_uniform
     doc2label_model.reg_alpha:
-      min: -6
-      max: 0
-      distribution: log_uniform
+      min: 0
+      max: 3
+      distribution: uniform
     doc2label_model.reg_lambda:
-      min: -6
-      max: 0
-      distribution: log_uniform
-    doc2label_model.subsample:
+      min: 1
+      max: 4
+      distribution: uniform
+    doc2label_model.subsample: # add randomness
       min: 0.2
       max: 1.0
       distribution: uniform
-    doc2label_model.min_child_weight:
+    doc2label_model.min_child_weight: # 2
       min: 0.001
       max: 0.1
       distribution: uniform
