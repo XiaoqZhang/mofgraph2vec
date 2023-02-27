@@ -39,11 +39,13 @@ def train(config: DictConfig, sweep: bool=False):
             joblib.dump(model, os.path.join(wandb.run.dir, "../tmp/best_model.pkl"))
 
             table = wandb.Table(data=figure, columns = ["True", "Pred"])
-            wandb.log({"task": config.doc2label_data.task[0]})
-            wandb.log({"parity" : wandb.plot.scatter(table,
-                            "True", "Pred")})
-            wandb.log(unsupervised_metrics)
-            wandb.log(supervised_metrics)
+            to_log = {
+                'task': config.doc2label_data.task[0],
+                'parity': wandb.plot.scatter(table, "True", "Pred")
+            }
+            to_log.update(unsupervised_metrics)
+            to_log.update(supervised_metrics)
+            wandb.log(to_log)
         elif config.mode == "mof2vec":
             logger.info(f"Running MOF embedding. ")
             unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"))
@@ -54,9 +56,13 @@ def train(config: DictConfig, sweep: bool=False):
             model, supervised_metrics, figure = run_regression(config)
             logger.info(f"Model performance: {supervised_metrics}")
             joblib.dump(model, os.path.join(wandb.run.dir, "../tmp/best_model.pkl"))
-            wandb.log({"task": config.doc2label_data.task[0]})
-            wandb.log(supervised_metrics)
+
             table = wandb.Table(data=figure, columns = ["True", "Pred"])
-            wandb.log({"parity" : wandb.plot.scatter(table,
-                            "True", "Pred")})
+            to_log = {
+                'task': config.doc2label_data.task[0],
+                'parity': wandb.plot.scatter(table, "True", "Pred")
+            }
+            to_log.update(supervised_metrics)
+            wandb.log(to_log)
+            
 
