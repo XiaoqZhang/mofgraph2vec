@@ -21,3 +21,4 @@ dev/lightning_logs
 src/mofgraph2vec/__pycache__
 src/mofgraph2vec/*/__pycache__
 src/mofgraph2vec.egg-info
+.DS_Store
