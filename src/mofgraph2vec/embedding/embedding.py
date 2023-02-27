@@ -7,6 +7,7 @@ from gensim.models.doc2vec import Doc2Vec
 from mofgraph2vec.utils.saving import save_embedding
 from mofgraph2vec.utils.evaluation import evaluate_model
 from mofgraph2vec.embedding.callbacks import AccuracyCallback
+from sklearn.model_selection import train_test_split
 
 def run_embedding(
     config: DictConfig,
@@ -14,9 +15,10 @@ def run_embedding(
 ):
     # Load MOF document data
     doc = instantiate(config.mof2vec_data.data, seed=config.seed)
-    documents, train_documents, test_documents = doc.get_documents()
+    documents = doc.get_documents()
+    _, valid_documents = train_test_split(documents, test_size=0.1, random_seed=1234)
     word_percentage = doc.distribution_analysis(config.mof2vec_model.gensim.min_count)
-    logger.info(f"Learning MOF embedding with {len(train_documents)} training data and {len(test_documents)} test data. ")
+    logger.info(f"Learning MOF embedding with {len(documents)} training data. ")
 
     # Gensim model instantiation
     logger.info(f"Instantiate model. ")
@@ -28,7 +30,7 @@ def run_embedding(
     else:
         model = Doc2Vec(**config.mof2vec_model.gensim, seed=config.seed)
         model.build_vocab(documents)
-        accuracy_callback = AccuracyCallback(log_dir, test_documents, config.mof2vec_model.evaluate_patience)
+        accuracy_callback = AccuracyCallback(log_dir, valid_documents, config.mof2vec_model.evaluate_patience)
 
         # Model training
         model.train(
@@ -43,7 +45,7 @@ def run_embedding(
         # Log info
         logger.info(f"Saving embedded vectors. ")
         save_embedding(
-            os.path.join(log_dir, "embedding.csv"), 
+            log_dir, 
             model, 
             documents, 
             config.mof2vec_model.gensim.vector_size

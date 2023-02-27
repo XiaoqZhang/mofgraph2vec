@@ -17,7 +17,7 @@ logger:
   project: mof2vec
   entity: xiaoqiz
   mode: online
-  tags: rsm, co2
+  tags: 
 
 seed: 5432
 sweep: false

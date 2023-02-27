@@ -9,7 +9,6 @@ from typing import Optional, List
 from mofgraph2vec.featurize.cif2graph import MOFDataset
 from mofgraph2vec.featurize.tokenize import WeisfeilerLehmanMachine
 from gensim.models.doc2vec import TaggedDocument
-from sklearn.model_selection import train_test_split
 
 class MOF2doc:
     def __init__(
@@ -43,9 +42,8 @@ class MOF2doc:
             doc = TaggedDocument(words=word, tags=[name])
 
             self.documents.append(doc)
-        train_doc, test_doc = train_test_split(self.documents, train_size=0.9, test_size=0.1, random_state=self.seed)
 
-        return self.documents, train_doc, test_doc
+        return self.documents
     
     def distribution_analysis(self, threshold: int = 4) -> float:
         """

@@ -1,5 +1,5 @@
 #_target_: mofgraph2vec.model.regressor.Regressor
-n_estimators: 5000
+n_estimators: 100
 max_depth: 5 #12
 reg_alpha: #2.6955990151262372
 reg_lambda: #1.9343058864538412

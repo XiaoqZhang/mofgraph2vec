@@ -11,16 +11,16 @@ config:
   parameters:
     doc2label_model.n_estimators: 
       min: 10
-      max: 5000
+      max: 200
       distribution: int_uniform
     doc2label_model.max_depth: # 1
       min: 3
       max: 20
       distribution: int_uniform
     doc2label_model.reg_alpha:
-      min: 0
-      max: 3
-      distribution: uniform
+      min: -3
+      max: 1
+      distribution: log_uniform
     doc2label_model.reg_lambda:
       min: 1
       max: 4
