@@ -16,7 +16,7 @@ def run_embedding(
     # Load MOF document data
     doc = instantiate(config.mof2vec_data.data, seed=config.seed)
     documents = doc.get_documents()
-    _, valid_documents = train_test_split(documents, test_size=0.1, random_seed=1234)
+    _, valid_documents = train_test_split(documents, test_size=0.1, random_state=1234)
     word_percentage = doc.distribution_analysis(config.mof2vec_model.gensim.min_count)
     logger.info(f"Learning MOF embedding with {len(documents)} training data. ")
 

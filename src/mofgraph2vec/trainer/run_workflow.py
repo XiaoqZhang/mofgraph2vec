@@ -32,7 +32,7 @@ def train(config: DictConfig, sweep: bool=False):
 
         if config.mode == "workflow":
             logger.info(f"Running workflow. ")
-            config.doc2label_data.embedding_path = os.path.join(wandb.run.dir, "../tmp/embedding.csv")
+            config.doc2label_data.embedding_path = os.path.join(wandb.run.dir, "../tmp/embedding_dv.csv")
             unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"))
             model, supervised_metrics, figure = run_regression(config)
             logger.info(f"Model performance: {supervised_metrics}")

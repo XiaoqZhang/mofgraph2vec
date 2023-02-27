@@ -1,10 +1,10 @@
 #_target_: mofgraph2vec.model.regressor.Regressor
 n_estimators: 100
-max_depth: 5 #12
-reg_alpha: #2.6955990151262372
-reg_lambda: #1.9343058864538412
-subsample: 1.0 #0.9980347080095472
-min_child_weight: 2 #0.08459677153963636
-learning_rate: 0.1 #1.019044321427076
+max_depth: 5
+reg_alpha: #0
+reg_lambda: #1
+subsample: #1.0 
+min_child_weight: #1
+learning_rate: 0.10
 n_jobs: -2
 random_state: 2234
