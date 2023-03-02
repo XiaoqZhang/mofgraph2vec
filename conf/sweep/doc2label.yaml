@@ -1,4 +1,4 @@
-count: 200
+count: 50
 id: null
 config:
   method: bayes
@@ -10,12 +10,12 @@ config:
     min_iter: 5
   parameters:
     doc2label_model.n_estimators: 
-      min: 10
-      max: 200
+      min: 50
+      max: 100
       distribution: int_uniform
     doc2label_model.max_depth: # 1
       min: 3
-      max: 20
+      max: 10
       distribution: int_uniform
     doc2label_model.reg_alpha:
       min: -3
@@ -23,17 +23,17 @@ config:
       distribution: log_uniform
     doc2label_model.reg_lambda:
       min: 1
-      max: 4
+      max: 10
       distribution: uniform
     doc2label_model.subsample: # add randomness
-      min: 0.2
+      min: 0.7
       max: 1.0
       distribution: uniform
     doc2label_model.min_child_weight: # 2
-      min: 0.001
-      max: 0.1
+      min: 1
+      max: 10
       distribution: uniform
     doc2label_model.learning_rate:
-      min: -8
+      min: -5
       max: 0
       distribution: log_uniform

@@ -30,17 +30,21 @@ def run_embedding(
     else:
         model = Doc2Vec(**config.mof2vec_model.gensim, seed=config.seed)
         model.build_vocab(documents)
-        accuracy_callback = AccuracyCallback(log_dir, valid_documents, config.mof2vec_model.evaluate_patience)
+        #accuracy_callback = AccuracyCallback(log_dir, valid_documents, config.mof2vec_model.evaluate_patience)
 
         # Model training
         model.train(
             documents, 
             total_examples=model.corpus_count, 
             epochs=config.mof2vec_model.gensim.epochs, 
-            callbacks=[accuracy_callback]
+            #callbacks=[accuracy_callback]
         )
         logger.info(f"Evaluating the model performance. ")
         model.save(os.path.join(log_dir, "embedding_model.pt"))
+
+        # Get topology vectors
+        logger.info(f"Calculating topology vectors. ")
+        topo_vectors = doc.get_topovectors()
 
         # Log info
         logger.info(f"Saving embedded vectors. ")
@@ -48,10 +52,12 @@ def run_embedding(
             log_dir, 
             model, 
             documents, 
-            config.mof2vec_model.gensim.vector_size
+            config.mof2vec_model.gensim.vector_size,
+            topo_vectors,
+            topo_vectors[0].vectors.shape[0]
         )
     
-    accuracy = evaluate_model(model, documents, config.mof2vec_model.evaluate_patience)
+    accuracy = 0 #evaluate_model(model, documents, config.mof2vec_model.evaluate_patience)
 
     return {
         "percentage": word_percentage,

@@ -9,12 +9,15 @@ from typing import Optional, List
 from mofgraph2vec.featurize.cif2graph import MOFDataset
 from mofgraph2vec.featurize.tokenize import WeisfeilerLehmanMachine
 from gensim.models.doc2vec import TaggedDocument
+from mofgraph2vec.featurize.topo2vec import TaggedVector
+from pymatgen.core import Structure
 
 class MOF2doc:
     def __init__(
         self,
         cif_path: List[str],
         wl_step: int = 5,
+        n_components: int = 20,
         subsample: Optional[int] = None,
         seed: Optional[int] = 1234,
         **kwarg
@@ -28,6 +31,7 @@ class MOF2doc:
             self.files: List[str] = random.sample(self.files, int(subsample*len(self.files)))
 
         self.wl_step = wl_step
+        self.n_components = n_components
         self.seed = seed
 
     def get_documents(self):
@@ -44,6 +48,30 @@ class MOF2doc:
             self.documents.append(doc)
 
         return self.documents
+    
+    def get_topovectors(self):
+        from mofdscribe.featurizers.topology.ph_vect import PHVect
+
+        topo_featurizer = PHVect(
+            atom_types=(),
+            compute_for_all_elements=True,
+            dimensions=(1,2),
+            min_size=20,
+            n_components=self.n_components,
+            apply_umap=False,
+            random_state=self.seed
+        )
+
+        py_cifs = [Structure.from_file(c) for c in self.files]
+        topo_vectors = topo_featurizer.fit_transform(py_cifs)
+        names = [Path(cif).stem for cif in self.files]
+
+        self.topo_vectors = []
+        for name, vector in zip(names, topo_vectors):
+            vec = TaggedVector(vectors=vector, tags=[name])
+            self.topo_vectors.append(vec)
+
+        return self.topo_vectors
     
     def distribution_analysis(self, threshold: int = 4) -> float:
         """

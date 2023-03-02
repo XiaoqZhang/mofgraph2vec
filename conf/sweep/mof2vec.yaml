@@ -1,4 +1,4 @@
-count: 400
+count: 50
 id: null
 config:
   method: bayes
@@ -9,9 +9,13 @@ config:
     type: hyperband
     min_iter: 5
   parameters:
+    mof2vec_data.data.n_components:
+      min: 10
+      max: 100
+      distribution: int_uniform
     mof2vec_model.gensim.vector_size:
-      min: 8
-      max: 256
+      min: 200
+      max: 400
       distribution: int_uniform
     mof2vec_model.gensim.window:
       min: 1
@@ -30,6 +34,6 @@ config:
       max: 0
       distribution: log_uniform
     mof2vec_model.gensim.epochs:
-      min: 5
-      max: 100
+      min: 10
+      max: 20
       distribution: int_uniform

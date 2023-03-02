@@ -5,7 +5,7 @@ def path2name(path):
     base = os.path.basename(path)
     return os.path.splitext(base)[0]
 
-def save_embedding(output_path, model, documents, dimensions):
+def save_embedding(output_path, model, documents, doc_dimensions, topo_vectors, topo_dimensions):
     """
     Function to save the embedding.
     :param output_path: Path to the embedding csv.
@@ -14,21 +14,19 @@ def save_embedding(output_path, model, documents, dimensions):
     :param dimensions: The embedding dimension parameter.
     """
     output_dv = os.path.join(output_path, "embedding_dv.csv")
-    output_infer = os.path.join(output_path, "embedding_infer.csv")
     out_dv = []
-    out_infer = []
     for id in range(len(documents)):
         identifier = documents[id].tags[0]
-        out_dv.append([identifier] + list(model.dv[identifier]))
-        inferred_vector = model.infer_vector(documents[id].words, epochs=40)
-        out_infer.append([identifier] + list(inferred_vector))
-    column_names = ["type"]+["x_"+str(dim) for dim in range(dimensions)]
+        for tagged_vec in topo_vectors:
+            if tagged_vec.tags[0] == identifier:
+                topo_vec = tagged_vec.vectors
+        out_dv.append([identifier] + list(model.dv[identifier]) + list(topo_vec))
+
+    column_names = ["type"]+["x_"+str(dim) for dim in range(doc_dimensions)]
+    column_names += ["topo_"+str(dim) for dim in range(topo_dimensions)]
     out_dv = pd.DataFrame(out_dv, columns=column_names)
-    out_infer = pd.DataFrame(out_infer, columns=column_names)
     out_dv = out_dv.sort_values(["type"])
-    out_infer = out_infer.sort_values(["type"])
     out_dv.to_csv(output_dv, index=None)
-    out_infer.to_csv(output_infer, index=None)
 
 
 def _get_config_file(model_path, model_name):

@@ -1,12 +1,12 @@
 gensim: 
-  vector_size: 400
-  window: 10
-  min_count: 3
+  vector_size: 200
+  window: 3
+  min_count: 1
   dm: 1
-  sample: 0.9
-  workers: 1
+  sample: 1.0
+  workers: 4
   alpha: 1e-4
-  epochs: 30
+  epochs: 15
   
 evaluate_patience: 5
 load_checkpoint: false
