@@ -42,7 +42,7 @@ class MOFDataset:
         return data
 
     def _get_node_features(self, structure: Structure):
-        x = [site.specie.Z for site in structure]
+        x = [site.species_string for site in structure]
         return np.vstack(x)
 
     def _get_edge_index_and_lengths(self, sg: StructureGraph):

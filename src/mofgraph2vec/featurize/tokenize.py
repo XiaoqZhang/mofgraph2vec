@@ -34,9 +34,9 @@ class WeisfeilerLehmanMachine:
             degs = [self.features[neb] for neb in nebs]
             features = [str(self.features[node])]+sorted([str(deg) for deg in degs])
             features = "_".join(features)
-            hash_object = hashlib.md5(features.encode())
-            hashing = hash_object.hexdigest()
-            new_features[node] = hashing
+            #hash_object = hashlib.md5(features.encode())
+            #hashing = hash_object.hexdigest()
+            new_features[node] = features #hashing
         if len(Counter(new_features.values()).values()) > self.length:
             self.extracted_features = self.extracted_features + list(new_features.values())
         self.step += 1
