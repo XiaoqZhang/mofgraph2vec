@@ -28,6 +28,7 @@ class MOF2doc:
             self.files.append(files_in_pt)
         self.files = [file for folder in self.files for file in folder]
         if subsample is not None and subsample < 1:
+            random.seed(seed)
             self.files: List[str] = random.sample(self.files, int(subsample*len(self.files)))
 
         self.wl_step = wl_step

@@ -1,7 +1,6 @@
 # data
 data/cifs
-data/meta
-data/meta-Z
+data/meta*
 data/embedding_example/*
 
 # experiment loggings

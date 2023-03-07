@@ -37,8 +37,8 @@ class WeisfeilerLehmanMachine:
             #hash_object = hashlib.md5(features.encode())
             #hashing = hash_object.hexdigest()
             new_features[node] = features #hashing
-        if len(Counter(new_features.values()).values()) > self.length:
-            self.extracted_features = self.extracted_features + list(new_features.values())
+        #if len(Counter(new_features.values()).values()) > self.length:
+        self.extracted_features += list(new_features.values())
         self.step += 1
         self.length = len(Counter(new_features.values()).values())
         return new_features

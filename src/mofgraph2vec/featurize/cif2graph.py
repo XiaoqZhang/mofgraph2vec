@@ -51,12 +51,12 @@ class MOFDataset:
 
         lattice = sg.structure.lattice
         structure = sg.structure
-        for edge in sg.graph.edges(keys=True, data=True):
-            fc_0 = structure.frac_coords[edge[0]]
-            fc_1 = structure.frac_coords[edge[1]]
-            d = _get_distance(lattice, fc_0, fc_1, edge[-1]["to_jimage"])
-            distances.append(d)
-            edge_idx.append([edge[0], edge[1]])
+        for node_idx in range(len(structure.sites)):
+            nbr = sg.get_connected_sites(node_idx)
+            fc_0 = structure.frac_coords[node_idx]
+            d = [_get_distance(lattice, fc_0, structure.frac_coords[nn.index], nn.jimage) for nn in nbr]
+            distances += d
+            edge_idx += [[node_idx, nn.index] for nn in nbr]
 
         return (
             np.array(edge_idx).T,
