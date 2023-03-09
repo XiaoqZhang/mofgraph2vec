@@ -1,9 +1,11 @@
+import os
 from loguru import logger
 from omegaconf import DictConfig
 from hydra.utils import instantiate
 
 import numpy as np
 import pandas as pd
+import torch
 from mofgraph2vec.data.datamodule import DataModuleFactory
 from mofgraph2vec.utils.loss import get_numpy_regression_metrics
 from mofgraph2vec.model.vecnn import VecModel
@@ -14,7 +16,7 @@ def run_regression(
         config: DictConfig
 ):
     config.doc2label_model.random_state = config.seed
-    dm = DataModuleFactory(**config.doc2label_data, device="cpu")
+    dm = DataModuleFactory(**config.doc2label_data)
 
     pl_model = VecLightningModule(instantiate(config.doc2label_model.nn), config.doc2label_model.loss, config.doc2label_model.lr)
     trainer = instantiate(config.trainer)
@@ -36,5 +38,12 @@ def run_regression(
     metrics.update(
         get_numpy_regression_metrics(test_true, test_pred, prefix="test")
     )
+
+    # use the trained model to get new embeddings
+    ori_feat = pd.read_csv(config.doc2label_data.embedding_path).set_index('type')
+    new_feat = pl_model.model.get_embedding(torch.Tensor(ori_feat.values)).detach().numpy()
+    ori_feat.loc[:] = new_feat
+    ori_feat.to_csv(os.path.join(os.path.dirname(config.doc2label_data.embedding_path),
+                                 "embedding-%s.csv" %config.doc2label_data.task[0]))
 
     return pl_model, metrics, test_table

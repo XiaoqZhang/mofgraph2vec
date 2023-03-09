@@ -12,7 +12,7 @@ def run_regression(
     config: DictConfig
 ):
     config.doc2label_model.random_state = config.seed
-    dm = DataModuleFactory(**config.doc2label_data, device="cpu")
+    dm = DataModuleFactory(**config.doc2label_data)
 
     train_ds = dm.get_train_dataset()
     valid_ds = dm.get_valid_dataset()

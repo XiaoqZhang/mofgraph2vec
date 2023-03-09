@@ -5,3 +5,7 @@ embedding_path: ../../data/embedding_example/embedding-qmof-500.csv # same as ge
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1
+batch_size: 512
+num_workers: 6
+device: "cpu"
+seed: 2234

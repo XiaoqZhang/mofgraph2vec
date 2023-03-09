@@ -5,3 +5,7 @@ embedding_path: "wandb/offline-run-20230301_163246-k8f3nza6/tmp/embedding_dv.csv
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1
+batch_size: 512
+num_workers: 6
+device: "cpu"
+seed: 2234

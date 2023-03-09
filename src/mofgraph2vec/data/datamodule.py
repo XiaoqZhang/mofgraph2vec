@@ -115,10 +115,10 @@ class DataModuleFactory:
         )
 
     def train_dataloader(self):
-        return DataLoader(self.get_train_dataset(), batch_size=self.batch_size)
+        return DataLoader(self.get_train_dataset(), batch_size=self.batch_size, num_workers=self.num_workers)
     
     def valid_dataloader(self):
-        return DataLoader(self.get_valid_dataset(), batch_size=self.batch_size)
+        return DataLoader(self.get_valid_dataset(), batch_size=self.batch_size, num_workers=self.num_workers)
      
     def test_dataloader(self):
-        return DataLoader(self.get_test_dataset(), batch_size=self.batch_size)
+        return DataLoader(self.get_test_dataset(), batch_size=self.batch_size, num_workers=self.num_workers)

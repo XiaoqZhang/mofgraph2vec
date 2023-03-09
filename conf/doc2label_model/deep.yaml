@@ -3,12 +3,12 @@ nn:
   input_dim: 256 # same as config.model.gensim.vector_size
   output_dim: 1
   fcnn_n_layers: 5
-  fcnn_hidden_size: 128
+  fcnn_hidden_size: 256
   fcnn_activation: "relu"
   dropout: null
   
 loss: "mse"
-lr: 1e-4
+lr: 1e-3
 patience: 6
 checkpoint: true
 random_state: 2234
