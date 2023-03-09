@@ -1,11 +1,22 @@
 import os
 import pandas as pd
+from typing import List, Optional
+from gensim.models.doc2vec import Doc2Vec
+from gensim.models.doc2vec import TaggedDocument
+from mofgraph2vec.featurize.topo2vec import TaggedVector
 
 def path2name(path):
     base = os.path.basename(path)
     return os.path.splitext(base)[0]
 
-def save_embedding(output_path, model, documents, doc_dimensions, topo_vectors, topo_dimensions):
+def save_embedding(
+        output_path: str, 
+        model: Doc2Vec, 
+        documents: List[TaggedDocument], 
+        doc_dimensions: int, 
+        topo_vectors: Optional[List[TaggedVector]], 
+        topo_dimensions: Optional[int]
+):
     """
     Function to save the embedding.
     :param output_path: Path to the embedding csv.
@@ -17,13 +28,17 @@ def save_embedding(output_path, model, documents, doc_dimensions, topo_vectors, 
     out_dv = []
     for id in range(len(documents)):
         identifier = documents[id].tags[0]
-        for tagged_vec in topo_vectors:
-            if tagged_vec.tags[0] == identifier:
-                topo_vec = tagged_vec.vectors
-        out_dv.append([identifier] + list(model.dv[identifier]) + list(topo_vec))
+        if topo_vectors is not None:
+            for tagged_vec in topo_vectors:
+                if tagged_vec.tags[0] == identifier:
+                    topo_vec = tagged_vec.vectors
+            out_dv.append([identifier] + list(model.dv[identifier]) + list(topo_vec))
+        else:
+            out_dv.append([identifier] + list(model.dv[identifier]))
 
     column_names = ["type"]+["x_"+str(dim) for dim in range(doc_dimensions)]
-    column_names += ["topo_"+str(dim) for dim in range(topo_dimensions)]
+    if topo_vectors is not None:
+        column_names += ["topo_"+str(dim) for dim in range(topo_dimensions)]
     out_dv = pd.DataFrame(out_dv, columns=column_names)
     out_dv = out_dv.sort_values(["type"])
     out_dv.to_csv(output_dv, index=None)

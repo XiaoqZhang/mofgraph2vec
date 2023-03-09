@@ -11,6 +11,11 @@ from mofgraph2vec.model.regression import run_regression
 def train(config: DictConfig, sweep: bool=False):
 
     assert config.mode in ["mof2vec", "doc2label", "workflow"]
+
+    if config.doc2label_model.get("nn") is None:
+        from mofgraph2vec.model.regression import run_regression
+    else:
+        from mofgraph2vec.model.nn_regression import run_regression
     
     with wandb.init(
         project=config.logger.project,

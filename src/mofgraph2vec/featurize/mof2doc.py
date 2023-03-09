@@ -18,6 +18,7 @@ class MOF2doc:
         cif_path: List[str],
         wl_step: int = 5,
         n_components: int = 20,
+        use_hash: bool = False,
         subsample: Optional[int] = None,
         seed: Optional[int] = 1234,
         **kwarg
@@ -33,6 +34,7 @@ class MOF2doc:
 
         self.wl_step = wl_step
         self.n_components = n_components
+        self.hash = use_hash
         self.seed = seed
 
     def get_documents(self):
@@ -42,7 +44,7 @@ class MOF2doc:
         for cif in tqdm(self.files):
             name = Path(cif).stem
             graph, feature = ds_loader.to_WL_machine(cif)
-            machine = WeisfeilerLehmanMachine(graph, feature, self.wl_step)
+            machine = WeisfeilerLehmanMachine(graph, feature, self.wl_step, self.hash)
             word = machine.extracted_features
             doc = TaggedDocument(words=word, tags=[name])
 

@@ -4,6 +4,7 @@ import torch
 import pandas as pd
 import numpy as np
 from mofgraph2vec.data.spliter import train_valid_test_split
+from torch.utils.data import DataLoader
 from mofgraph2vec.data.dataset import VecDataset
 from torch_geometric.data import LightningDataset
 from sklearn.preprocessing import MinMaxScaler
@@ -112,3 +113,12 @@ class DataModuleFactory:
             test_dataset=self.get_test_dataset(),
             batch_size=self.batch_size,
         )
+
+    def train_dataloader(self):
+        return DataLoader(self.get_train_dataset(), batch_size=self.batch_size)
+    
+    def valid_dataloader(self):
+        return DataLoader(self.get_valid_dataset(), batch_size=self.batch_size)
+     
+    def test_dataloader(self):
+        return DataLoader(self.get_test_dataset(), batch_size=self.batch_size)

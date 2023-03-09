@@ -7,7 +7,7 @@ class WeisfeilerLehmanMachine:
     """
     Weisfeiler Lehman feature extractor class.
     """
-    def __init__(self, graph, features, iterations):
+    def __init__(self, graph, features, iterations, use_hash):
         """
         Initialization method which also executes feature extraction.
         :param graph: The networkx graph object.
@@ -19,7 +19,8 @@ class WeisfeilerLehmanMachine:
         self.features = features
         self.nodes = self.graph.nodes()
         self.extracted_features = [str(v) for k, v in features.items()]
-        self.length = len(Counter(self.extracted_features).values())
+        self.hash = use_hash
+        #self.length = len(Counter(self.extracted_features).values())
         self.step = 0
         self.do_recursions()
 
@@ -34,13 +35,15 @@ class WeisfeilerLehmanMachine:
             degs = [self.features[neb] for neb in nebs]
             features = [str(self.features[node])]+sorted([str(deg) for deg in degs])
             features = "_".join(features)
-            #hash_object = hashlib.md5(features.encode())
-            #hashing = hash_object.hexdigest()
-            new_features[node] = features #hashing
-        #if len(Counter(new_features.values()).values()) > self.length:
+            if self.hash == True:
+                hash_object = hashlib.md5(features.encode())
+                hashing = hash_object.hexdigest()
+                new_features[node] = hashing
+            else:
+                new_features[node] = features
         self.extracted_features += list(new_features.values())
         self.step += 1
-        self.length = len(Counter(new_features.values()).values())
+        #self.length = len(Counter(new_features.values()).values())
         return new_features
 
     def do_recursions(self):

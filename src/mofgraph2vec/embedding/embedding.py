@@ -44,7 +44,13 @@ def run_embedding(
 
         # Get topology vectors
         logger.info(f"Calculating topology vectors. ")
-        topo_vectors = doc.get_topovectors()
+        if config.mof2vec_model.topology:
+            topo_vectors = doc.get_topovectors()
+            topo_dim = topo_vectors[0].vectors.shape[0]
+        else:
+            topo_vectors = None
+            topo_dim = None
+            
 
         # Log info
         logger.info(f"Saving embedded vectors. ")
@@ -54,7 +60,7 @@ def run_embedding(
             documents, 
             config.mof2vec_model.gensim.vector_size,
             topo_vectors,
-            topo_vectors[0].vectors.shape[0]
+            topo_dim
         )
     
     accuracy = 0 #evaluate_model(model, documents, config.mof2vec_model.evaluate_patience)

@@ -18,7 +18,9 @@ class VecModel(nn.Module):
 
         self.dropout = dropout
 
-        self.embedding = nn.Embedding(input_dim, fcnn_hidden_size)
+        self.embedding = nn.Linear(input_dim, input_dim)
+
+        self.before_convs = nn.Linear(input_dim, fcnn_hidden_size)
 
         self.convs = nn.ModuleList(
             [
@@ -34,6 +36,7 @@ class VecModel(nn.Module):
 
     def forward(self, vec):
         out = self.embedding(vec)
+        out = self.before_convs(vec)
         for conv in self.convs:
             if self.dropout is not None:
                 out = F.dropout(out, p=self.dropout)
@@ -42,3 +45,7 @@ class VecModel(nn.Module):
         out = self.output(out)
 
         return out
+
+    def get_embedding(self, vec):
+        self.eval()
+        return self.embedding(vec)

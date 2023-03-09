@@ -2,5 +2,6 @@ data:
   _target_: mofgraph2vec.featurize.mof2doc.MOF2doc
   cif_path: ["../../data/cifs/qmof/"] #, "../../data/cifs/qmof/"] #, "../../data/cifs/hMOF/"]
   subsample: null
-  wl_step: 20
+  wl_step: 4
   n_components: 20
+  use_hash: False
