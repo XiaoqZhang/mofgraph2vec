@@ -1,11 +1,11 @@
 task: ["logKH_CO2"]
 MOF_id: "cif.label"
 label_path: "../../data/data.csv"
-embedding_path: "wandb/offline-run-20230301_163246-k8f3nza6/tmp/embedding_dv.csv" # same as gensim storage path
+embedding_path: wandb/offline-run-20230320_213932-je6u1ubb/tmp/embedding_dv.csv # same as gensim storage path
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1
-batch_size: 512
+batch_size: 256
 num_workers: 6
 device: "cpu"
 seed: 2234

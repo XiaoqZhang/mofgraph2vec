@@ -5,7 +5,7 @@ defaults:
   - mof2vec_model:
     - gensim.yaml
   - doc2label_data: 
-    - qmof.yaml 
+    - rsm.yaml 
   - doc2label_model:
     - deep.yaml
   - trainer:
@@ -21,4 +21,4 @@ logger:
 
 seed: 5432
 sweep: false
-mode: workflow # available choices: mof2vec, doc2label, workflow
+mode: doc2label # available choices: mof2vec, doc2label, workflow

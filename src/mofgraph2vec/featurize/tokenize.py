@@ -7,7 +7,7 @@ class WeisfeilerLehmanMachine:
     """
     Weisfeiler Lehman feature extractor class.
     """
-    def __init__(self, graph, features, iterations, use_hash):
+    def __init__(self, graph, features, iterations, use_hash, writing_style):
         """
         Initialization method which also executes feature extraction.
         :param graph: The networkx graph object.
@@ -20,6 +20,7 @@ class WeisfeilerLehmanMachine:
         self.nodes = self.graph.nodes()
         self.extracted_features = [str(v) for k, v in features.items()]
         self.hash = use_hash
+        self.writing_style = writing_style
         #self.length = len(Counter(self.extracted_features).values())
         self.step = 0
         self.do_recursions()
@@ -41,7 +42,12 @@ class WeisfeilerLehmanMachine:
                 new_features[node] = hashing
             else:
                 new_features[node] = features
-        self.extracted_features += list(new_features.values())
+        if self.writing_style == "paragraph":
+            self.extracted_features += list(new_features.values())
+        elif self.writing_style == "sentence":
+            for index in range(len(self.nodes)):
+                insert_pos = self.step + 1 + index * (self.step+2)
+                self.extracted_features.insert(insert_pos, new_features[index])
         self.step += 1
         #self.length = len(Counter(new_features.values()).values())
         return new_features

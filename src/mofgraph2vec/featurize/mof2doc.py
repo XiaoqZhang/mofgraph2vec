@@ -11,6 +11,7 @@ from mofgraph2vec.featurize.tokenize import WeisfeilerLehmanMachine
 from gensim.models.doc2vec import TaggedDocument
 from mofgraph2vec.featurize.topo2vec import TaggedVector
 from pymatgen.core import Structure
+from loguru import logger
 
 class MOF2doc:
     def __init__(
@@ -19,6 +20,7 @@ class MOF2doc:
         wl_step: int = 5,
         n_components: int = 20,
         use_hash: bool = False,
+        writing_style: str = "sentence",
         subsample: Optional[int] = None,
         seed: Optional[int] = 1234,
         **kwarg
@@ -35,6 +37,7 @@ class MOF2doc:
         self.wl_step = wl_step
         self.n_components = n_components
         self.hash = use_hash
+        self.writing_style = writing_style
         self.seed = seed
 
     def get_documents(self):
@@ -44,11 +47,12 @@ class MOF2doc:
         for cif in tqdm(self.files):
             name = Path(cif).stem
             graph, feature = ds_loader.to_WL_machine(cif)
-            machine = WeisfeilerLehmanMachine(graph, feature, self.wl_step, self.hash)
+            machine = WeisfeilerLehmanMachine(graph, feature, self.wl_step, self.hash, self.writing_style)
             word = machine.extracted_features
             doc = TaggedDocument(words=word, tags=[name])
 
             self.documents.append(doc)
+        logger.info(f"{self.documents[-1]}")
 
         return self.documents
     
