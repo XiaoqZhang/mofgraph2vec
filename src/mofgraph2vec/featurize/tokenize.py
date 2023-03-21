@@ -1,7 +1,5 @@
 # update node hash by gathering information from neighborhoods
 import hashlib
-from collections import Counter
-from loguru import logger
 
 class WeisfeilerLehmanMachine:
     """

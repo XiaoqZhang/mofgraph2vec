@@ -2,14 +2,10 @@
 data/cifs
 data/meta*
 data/embedding_example/*
+data/*.csv
+data/*.json
 
 # experiment loggings
-experiments/supervised/lightning_logs
-experiments/supervised/outputs
-experiments/supervised/wandb
-experiments/supervised/.lr_find*
-experiments/unsupervised/outputs
-experiments/unsupervised/wandb
 experiments/workflow/lightning_logs
 experiments/workflow/outputs
 experiments/workflow/wandb

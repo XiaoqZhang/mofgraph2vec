@@ -1,9 +1,7 @@
 from loguru import logger
 from omegaconf import DictConfig
-from hydra.utils import instantiate
 
 import numpy as np
-from sklearn.model_selection import cross_val_score
 from mofgraph2vec.data.datamodule import DataModuleFactory
 from xgboost import XGBRegressor
 from mofgraph2vec.utils.loss import get_numpy_regression_metrics

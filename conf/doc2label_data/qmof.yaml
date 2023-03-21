@@ -1,11 +1,11 @@
-task: ["outputs.pbe.bandgap"]
-MOF_id: "qmof_id"
-label_path: "../../data/qmof-data.csv"
-embedding_path: wandb/offline-run-20230320_165953-5nnlomfl/tmp/embedding_dv.csv # same as gensim storage path
+task: ["outputs.H2-working_capacity_5_to_100_bar_298_to_198_K-g--L"] #["outputs.CO2-henry_coefficient-mol--kg--Pa"]
+MOF_id: "info.qmof_id"
+label_path: "../../data/qmof-mofdscribe.csv"
+embedding_path: wandb/offline-run-20230321_150532-1rag6vuf/tmp/embedding_dv.csv #wandb/offline-run-20230321_114831-3kwsegz5/tmp/embedding_dv.csv #wandb/offline-run-20230320_165953-5nnlomfl/tmp/embedding_dv.csv #24 # same as gensim storage path
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1
-batch_size: 1024
+batch_size: 64
 num_workers: 6
 device: "cpu"
 seed: 2234

@@ -5,7 +5,7 @@ defaults:
   - mof2vec_model:
     - gensim.yaml
   - doc2label_data: 
-    - rsm.yaml 
+    - qmof.yaml 
   - doc2label_model:
     - deep.yaml
   - trainer:

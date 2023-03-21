@@ -1,5 +1,4 @@
 import os
-from loguru import logger
 from omegaconf import DictConfig
 from hydra.utils import instantiate
 
@@ -7,10 +6,10 @@ import numpy as np
 import pandas as pd
 import torch
 from mofgraph2vec.data.datamodule import DataModuleFactory
-from mofgraph2vec.utils.loss import get_numpy_regression_metrics
-from mofgraph2vec.model.vecnn import VecModel
 from mofgraph2vec.model.nn_lightning import VecLightningModule
 from mofgraph2vec.utils.loss import get_numpy_regression_metrics
+
+from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 
 def run_regression(
         config: DictConfig
@@ -19,7 +18,18 @@ def run_regression(
     dm = DataModuleFactory(**config.doc2label_data)
 
     pl_model = VecLightningModule(instantiate(config.doc2label_model.nn), config.doc2label_model.loss, config.doc2label_model.lr)
-    trainer = instantiate(config.trainer)
+
+    # config trainer
+    callbacks = []
+    if config.doc2label_model.patience >= 0:
+        callbacks.append(EarlyStopping(monitor="valid_loss", patience=config.doc2label_model.patience))
+    if config.doc2label_model.checkpoint:
+        callbacks.append(ModelCheckpoint(monitor="valid_loss"))
+    trainer = instantiate(
+        config.trainer,
+        _convert_="partial",
+        callbacks=callbacks,
+    )
 
     trainer.tune(pl_model, datamodule=dm.get_datamodule())
     trainer.fit(pl_model, datamodule=dm.get_datamodule())

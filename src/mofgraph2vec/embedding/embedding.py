@@ -5,8 +5,6 @@ from omegaconf import DictConfig
 
 from gensim.models.doc2vec import Doc2Vec
 from mofgraph2vec.utils.saving import save_embedding
-from mofgraph2vec.utils.evaluation import evaluate_model
-from mofgraph2vec.embedding.callbacks import AccuracyCallback
 from sklearn.model_selection import train_test_split
 
 def run_embedding(

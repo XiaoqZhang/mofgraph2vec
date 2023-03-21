@@ -3,10 +3,8 @@ import pandas as pd
 from typing import Sequence
 from sklearn.model_selection import train_test_split
 from numpy.typing import ArrayLike
-from loguru import logger
 
-
-def quantile_binning(values: np.typing.ArrayLike, q: Sequence[float]) -> np.array:
+def quantile_binning(values: ArrayLike, q: Sequence[float]) -> np.array:
     """Use :py:meth:`pandas.qcut` to bin the values based on quantiles."""
     values = pd.qcut(values, q, labels=np.arange(len(q) - 1)).astype(int)
     return values

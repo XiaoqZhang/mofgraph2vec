@@ -6,7 +6,6 @@ import joblib
 from mofgraph2vec.utils.dict_helpers import get, put
 from mofgraph2vec.utils.seed import set_seed
 from mofgraph2vec.embedding.embedding import run_embedding
-from mofgraph2vec.model.regression import run_regression
 
 def train(config: DictConfig, sweep: bool=False):
 

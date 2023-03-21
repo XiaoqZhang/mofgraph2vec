@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 from pytorch_lightning import LightningModule
 from mofgraph2vec.utils.loss import get_regression_metrics
-from loguru import logger
 from typing import Optional
 
 class VecLightningModule(LightningModule):
