@@ -6,7 +6,7 @@ import numpy as np
 from mofgraph2vec.data.spliter import train_valid_test_split
 from torch.utils.data import DataLoader
 from mofgraph2vec.data.dataset import VecDataset
-from torch_geometric.data import LightningDataset
+from torch_geometric.data.lightning import LightningDataset
 
 class DataModuleFactory:
     def __init__(

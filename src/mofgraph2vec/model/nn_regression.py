@@ -15,6 +15,7 @@ def run_regression(
         config: DictConfig
 ):
     config.doc2label_model.random_state = config.seed
+    device = torch.device(config.trainer.accelerator)
     dm = DataModuleFactory(**config.doc2label_data)
 
     pl_model = VecLightningModule(instantiate(config.doc2label_model.nn), config.doc2label_model.loss, config.doc2label_model.lr)
@@ -31,7 +32,7 @@ def run_regression(
         callbacks=callbacks,
     )
 
-    trainer.tune(pl_model, datamodule=dm.get_datamodule())
+    #trainer.tune(pl_model, datamodule=dm.get_datamodule())
     trainer.fit(pl_model, datamodule=dm.get_datamodule())
 
     train_predictions = trainer.predict(pl_model, dataloaders=dm.train_dataloader())

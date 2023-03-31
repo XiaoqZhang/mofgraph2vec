@@ -2,6 +2,7 @@
 data/cifs
 data/meta*
 data/embedding_example/*
+data/fine-tune-embedding/*
 data/*.csv
 data/*.json
 

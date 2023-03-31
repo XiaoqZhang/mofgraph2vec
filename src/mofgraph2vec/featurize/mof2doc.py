@@ -52,7 +52,6 @@ class MOF2doc:
             doc = TaggedDocument(words=word, tags=[name])
 
             self.documents.append(doc)
-        logger.info(f"{self.documents[-1]}")
 
         return self.documents
     

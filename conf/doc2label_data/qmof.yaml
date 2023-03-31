@@ -1,11 +1,12 @@
-task: ["outputs.H2-working_capacity_5_to_100_bar_298_to_198_K-g--L"] #["outputs.CO2-henry_coefficient-mol--kg--Pa"]
-MOF_id: "info.qmof_id"
-label_path: "../../data/qmof-mofdscribe.csv"
-embedding_path: wandb/offline-run-20230321_150532-1rag6vuf/tmp/embedding_dv.csv #wandb/offline-run-20230321_114831-3kwsegz5/tmp/embedding_dv.csv #wandb/offline-run-20230320_165953-5nnlomfl/tmp/embedding_dv.csv #24 # same as gensim storage path
+task: ["outputs.pbe.bandgap"] #["outputs.CO2-henry_coefficient-mol--kg--Pa"]
+MOF_id: "qmof_id"
+label_path: "../../data/qmof-data.csv"
+embedding_path: ../../data/fine-tune-embedding/bg1024-133.csv #wandb/offline-run-20230321_114831-3kwsegz5/tmp/embedding_dv.csv #wandb/offline-run-20230320_165953-5nnlomfl/tmp/embedding_dv.csv #24 # same as gensim storage path
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1
-batch_size: 64
+batch_size: 512
 num_workers: 6
-device: "cpu"
 seed: 2234
+
+#offline-run-20230320_165953-5nnlomfl/tmp/embedding-outputs.pbe.bandgap.csv
