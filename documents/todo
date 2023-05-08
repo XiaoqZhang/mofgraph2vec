@@ -1,8 +1,0 @@
-1. 
-    a. Input the embedding into the neural network for different tasks
-    b. Get the task specific embedding
-    c. Calculate the vector similarity of the task embedding 
-    d. Calculate the correlation between the vector similarity and the task value
-
-2. hierarchical embedding of MOFs: from electronic level to atomic level to structure level
-    Will the atomic level embedding help in the electronic properties?

@@ -21,4 +21,4 @@ logger:
 
 seed: 5432
 sweep: false
-mode: doc2label # available choices: mof2vec, doc2label, workflow
+mode: mof2vec # available choices: mof2vec, doc2label, workflow
