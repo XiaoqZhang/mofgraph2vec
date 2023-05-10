@@ -1,7 +1,7 @@
 count: 300
 id: null
 config:
-  method: bayes
+  method: random
   metric:
     name: test_mse
     goal: minimize
@@ -14,25 +14,25 @@ config:
       max: 500
       distribution: int_uniform
     doc2label_model.max_depth: # 1
-      min: 3
+      min: 5
       max: 10
       distribution: int_uniform
     doc2label_model.reg_alpha:
-      min: -3
+      min: 0
       max: 1
-      distribution: log_uniform
+      distribution: uniform
     doc2label_model.reg_lambda:
-      min: 1
-      max: 10
+      min: 0
+      max: 1
       distribution: uniform
     doc2label_model.subsample: # add randomness
-      min: 0.7
+      min: 0.5
       max: 1.0
       distribution: uniform
     doc2label_model.min_child_weight: # 2
-      min: 1
+      min: 0
       max: 10
-      distribution: uniform
+      distribution: int_uniform
     doc2label_model.learning_rate:
       min: -2
       max: 0

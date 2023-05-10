@@ -10,6 +10,7 @@ def path2name(path):
     return os.path.splitext(base)[0]
 
 def save_embedding(
+        pretraining: bool,
         output_path: str, 
         model: Doc2Vec, 
         documents: List[TaggedDocument], 
@@ -32,9 +33,15 @@ def save_embedding(
             for tagged_vec in topo_vectors:
                 if tagged_vec.tags[0] == identifier:
                     topo_vec = tagged_vec.vectors
-            out_dv.append([identifier] + list(model.dv[identifier]) + list(topo_vec))
+            if pretraining == True:
+                out_dv.append([identifier] + list(model.dv[identifier]) + list(topo_vec))
+            else:
+                out_dv.append([identifier] + list(model.infer_vector(documents[id].words, epochs=100)) + list(topo_vec))
         else:
-            out_dv.append([identifier] + list(model.dv[identifier]))
+            if pretraining == True:
+                out_dv.append([identifier] + list(model.dv[identifier]))
+            else: 
+                out_dv.append([identifier] + list(model.infer_vector(documents[id].words, epochs=100)))
 
     column_names = ["type"]+["x_"+str(dim) for dim in range(doc_dimensions)]
     if topo_vectors is not None:

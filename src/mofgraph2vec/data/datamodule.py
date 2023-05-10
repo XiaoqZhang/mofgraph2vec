@@ -39,6 +39,7 @@ class DataModuleFactory:
 
         df_label = pd.read_csv(label_path)
         df_feat = pd.read_csv(embedding_path)
+        logger.debug(f"Loading embedded features from {embedding_path}")
         embedded_mofs = list(df_feat["type"])
         df_label = df_label[df_label[self.MOF_id].isin(embedded_mofs)].set_index(self.MOF_id)
         df_label = df_label.dropna(subset=self.task)

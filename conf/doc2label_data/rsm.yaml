@@ -1,7 +1,9 @@
+pretraining: true
+embedding_model_path: #../../data/embedding_model/embedding_model.pt
 task: ["logKH_CO2"]
 MOF_id: "cif.label"
 label_path: "../../data/data.csv"
-embedding_path: wandb/offline-run-20230320_213932-je6u1ubb/tmp/embedding_dv.csv # same as gensim storage path
+embedding_path: wandb/offline-run-20230508_143829-3mwdcblz/tmp/embedding_dv.csv # same as gensim storage path
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1

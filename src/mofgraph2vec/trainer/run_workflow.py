@@ -37,7 +37,7 @@ def train(config: DictConfig, sweep: bool=False):
         if config.mode == "workflow":
             logger.info(f"Running workflow. ")
             config.doc2label_data.embedding_path = os.path.join(wandb.run.dir, "../tmp/embedding_dv.csv")
-            unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"))
+            unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"), pretraining=config.doc2label_data.pretraining)
             model, supervised_metrics, figure = run_regression(config)
             logger.info(f"Model performance: {supervised_metrics}")
             joblib.dump(model, os.path.join(wandb.run.dir, "../tmp/best_model.pkl"))
@@ -52,10 +52,14 @@ def train(config: DictConfig, sweep: bool=False):
             wandb.log(to_log)
         elif config.mode == "mof2vec":
             logger.info(f"Running MOF embedding. ")
-            unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"))
+            unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"), pretraining=config.doc2label_data.pretraining)
             wandb.log(unsupervised_metrics)
         
         elif config.mode == "doc2label":
+            if ((config.doc2label_data.pretraining == False) and (config.doc2label_data.embedding_model_path is not None)):
+                config.doc2label_data.embedding_path = os.path.join(wandb.run.dir, "../tmp/embedding_dv.csv")
+                unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"), pretraining=config.doc2label_data.pretraining)
+            
             logger.info(f"Running regression. ")
             model, supervised_metrics, figure = run_regression(config)
             logger.info(f"Model performance: {supervised_metrics}")

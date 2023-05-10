@@ -1,14 +1,14 @@
 gensim: 
-  vector_size: 512
+  vector_size: 256
   window: 100
   min_count: 0
   dm: 1
   sample: 1.0
   workers: 4
   alpha: 1.5e-2
-  epochs: 80
+  epochs: 100
 
-topology: False  
+topology: false  
 evaluate_patience: 5
 load_checkpoint: false
 checkpoint: null
