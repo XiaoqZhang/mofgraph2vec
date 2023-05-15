@@ -61,7 +61,7 @@ class MOF2doc:
         topo_featurizer = PHVect(
             atom_types=(),
             compute_for_all_elements=True,
-            dimensions=(1,2),
+            dimensions=(1,2,3),
             min_size=20,
             n_components=self.n_components,
             apply_umap=False,
