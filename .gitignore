@@ -16,6 +16,9 @@ experiments/workflow/sweep_results
 # python cache
 dev/*.json
 dev/.ipynb_checkpoints
+dev/*.cif
+dev/*.pt
+dev/test
 dev/lightning_logs
 src/mofgraph2vec/__pycache__
 src/mofgraph2vec/*/__pycache__

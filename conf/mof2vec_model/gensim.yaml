@@ -4,11 +4,11 @@ gensim:
   min_count: 0
   dm: 1
   sample: 1.0
-  workers: 4
-  alpha: 1.8e-2
+  workers: 6
+  alpha: 1.5e-2
   epochs: 100
 
-topology: true  
+topology: false  
 evaluate_patience: 5
 load_checkpoint: false
 checkpoint: null

@@ -4,5 +4,8 @@ data:
   subsample: null
   wl_step: 4
   n_components: 20
-  use_hash: False
+  use_hash: false
   writing_style: "paragraph"
+  composition: true
+  mode: scaffold # all, nodes, linker
+  embed_cif: false

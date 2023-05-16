@@ -3,10 +3,12 @@ import os
 import numpy as np
 import yaml
 from typing import Tuple
+from loguru import logger
 
 from pymatgen.core.structure import Structure, Lattice
 from pymatgen.analysis.graphs import StructureGraph
 from pymatgen.analysis.local_env import CutOffDictNN
+from mofdscribe.featurizers.chemistry._fragment import get_bb_indices
 
 import torch
 from torch_geometric.data import Data
@@ -31,10 +33,22 @@ class MOFDataset:
         if not os.path.exists(meta_path):
             structure = Structure.from_file(path)
             sg = StructureGraph.with_local_env_strategy(structure, self.strategy)
+            logger.debug(f"{path}")
+            logger.debug(f"Calculating building blocks. ")
+            indices = get_bb_indices(sg)
+            logger.debug(f"BB finished. ")
+            nodes_indices = [item for sublist in indices["nodes"] for item in sublist]
+            linker_scaffold_indices = [item for sublist in indices["nodes"] for item in sublist]
 
             x = self._get_node_features(structure)
             edge_idx, edge_attr = self._get_edge_index_and_lengths(sg)
-            data = Data(x=x, edge_index=torch.Tensor(edge_idx), edge_attr=edge_attr)
+            data = Data(
+                x=x, 
+                edge_index=torch.Tensor(edge_idx), 
+                edge_attr=edge_attr, 
+                nodes=nodes_indices, 
+                linker_scaffold=linker_scaffold_indices
+                        )
             torch.save(data, meta_path)
         else:
             data = torch.load(meta_path)
@@ -69,7 +83,7 @@ class MOFDataset:
         features_to_WL = {}
         for i, item in enumerate(data.x.flatten()):
             features_to_WL.update({i: item})
-        return graph, features_to_WL
+        return graph, features_to_WL, data.nodes, data.linker_scaffold
 
 
 def _get_distance(

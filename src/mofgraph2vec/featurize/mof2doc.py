@@ -1,5 +1,6 @@
 import os
 import random
+import re
 from glob import glob
 from tqdm import tqdm
 from pathlib import Path
@@ -21,6 +22,9 @@ class MOF2doc:
         n_components: int = 20,
         use_hash: bool = False,
         writing_style: str = "sentence",
+        composition: bool = True,
+        mode: str = "all",
+        embed_cif: Optional[bool] = False,
         subsample: Optional[int] = None,
         seed: Optional[int] = 1234,
         **kwarg
@@ -38,7 +42,11 @@ class MOF2doc:
         self.n_components = n_components
         self.hash = use_hash
         self.writing_style = writing_style
+        self.composition = composition
+        self.mode = mode
         self.seed = seed
+
+        self.embed_cif = embed_cif
 
     def get_documents(self):
         ds_loader = MOFDataset(strategy="vesta")
@@ -46,11 +54,37 @@ class MOF2doc:
         self.documents = []
         for cif in tqdm(self.files):
             name = Path(cif).stem
-            graph, feature = ds_loader.to_WL_machine(cif)
-            machine = WeisfeilerLehmanMachine(graph, feature, self.wl_step, self.hash, self.writing_style)
-            word = machine.extracted_features
-            doc = TaggedDocument(words=word, tags=[name])
 
+            if self.embed_cif:
+                py_cif = Structure.from_file(cif)
+                # composition
+                com = str(py_cif.composition).split()
+                opt = re.compile("([a-zA-Z]+)([0-9]+)")
+                com = [opt.match(c).groups() for c in com]
+                # lattice
+                lattice = ([round(x, 2) for x in list(py_cif.lattice.abc)]
+                            + [round(x, 2) for x in list(py_cif.lattice.angles)]
+                            + [x for x in py_cif.lattice.pbc])
+                # sites
+                sites = [[[str(site.specie)] + [round(x, 2) for x in list(site.coords)]] for site in py_cif.sites]
+
+                word = com + lattice + list(np.array(sites).flatten())
+
+
+            else:
+                graph, feature, nodes_idx, linker_idx = ds_loader.to_WL_machine(cif)
+                machine = WeisfeilerLehmanMachine(graph, feature, nodes_idx, linker_idx, self.wl_step, self.hash, self.writing_style, self.mode)
+                word = machine.extracted_features
+            
+                if self.composition:
+                    com = str(Structure.from_file(cif).composition).split()
+                    opt = re.compile("([a-zA-Z]+)([0-9]+)")
+                    word = [opt.match(c).groups() for c in com] + word
+            
+            if name == "RSM0001":
+                logger.info(f"{word}")
+            
+            doc = TaggedDocument(words=word, tags=[name])
             self.documents.append(doc)
 
         return self.documents

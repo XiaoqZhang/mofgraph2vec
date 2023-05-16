@@ -1,7 +1,7 @@
-count: 50
+count: 300
 id: null
 config:
-  method: bayes
+  method: grid
   metric:
     name: test_mse
     goal: minimize
@@ -10,30 +10,14 @@ config:
     min_iter: 5
   parameters:
     mof2vec_data.data.n_components:
-      min: 10
-      max: 100
-      distribution: int_uniform
+      values: [20, 40, 60, 80, 100]
     mof2vec_model.gensim.vector_size:
-      min: 200
-      max: 400
-      distribution: int_uniform
+      values: [64, 128, 256, 512]
     mof2vec_model.gensim.window:
-      min: 1
-      max: 30
-      distribution: int_uniform
+      values: [10, 50, 100]
     mof2vec_model.gensim.min_count:
-      min: 1
-      max: 10
-      distribution: int_uniform
+      values: [0, 2, 4, 6, 8]
     mof2vec_model.gensim.sample: 
-      min: 0.4
-      max: 1.0
-      distribution: uniform
+      values: [0.5, 0.8, 1.0]
     mof2vec_model.gensim.alpha:
-      min: -4
-      max: 0
-      distribution: log_uniform
-    mof2vec_model.gensim.epochs:
-      min: 10
-      max: 20
-      distribution: int_uniform
+      values: [1e-3, 2e-3, 3e-3, 4e-3, 5e-3, 6e-3, 7e-3, 8e-3, 9e-3, 1e-2, 2e-2, 3e-2, 4e-2, 5e-2]
