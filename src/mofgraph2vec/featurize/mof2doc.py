@@ -79,7 +79,7 @@ class MOF2doc:
                 if self.composition:
                     com = str(Structure.from_file(cif).composition).split()
                     opt = re.compile("([a-zA-Z]+)([0-9]+)")
-                    word = [opt.match(c).groups() for c in com] + word
+                    word = [x for c in com for x in list(opt.match(c).groups())] + word
             
             if name == "RSM0001":
                 logger.info(f"{word}")
