@@ -6,7 +6,9 @@ from tqdm import tqdm
 from pathlib import Path
 from collections import Counter
 import numpy as np
+import pandas as pd
 from typing import Optional, List
+from mofgraph2vec.data.spliter import quantile_binning
 from mofgraph2vec.featurize.cif2graph import MOFDataset
 from mofgraph2vec.featurize.tokenize import WeisfeilerLehmanMachine
 from gensim.models.doc2vec import TaggedDocument
@@ -18,6 +20,9 @@ class MOF2doc:
     def __init__(
         self,
         cif_path: List[str],
+        label_path: str,
+        embed_label: List[str],
+        id_column: str,
         wl_step: int = 5,
         n_components: int = 20,
         use_hash: bool = False,
@@ -30,6 +35,11 @@ class MOF2doc:
         **kwarg
     ):     
         self.files = []
+        self.df_label = pd.read_csv(label_path).set_index(id_column)
+        self.embed_label = ["binned_%s" %label for label in embed_label]
+        for label in embed_label:
+            binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
+            self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) for v in binned_values]
         for pt in cif_path:
             files_in_pt = glob(os.path.join(pt, "*.cif"))
             self.files.append(files_in_pt)
@@ -71,15 +81,18 @@ class MOF2doc:
                 word = com + lattice + list(np.array(sites).flatten())
 
 
-            else:
-                graph, feature, nodes_idx, linker_idx = ds_loader.to_WL_machine(cif)
-                machine = WeisfeilerLehmanMachine(graph, feature, nodes_idx, linker_idx, self.wl_step, self.hash, self.writing_style, self.mode)
-                word = machine.extracted_features
-            
+            else:          
                 if self.composition:
                     com = str(Structure.from_file(cif).composition).split()
                     opt = re.compile("([a-zA-Z]+)([0-9]+)")
-                    word = [x for c in com for x in list(opt.match(c).groups())] + word
+                    word = [x for c in com for x in list(opt.match(c).groups())]
+                
+                graph, feature, nodes_idx, linker_idx = ds_loader.to_WL_machine(cif)
+                machine = WeisfeilerLehmanMachine(graph, feature, nodes_idx, linker_idx, self.wl_step, self.hash, self.writing_style, self.mode)
+                word += machine.extracted_features
+
+                # embed binned labels
+                word += list(self.df_label.loc[name, self.embed_label].values)
             
             if name == "RSM0001":
                 logger.info(f"{word}")
