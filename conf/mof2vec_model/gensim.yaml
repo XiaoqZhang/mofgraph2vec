@@ -5,8 +5,8 @@ gensim:
   dm: 1
   sample: 1.0
   workers: 6
-  alpha: 1.7e-2
-  epochs: 100
+  alpha: 1.8e-2
+  epochs: 20
 
 topology: false  
 evaluate_patience: 5

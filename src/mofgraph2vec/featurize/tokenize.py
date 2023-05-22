@@ -48,6 +48,8 @@ class WeisfeilerLehmanMachine:
         
         feature_storage = {}
         new_features = {}
+        logger.debug(f"Node indices: {self.nodes_idx}")
+        logger.debug(f"Linker indices: {self.linker_idx}")
         for node in self.nodes:
             feature_storage = get_new_features(feature_storage, node)
             if self.mode == "all":

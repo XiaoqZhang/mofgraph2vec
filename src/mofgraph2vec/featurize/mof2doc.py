@@ -86,7 +86,9 @@ class MOF2doc:
                     com = str(Structure.from_file(cif).composition).split()
                     opt = re.compile("([a-zA-Z]+)([0-9]+)")
                     word = [x for c in com for x in list(opt.match(c).groups())]
-                
+                else:
+                    word = []
+
                 graph, feature, nodes_idx, linker_idx = ds_loader.to_WL_machine(cif)
                 machine = WeisfeilerLehmanMachine(graph, feature, nodes_idx, linker_idx, self.wl_step, self.hash, self.writing_style, self.mode)
                 word += machine.extracted_features

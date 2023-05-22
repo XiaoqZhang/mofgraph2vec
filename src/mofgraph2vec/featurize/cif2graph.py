@@ -37,8 +37,12 @@ class MOFDataset:
             logger.debug(f"Calculating building blocks. ")
             indices = get_bb_indices(sg)
             logger.debug(f"BB finished. ")
+
             nodes_indices = [item for sublist in indices["nodes"] for item in sublist]
-            linker_scaffold_indices = [item for sublist in indices["nodes"] for item in sublist]
+            linker_scaffold_indices = [item for sublist in indices["linker_scaffold"] for item in sublist]
+            linker_all_indices = [item for sublist in indices["linker_all"] for item in sublist]
+            linker_functional_indices = [item for sublist in indices["linker_functional"] for item in sublist]
+            linker_connecting_indices = [item for sublist in indices["linker_connecting"] for item in sublist]
 
             x = self._get_node_features(structure)
             edge_idx, edge_attr = self._get_edge_index_and_lengths(sg)
@@ -47,7 +51,10 @@ class MOFDataset:
                 edge_index=torch.Tensor(edge_idx), 
                 edge_attr=edge_attr, 
                 nodes=nodes_indices, 
-                linker_scaffold=linker_scaffold_indices
+                linker_scaffold=linker_scaffold_indices,
+                linker_all=linker_all_indices,
+                linker_functional=linker_functional_indices,
+                linker_connecting=linker_connecting_indices
                         )
             torch.save(data, meta_path)
         else:

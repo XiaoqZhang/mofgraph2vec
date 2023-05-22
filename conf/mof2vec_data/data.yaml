@@ -5,10 +5,10 @@ data:
   embed_label: ["pure_CO2_kH", "pure_methane_kH"]
   id_column: "cif.label"
   subsample: null
-  wl_step: 3
+  wl_step: 1
   n_components: 20
   use_hash: false
   writing_style: "paragraph"
-  composition: true
-  mode: all # all, scaffold, nodes, linker
+  composition: false
+  mode: linker # all, scaffold, nodes, linker
   embed_cif: false
