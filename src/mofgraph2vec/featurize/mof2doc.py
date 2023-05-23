@@ -13,13 +13,14 @@ from mofgraph2vec.featurize.cif2graph import MOFDataset
 from mofgraph2vec.featurize.tokenize import WeisfeilerLehmanMachine
 from gensim.models.doc2vec import TaggedDocument
 from mofgraph2vec.featurize.topo2vec import TaggedVector
-from pymatgen.core import Structure
+from pymatgen.core import Structure, Element
 from loguru import logger
 
 class MOF2doc:
     def __init__(
         self,
         cif_path: List[str],
+        embed_property: bool,
         label_path: str,
         embed_label: List[str],
         id_column: str,
@@ -35,11 +36,13 @@ class MOF2doc:
         **kwarg
     ):     
         self.files = []
-        self.df_label = pd.read_csv(label_path).set_index(id_column)
-        self.embed_label = ["binned_%s" %label for label in embed_label]
-        for label in embed_label:
-            binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
-            self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) for v in binned_values]
+        self.embed_property = embed_property
+        if self.embed_property:
+            self.df_label = pd.read_csv(label_path).set_index(id_column)
+            self.embed_label = ["binned_%s" %label for label in embed_label]
+            for label in embed_label:
+                binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.01, 0.05))
+                self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) for v in binned_values]
         for pt in cif_path:
             files_in_pt = glob(os.path.join(pt, "*.cif"))
             self.files.append(files_in_pt)
@@ -93,8 +96,24 @@ class MOF2doc:
                 machine = WeisfeilerLehmanMachine(graph, feature, nodes_idx, linker_idx, self.wl_step, self.hash, self.writing_style, self.mode)
                 word += machine.extracted_features
 
+                feature_affinity = {}
+                for i, ele in feature.items():
+                    feature_affinity.update({i: "g%s" %Element(ele).group})
+                    #feature_affinity.update({i: "%.2f" %Element(ele).electron_affinity})
+                machine_affinity = WeisfeilerLehmanMachine(graph, feature_affinity, nodes_idx, linker_idx, 1, self.hash, self.writing_style, self.mode)
+                word += machine_affinity.extracted_features
+                
+                feature_block = {}
+                for i, ele in feature.items():
+                    feature_block.update({i: Element(ele).block})
+                machine_block = WeisfeilerLehmanMachine(graph, feature_block, nodes_idx, linker_idx, 1, self.hash, self.writing_style, self.mode)
+                word += machine_block.extracted_features
+
+                # embed edges
+                word += list(np.unique(["%s=%s" %(feature_block[i], feature_block[j]) for i, j in graph.edges]))
                 # embed binned labels
-                word += list(self.df_label.loc[name, self.embed_label].values)
+                if self.embed_property:
+                    word += list(self.df_label.loc[name, self.embed_label].values)
             
             if name == "RSM0001":
                 logger.info(f"{word}")

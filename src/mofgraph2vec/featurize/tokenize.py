@@ -14,13 +14,14 @@ class WeisfeilerLehmanMachine:
         :param features: Feature hash table.
         :param iterations: Number of WL iterations.
         """
+        assert mode in ["all", "scaffold", "nodes", "linker"]
         self.iterations = iterations
         self.graph = graph
         self.features = features
         self.nodes_idx = nodes_idx
         self.linker_idx = linker_idx
         self.nodes = self.graph.nodes()
-        self.extracted_features = [] #list(Counter([str(v) for k, v in features.items()]).keys())
+        self.extracted_features = list(Counter([str(v) for k, v in features.items()]).keys())
         self.hash = use_hash
         self.writing_style = writing_style
         self.mode = mode
@@ -48,8 +49,6 @@ class WeisfeilerLehmanMachine:
         
         feature_storage = {}
         new_features = {}
-        logger.debug(f"Node indices: {self.nodes_idx}")
-        logger.debug(f"Linker indices: {self.linker_idx}")
         for node in self.nodes:
             feature_storage = get_new_features(feature_storage, node)
             if self.mode == "all":
@@ -57,7 +56,7 @@ class WeisfeilerLehmanMachine:
             if self.mode == "scaffold":
                 if (node in self.nodes_idx) or (node in self.linker_idx):
                     new_features = get_new_features(new_features, node)
-            if self.mode == "node":
+            if self.mode == "nodes":
                 if node in self.nodes_idx:
                     new_features = get_new_features(new_features, node)
             if self.mode == "linker":
