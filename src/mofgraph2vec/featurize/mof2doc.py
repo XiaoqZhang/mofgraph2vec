@@ -20,8 +20,9 @@ class MOF2doc:
     def __init__(
         self,
         cif_path: List[str],
+        embed_label: bool,
         label_path: str,
-        embed_label: List[str],
+        labels_to_embed: List[str],
         id_column: str,
         wl_step: int = 5,
         n_components: int = 20,
@@ -35,11 +36,15 @@ class MOF2doc:
         **kwarg
     ):     
         self.files = []
-        self.df_label = pd.read_csv(label_path).set_index(id_column)
-        self.embed_label = ["binned_%s" %label for label in embed_label]
-        for label in embed_label:
-            binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
-            self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) for v in binned_values]
+
+        self.embed_label = embed_label
+        if self.embed_label:
+            self.df_label = pd.read_csv(label_path).set_index(id_column)
+            self.labels_to_embed = ["binned_%s" %label for label in labels_to_embed]
+            for label in labels_to_embed:
+                binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
+                self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) for v in binned_values]
+        
         for pt in cif_path:
             files_in_pt = glob(os.path.join(pt, "*.cif"))
             self.files.append(files_in_pt)
@@ -94,7 +99,8 @@ class MOF2doc:
                 word += machine.extracted_features
 
                 # embed binned labels
-                word += list(self.df_label.loc[name, self.embed_label].values)
+                if self.embed_label:
+                    word += list(self.df_label.loc[name, self.labels_to_embed].values)
             
             if name == "RSM0001":
                 logger.info(f"{word}")

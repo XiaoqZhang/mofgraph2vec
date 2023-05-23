@@ -1,14 +1,15 @@
 data:
   _target_: mofgraph2vec.featurize.mof2doc.MOF2doc
   cif_path: ["../../data/cifs/rsm/"] #, "../../data/cifs/qmof/", "../../data/cifs/hMOF/"]
+  embed_label: false
   label_path: "../../data/data.csv"
-  embed_label: ["pure_CO2_kH", "pure_methane_kH"]
+  labels_to_embed: ["pure_CO2_kH", "pure_methane_kH"]
   id_column: "cif.label"
   subsample: null
-  wl_step: 1
+  wl_step: 3
   n_components: 20
   use_hash: false
   writing_style: "paragraph"
   composition: false
-  mode: linker # all, scaffold, nodes, linker
+  mode: all # all, scaffold, nodes, linker
   embed_cif: false

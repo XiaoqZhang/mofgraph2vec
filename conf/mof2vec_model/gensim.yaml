@@ -6,7 +6,7 @@ gensim:
   sample: 1.0
   workers: 6
   alpha: 1.8e-2
-  epochs: 20
+  epochs: 100
 
 topology: false  
 evaluate_patience: 5
