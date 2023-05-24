@@ -5,7 +5,6 @@ data:
   label_path: "../../data/data.csv"
   labels_to_embed: ["pure_CO2_kH", "pure_methane_kH"]
   id_column: "cif.label"
-  subsample: null
   wl_step: 3
   n_components: 20
   use_hash: false

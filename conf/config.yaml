@@ -11,7 +11,7 @@ defaults:
   - trainer:
     - default.yaml
   - sweep:
-    - mof2vec.yaml
+    - doc2label.yaml
 
 logger:
   project: mof2vec
@@ -21,4 +21,4 @@ logger:
 
 seed: 5432
 sweep: false
-mode: workflow # available choices: mof2vec, doc2label, workflow
+mode: doc2label # available choices: mof2vec, doc2label, workflow

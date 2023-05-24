@@ -50,6 +50,7 @@ def train(config: DictConfig, sweep: bool=False):
             to_log.update(unsupervised_metrics)
             to_log.update(supervised_metrics)
             wandb.log(to_log)
+
         elif config.mode == "mof2vec":
             logger.info(f"Running MOF embedding. ")
             unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"), pretraining=config.doc2label_data.pretraining)
@@ -72,5 +73,4 @@ def train(config: DictConfig, sweep: bool=False):
             }
             to_log.update(supervised_metrics)
             wandb.log(to_log)
-            
 
