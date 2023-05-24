@@ -53,12 +53,15 @@ class DataModuleFactory:
         self.valid_names = [df_label.iloc[i].name for i in valid_idx]
         self.test_names = [df_label.iloc[i].name for i in test_idx]
 
+
         # fit transformers
+        """
         train_valid_names = np.concatenate([self.train_names, self.valid_names])
         df_feat = df_feat.set_index("type")
         x_to_transform = df_feat[df_feat.index.isin(train_valid_names)].values
         #self.transform = MinMaxScaler().fit(x_to_transform)
         #self.target_transform = MinMaxScaler().fit(df_label.iloc[train_valid_idx][self.task].values.reshape(-1,1))
+        """
         self.transform = None
         self.target_transform = None
 

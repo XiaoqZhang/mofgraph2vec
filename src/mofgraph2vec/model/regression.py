@@ -14,6 +14,8 @@ def run_regression(
 
     train_ds = dm.get_train_dataset()
     valid_ds = dm.get_valid_dataset()
+    x_train = train_ds.vectors.numpy()
+    y_train = train_ds.labels.numpy()
     x_train = np.concatenate((train_ds.vectors.numpy(), valid_ds.vectors.numpy()), axis=0)
     y_train = np.concatenate((train_ds.labels.numpy(), valid_ds.labels.numpy()), axis=0)
 

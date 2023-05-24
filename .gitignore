@@ -6,6 +6,9 @@ data/embedding_model/*
 data/fine-tune-embedding/*
 data/*.csv
 data/*.json
+data/features/QMOF/*.csv
+data/fetures/RSM/*.csv
+data/features/*.csv
 
 # experiment loggings
 experiments/workflow/lightning_logs
