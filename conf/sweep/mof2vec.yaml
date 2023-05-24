@@ -1,23 +1,27 @@
 count: 300
 id: null
 config:
-  method: grid
+  method: bayes
   metric:
     name: test_mse
     goal: minimize
   early_terminate:
     type: hyperband
     min_iter: 5
-  parameters:
-    mof2vec_data.data.n_components:
-      values: [20, 40, 60, 80, 100]
-    mof2vec_model.gensim.vector_size:
-      values: [64, 128, 256, 512]
+  parameters: 
     mof2vec_model.gensim.window:
-      values: [10, 50, 100]
+      min: 10
+      max: 300
+      distribution: int_uniform
     mof2vec_model.gensim.min_count:
-      values: [0, 2, 4, 6, 8]
+      min: 0
+      max: 15
+      distribution: int_uniform
     mof2vec_model.gensim.sample: 
-      values: [0.5, 0.8, 1.0]
+      min: -4
+      max: 0
+      distribution: log_uniform
     mof2vec_model.gensim.alpha:
-      values: [1e-3, 2e-3, 3e-3, 4e-3, 5e-3, 6e-3, 7e-3, 8e-3, 9e-3, 1e-2, 2e-2, 3e-2, 4e-2, 5e-2]
+      min: -3
+      max: -1
+      distribution: log_uniform
