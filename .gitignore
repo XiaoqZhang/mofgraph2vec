@@ -7,8 +7,12 @@ data/fine-tune-embedding/*
 data/*.csv
 data/*.json
 data/features/QMOF/*.csv
-data/fetures/RSM/*.csv
+data/features/RSM/*.csv
 data/features/*.csv
+data/bbs/*
+data/bbs_qmof/*
+
+results/*
 
 # experiment loggings
 experiments/workflow/lightning_logs

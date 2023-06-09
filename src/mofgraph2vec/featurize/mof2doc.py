@@ -94,18 +94,20 @@ class MOF2doc:
                 else:
                     word = []
 
-                graph, feature, nodes_idx, linker_idx = ds_loader.to_WL_machine(cif)
-                machine = WeisfeilerLehmanMachine(graph, feature, nodes_idx, linker_idx, self.wl_step, self.hash, self.writing_style, self.mode)
+                graph, feature = ds_loader.to_WL_machine(cif) #, nodes_idx, linker_idx = ds_loader.to_WL_machine(cif)
+                machine = WeisfeilerLehmanMachine(graph, feature, None, None, self.wl_step, self.hash, self.writing_style, self.mode)
                 word += machine.extracted_features
 
                 # embed binned labels
                 if self.embed_label:
-                    word += list(self.df_label.loc[name, self.labels_to_embed].values)
+                    tag_label = list(self.df_label.loc[name, self.labels_to_embed].values)
+                    doc = TaggedDocument(words=word, tags=[name]+tag_label)
+                else:
+                    doc = TaggedDocument(words=word, tags=[name])
             
             if name == "RSM0001":
                 logger.info(f"{word}")
             
-            doc = TaggedDocument(words=word, tags=[name])
             self.documents.append(doc)
 
         return self.documents

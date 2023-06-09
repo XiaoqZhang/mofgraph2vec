@@ -14,9 +14,9 @@ defaults:
     - doc2label.yaml
 
 logger:
-  project: feature-engineering
+  project: mof2vec #feature-engineering
   entity: xiaoqiz
-  mode: online
+  mode: offline
   tags: 
 
 seed: 5432
