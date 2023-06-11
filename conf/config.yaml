@@ -5,13 +5,13 @@ defaults:
   - mof2vec_model:
     - gensim.yaml
   - doc2label_data: 
-    - rsm.yaml 
+    - qmof.yaml 
   - doc2label_model:
     - ensemble.yaml
   - trainer:
     - default.yaml
   - sweep:
-    - doc2label.yaml
+    - mof2vec.yaml
 
 logger:
   project: mof2vec #feature-engineering

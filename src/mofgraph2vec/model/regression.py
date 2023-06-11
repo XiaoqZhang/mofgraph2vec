@@ -5,6 +5,7 @@ import numpy as np
 from mofgraph2vec.data.datamodule import DataModuleFactory
 from xgboost import XGBRegressor
 from mofgraph2vec.utils.loss import get_numpy_regression_metrics
+from sklearn.feature_selection import VarianceThreshold
 
 def run_regression(
     config: DictConfig
@@ -12,16 +13,20 @@ def run_regression(
     config.doc2label_model.random_state = config.seed
     dm = DataModuleFactory(**config.doc2label_data)
 
+    selector = VarianceThreshold(threshold=0)
+
     train_ds = dm.get_train_dataset()
     valid_ds = dm.get_valid_dataset()
     x_train = train_ds.vectors.numpy()
     y_train = train_ds.labels.numpy()
     x_train = np.concatenate((train_ds.vectors.numpy(), valid_ds.vectors.numpy()), axis=0)
     y_train = np.concatenate((train_ds.labels.numpy(), valid_ds.labels.numpy()), axis=0)
+    x_train = selector.fit_transform(x_train)
 
     test_ds = dm.get_test_dataset()
     x_test = test_ds.vectors.numpy()
     y_test = test_ds.labels.numpy()
+    x_test = selector.transform(x_test)
 
     regressor = XGBRegressor(**config.doc2label_model)
     logger.info(f"Start fitting xgbt model. ")

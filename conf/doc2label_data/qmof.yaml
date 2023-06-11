@@ -1,9 +1,9 @@
-pretraining: true # ture: instantiate and train an embedding model
+pretraining: false # ture: instantiate and train an embedding model
 embedding_model_path: #../../data/embedding_model/embedding_model.pt
 task: ["outputs.pbe.bandgap"] #["outputs.CO2-henry_coefficient-mol--kg--Pa"]
 MOF_id: "qmof_id"
 label_path: "../../data/qmof-data.csv"
-embedding_path: #wandb/offline-run-20230509_154052-ygb7sowe/tmp/embedding_dv.csv #wandb/offline-run-20230320_165953-5nnlomfl/tmp/embedding_dv.csv #24 # same as gensim storage path
+embedding_path: wandb/offline-run-20230609_183028-isklqdqv/tmp/embedding_dv.csv #wandb/offline-run-20230320_165953-5nnlomfl/tmp/embedding_dv.csv #24 # same as gensim storage path
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1

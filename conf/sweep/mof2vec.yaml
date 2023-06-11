@@ -1,4 +1,4 @@
-count: 300
+count: 100
 id: null
 config:
   method: bayes
@@ -11,17 +11,9 @@ config:
   parameters: 
     mof2vec_model.gensim.window:
       min: 10
-      max: 300
+      max: 100
       distribution: int_uniform
-    mof2vec_model.gensim.min_count:
-      min: 0
-      max: 15
-      distribution: int_uniform
-    mof2vec_model.gensim.sample: 
-      min: -4
-      max: 0
-      distribution: log_uniform
     mof2vec_model.gensim.alpha:
-      min: -3
+      min: -2
       max: -1
       distribution: log_uniform

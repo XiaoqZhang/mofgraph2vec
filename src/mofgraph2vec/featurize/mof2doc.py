@@ -30,6 +30,7 @@ class MOF2doc:
         writing_style: str = "sentence",
         composition: bool = True,
         mode: str = "all",
+        embed_smi: Optional[bool] = False,
         embed_cif: Optional[bool] = False,
         subsample: Optional[int] = None,
         seed: Optional[int] = 1234,
@@ -61,12 +62,14 @@ class MOF2doc:
         self.mode = mode
         self.seed = seed
 
+        self.embed_smi = embed_smi
         self.embed_cif = embed_cif
 
     def get_documents(self):
         ds_loader = MOFDataset(strategy="vesta")
 
         self.documents = []
+        self.names = []
         for cif in tqdm(self.files):
             name = Path(cif).stem
 
@@ -90,7 +93,7 @@ class MOF2doc:
                 if self.composition:
                     com = str(Structure.from_file(cif).composition).split()
                     opt = re.compile("([a-zA-Z]+)([0-9]+)")
-                    word = [x for c in com for x in list(opt.match(c).groups())]
+                    word = com #[x for c in com for x in list(opt.match(c).groups())]
                 else:
                     word = []
 
@@ -104,13 +107,20 @@ class MOF2doc:
                     doc = TaggedDocument(words=word, tags=[name]+tag_label)
                 else:
                     doc = TaggedDocument(words=word, tags=[name])
-            
+
+                if self.embed_smi:
+                    with open(os.path.join("../../data/bbs_qmof/", name+".cif", "python_mofid.txt")) as file:
+                        smi = file.readline().split()[0]
+                        smi = smi_tokenizer(smi).split()
+                        word += smi
+                
             if name == "RSM0001":
                 logger.info(f"{word}")
             
-            self.documents.append(doc)
+            self.names.append(name)
+            self.documents.append(word)
 
-        return self.documents
+        return self.names, self.documents
     
     def get_topovectors(self):
         from mofdscribe.featurizers.topology.ph_vect import PHVect
@@ -151,3 +161,14 @@ class MOF2doc:
         times_count = [distribution[word] for idx, word in enumerate(distribution)]
         percentage = np.sum(np.array(times_count)<threshold)/len(times_count)
         return percentage
+
+def smi_tokenizer(smi):
+    """
+    Tokenize a SMILES molecule or reaction
+    """
+    import re
+    pattern =  "(\[[^\]]+]|Br?|Cl?|N|O|S|P|F|I|b|c|n|o|s|p|\(|\)|\.|=|#|-|\+|\\\\|\/|:|~|@|\?|>|\*|\$|\%[0-9]{2}|[0-9])"
+    regex = re.compile(pattern)
+    tokens = [token for token in regex.findall(smi)]
+    assert smi == ''.join(tokens)
+    return ' '.join(tokens)
