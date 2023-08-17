@@ -1,9 +1,9 @@
 pretraining: False # ture: instantiate and train an embedding model
 embedding_model_path: #../../data/embedding_model/embedding_model.pt
-task: ["outputs.logKH_CH4"]
-MOF_id: "info.name"
-label_path: "../../data/md-core.csv"
-embedding_path: wandb/offline-run-20230706_112700-krfvi5r4/tmp/embedding_dv.csv # same as gensim storage path
+task: ["outputs.assigned_T_decomp"]
+MOF_id: "info.CoRE_name"
+label_path: "../../data/md-therm.csv"
+embedding_path: wandb/offline-run-20230706_121423-7qgmwgwm/tmp/embedding_dv.csv # same as gensim storage path
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1
