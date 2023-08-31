@@ -1,9 +1,9 @@
 data:
   _target_: mofgraph2vec.featurize.mof2doc.MOF2doc
-  cif_path: ["../../data/cifs/therm/", ]
+  cif_path: ["../../data/cifs/core_md/"] #, "../../data/cifs/md_2000_2005/", "../../data/cifs/md_2006", "../../data/cifs/md_2007", "../../data/cifs/md_2008", "../../data/cifs/md_2009", "../../data/cifs/md_2010", "../../data/cifs/md_2011", "../../data/cifs/md_2012", "../../data/cifs/md_2013", "../../data/cifs/md_2014", ]
   embed_label: False
-  label_path: "../../data/md-therm.csv"
-  labels_to_embed: ["info.density", "outputs.logKH_CO2", "outputs.logKH_CH4", "outputs.pure_uptake_CO2_298.00_15000", "outputs.pure_uptake_CO2_298.00_1600000", "outputs.pure_uptake_methane_298.00_580000", "outputs.pure_uptake_methane_298.00_6500000"]
+  label_path: "../../data/md-core.csv"
+  labels_to_embed: ["outputs.xq.logKH_CO2", "outputs.xq.logKH_N2"] #"outputs.pure_uptake_methane_298.00_580000", "outputs.pure_uptake_methane_298.00_6500000"]
   id_column: "info.name"
   wl_step: 2
   n_components: 20

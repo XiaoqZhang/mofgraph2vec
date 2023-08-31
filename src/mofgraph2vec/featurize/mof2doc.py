@@ -42,8 +42,8 @@ class MOF2doc:
             self.df_label = pd.read_csv(label_path).set_index(id_column)
             self.labels_to_embed = ["binned_%s" %label for label in labels_to_embed]
             for label in labels_to_embed:
-                binned_values = pd.qcut(self.df_label.loc[:, label], q=3, labels=["low", "medium", "high"])
-                #binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
+                #binned_values = pd.qcut(self.df_label.loc[:, label], q=3, labels=["low", "medium", "high"])
+                binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
                 self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if not pd.isna(v) else 0 for v in binned_values]
                 #self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if v=="high" else 0 for v in binned_values]
         for pt in cif_path:
