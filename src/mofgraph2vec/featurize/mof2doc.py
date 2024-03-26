@@ -22,7 +22,9 @@ class MOF2doc:
         cif_path: List[str],
         embed_label: bool,
         label_path: str,
-        labels_to_embed: List[str],
+        descriptors_to_embed: List[str],
+        category_to_embed: List[str],
+        tags_to_embed: List[str],
         id_column: str,
         wl_step: int = 5,
         n_components: int = 20,
@@ -40,12 +42,23 @@ class MOF2doc:
         self.embed_label = embed_label
         if self.embed_label:
             self.df_label = pd.read_csv(label_path).set_index(id_column)
-            self.labels_to_embed = ["binned_%s" %label for label in labels_to_embed]
-            for label in labels_to_embed:
-                #binned_values = pd.qcut(self.df_label.loc[:, label], q=3, labels=["low", "medium", "high"])
-                binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
-                self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if not pd.isna(v) else 0 for v in binned_values]
+            self.descriptors_to_embed = ["binned_%s" %label for label in descriptors_to_embed]
+            self.category_to_embed = category_to_embed
+            for label in descriptors_to_embed:
+                binned_values = pd.qcut(self.df_label.loc[:, label], q=10, labels=range(10))
+                #binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
+                self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if not pd.isna(v) else "UNKNOWN" for v in binned_values]
                 #self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if v=="high" else 0 for v in binned_values]
+        
+        if len(tags_to_embed) > 0:
+            self.tags_to_embed = ["binned_%s" %label for label in tags_to_embed]
+            for label in tags_to_embed:
+                binned_values = pd.qcut(self.df_label.loc[:, label], q=3, labels=["low", "medium", "high"])
+                #binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
+                self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if not pd.isna(v) else "UNKNOWN" for v in binned_values]
+        else:
+            self.tags_to_embed = None
+        
         for pt in cif_path:
             files_in_pt = glob(os.path.join(pt, "*.cif"))
             self.files.append(files_in_pt)
@@ -90,8 +103,9 @@ class MOF2doc:
             else:          
                 if self.composition:
                     com = str(Structure.from_file(cif).composition).split()
-                    opt = re.compile("([a-zA-Z]+)([0-9]+)")
-                    word = [x for c in com for x in list(opt.match(c).groups())]
+                    word = com
+                    #opt = re.compile("([a-zA-Z]+)([0-9]+)")
+                    #word = [x for c in com for x in list(opt.match(c).groups())]
                 else:
                     word = []
 
@@ -101,14 +115,20 @@ class MOF2doc:
 
                 # embed binned labels
                 if self.embed_label:
-                    tag_label = list([bin for bin in self.df_label.loc[name, self.labels_to_embed] if bin!=0])
-                    doc = TaggedDocument(words=word, tags=[name]+tag_label)
-                else:
-                    doc = TaggedDocument(words=word, tags=[name])
-            
-                    #if name == 'JUVROJ_clean':
-                        #logger.info(f"{tag_label}")
-            
+                    word += list([bin for bin in self.df_label.loc[name, self.descriptors_to_embed] if bin!="UNKNOWN"])
+                    word += list([bin for bin in self.df_label.loc[name, self.category_to_embed] if not bin is np.nan])
+                    
+                tag_label = [name]
+                if not self.tags_to_embed is None:
+                    tag_label += list([bin for bin in self.df_label.loc[name, self.tags_to_embed] if bin!="UNKNOWN"])
+
+            doc = TaggedDocument(words=word, tags=tag_label)
+                
+            if name == "DB1-Zn2O8-irmof14_A-irmof16_A_No82_repeat":
+                logger.debug(f"{doc}")
+            if name == "CUXJEM_clean":
+                logger.debug(f"{doc}")
+
             self.documents.append(doc)
 
         return self.documents

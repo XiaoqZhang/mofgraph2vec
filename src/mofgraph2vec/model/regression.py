@@ -24,6 +24,7 @@ def run_regression(
     y_test = test_ds.labels.numpy()
 
     regressor = XGBRegressor(**config.doc2label_model)
+    logger.info(f"x shape: {x_train.shape}; y shape: {y_train.shape}")
     logger.info(f"Start fitting xgbt model. ")
     regressor.fit(x_train, y_train)
     #scores = cross_val_score(regressor, x_train, y_train, cv=5, n_jobs=4)
@@ -35,15 +36,22 @@ def run_regression(
     })
     """
     logger.info(f"Evaluating the model. ")
+    
+    train_pred = regressor.predict(x_train)
     pred = regressor.predict(x_test)
     if dm.target_transform is not None:
         true = dm.target_transform.inverse_transform(x_test)
         pred = dm.target_transform.inverse_transform(x_test)
+        train_pred = dm.target_transform.inverse_transform(x_train)
     else: 
         true = y_test.flatten()
+        train_true = y_train.flatten()
     
     metrics = get_numpy_regression_metrics(y_train, regressor.predict(x_train), "train")
     metrics.update(get_numpy_regression_metrics(true, pred, "test"))
-    fig_data = [[x, y] for (x, y) in zip(true, pred)]
+    fig_data = {
+        "train": [[float(x), float(y)] for (x, y) in zip(train_true, train_pred)],
+        "test": [[float(x), float(y)] for (x, y) in zip(true, pred)]
+    }
 
     return regressor, metrics, fig_data

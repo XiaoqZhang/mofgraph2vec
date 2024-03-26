@@ -1,0 +1,12 @@
+pretraining: False # ture: instantiate and train an embedding model
+embedding_model_path: "wandb/offline-run-20231025_093835-53o0269a/tmp/embedding_model.pt"
+task: ["xq.co2_n2_selectivity"] 
+MOF_id: "info.name"
+label_path: "../../data/arc-core-xq-1120-sub.csv"
+embedding_path: "wandb/offline-run-20231025_093835-53o0269a/tmp/embedding_dv.csv"
+train_frac: 0.8
+valid_frac: 0.1
+test_frac: 0.1
+batch_size: 512
+num_workers: 6
+seed: 2234
