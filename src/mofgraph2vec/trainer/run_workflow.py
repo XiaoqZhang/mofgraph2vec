@@ -64,19 +64,15 @@ def train(config: DictConfig, sweep: bool=False):
                 unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"), pretraining=config.doc2label_data.pretraining)
             
             logger.info(f"Running regression. ")
-            model, supervised_metrics, figure_data = run_regression(config)
+            model, supervised_metrics, figure = run_regression(config)
             logger.info(f"Model performance: {supervised_metrics}")
             joblib.dump(model, os.path.join(wandb.run.dir, "../tmp/best_model.pkl"))
 
-            #table = wandb.Table(data=figure, columns = ["True", "Pred"])
+            table = wandb.Table(data=figure, columns = ["True", "Pred"])
             to_log = {
                 'task': config.doc2label_data.task[0],
-                #'parity': wandb.plot.scatter(table, "True", "Pred")
+                'parity': wandb.plot.scatter(table, "True", "Pred")
             }
             to_log.update(supervised_metrics)
             wandb.log(to_log)
-            
-            figure_data_obj = json.dumps(figure_data, indent=4)
-            with open(os.path.join(wandb.run.dir, "../tmp/prediction.json"), 'w') as fp:
-                json.dump(figure_data_obj, fp)
 

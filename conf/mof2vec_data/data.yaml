@@ -2,7 +2,7 @@ data:
   _target_: mofgraph2vec.featurize.mof2doc.MOF2doc
   cif_path: [ "../../data/cifs/arc/"] #["../../data/cifs/arc/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/"] #["../../data/cifs/arc/", "../../data/cifs/core_md/"] #, "../../data/cifs/md_2000_2005/", "../../data/cifs/md_2006", "../../data/cifs/md_2007", "../../data/cifs/md_2008", "../../data/cifs/md_2009", "../../data/cifs/md_2010", "../../data/cifs/md_2011", "../../data/cifs/md_2012", "../../data/cifs/md_2013", "../../data/cifs/md_2014", ]
   embed_label: True
-  label_path: "../../data/arc-core-xq.csv"
+  label_path: "../../data/arc-core-xq-1120.csv"
   descriptors_to_embed: ["Di", "Df", "Dif", "info.density"] #["Di", "Df", "Dif", "info.density", "ASA", "AVA", "POAVAf"] #"ASA", "AVA", "POAVAf", 
   category_to_embed: ["Crystalnet"]
   tags_to_embed: [] #"xq.ch4_logkh", "xq.ch4_uptake_580000", "xq.ch4_uptake_6500000"] #["xq.ch4_uptake_6500000"] #["xq.ch4_logkh", "xq.ch4_uptake_6500000"]

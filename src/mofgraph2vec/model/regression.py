@@ -49,9 +49,6 @@ def run_regression(
     
     metrics = get_numpy_regression_metrics(y_train, regressor.predict(x_train), "train")
     metrics.update(get_numpy_regression_metrics(true, pred, "test"))
-    fig_data = {
-        "train": [[float(x), float(y)] for (x, y) in zip(train_true, train_pred)],
-        "test": [[float(x), float(y)] for (x, y) in zip(true, pred)]
-    }
+    fig_data = [[x, y] for (x, y) in zip(true, pred)]
 
     return regressor, metrics, fig_data
