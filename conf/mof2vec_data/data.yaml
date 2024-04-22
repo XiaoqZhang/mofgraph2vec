@@ -1,15 +1,16 @@
 data:
   _target_: mofgraph2vec.featurize.mof2doc.MOF2doc
-  embed_property: False
-  cif_path: ["../../data/cifs/rsm/"] #, "../../data/cifs/qmof/", "../../data/cifs/hMOF/"]
-  label_path: "../../data/data.csv"
-  embed_label: ["logKH_CO2"] #, "pure_methane_kH", "pure_CO2_widomHOA", "pure_methane_widomHOA"]
-  id_column: "cif.label"
-  subsample: null
-  wl_step: 3
+  cif_path: [ "../../data/cifs/arc/"] #["../../data/cifs/arc/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/", "../../data/cifs/core_md/"] #["../../data/cifs/arc/", "../../data/cifs/core_md/"] #, "../../data/cifs/md_2000_2005/", "../../data/cifs/md_2006", "../../data/cifs/md_2007", "../../data/cifs/md_2008", "../../data/cifs/md_2009", "../../data/cifs/md_2010", "../../data/cifs/md_2011", "../../data/cifs/md_2012", "../../data/cifs/md_2013", "../../data/cifs/md_2014", ]
+  embed_label: True
+  label_path: "../../data/arc-core-xq-1120.csv"
+  descriptors_to_embed: ["Di", "Df", "Dif", "info.density"] #["Di", "Df", "Dif", "info.density", "ASA", "AVA", "POAVAf"] #"ASA", "AVA", "POAVAf", 
+  category_to_embed: ["Crystalnet"]
+  tags_to_embed: [] #"xq.ch4_logkh", "xq.ch4_uptake_580000", "xq.ch4_uptake_6500000"] #["xq.ch4_uptake_6500000"] #["xq.ch4_logkh", "xq.ch4_uptake_6500000"]
+  id_column: "info.name"
+  wl_step: 2
   n_components: 20
   use_hash: false
   writing_style: "paragraph"
-  composition: false
+  composition: False
   mode: all # all, scaffold, nodes, linker
   embed_cif: false

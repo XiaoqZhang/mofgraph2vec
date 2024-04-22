@@ -3,6 +3,7 @@ import wandb
 from omegaconf import DictConfig
 from loguru import logger
 import joblib
+import json
 from mofgraph2vec.utils.dict_helpers import get, put
 from mofgraph2vec.utils.seed import set_seed
 from mofgraph2vec.embedding.embedding import run_embedding
@@ -38,6 +39,7 @@ def train(config: DictConfig, sweep: bool=False):
             logger.info(f"Running workflow. ")
             config.doc2label_data.embedding_path = os.path.join(wandb.run.dir, "../tmp/embedding_dv.csv")
             unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"), pretraining=config.doc2label_data.pretraining)
+            #config.mof2vec_data.data.embed_label = False
             model, supervised_metrics, figure = run_regression(config)
             logger.info(f"Model performance: {supervised_metrics}")
             joblib.dump(model, os.path.join(wandb.run.dir, "../tmp/best_model.pkl"))
@@ -50,6 +52,7 @@ def train(config: DictConfig, sweep: bool=False):
             to_log.update(unsupervised_metrics)
             to_log.update(supervised_metrics)
             wandb.log(to_log)
+
         elif config.mode == "mof2vec":
             logger.info(f"Running MOF embedding. ")
             unsupervised_metrics = run_embedding(config, os.path.join(wandb.run.dir, "../tmp/"), pretraining=config.doc2label_data.pretraining)
@@ -72,5 +75,4 @@ def train(config: DictConfig, sweep: bool=False):
             }
             to_log.update(supervised_metrics)
             wandb.log(to_log)
-            
 

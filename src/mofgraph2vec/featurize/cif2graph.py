@@ -30,19 +30,13 @@ class MOFDataset:
         meta_path = path.replace("cifs", "meta")
         meta_path = meta_path.replace(".cif", ".pt")
 
+        meta_folder = os.path.dirname(meta_path)
+        if not os.path.exists(meta_folder):
+            os.mkdir(meta_folder)
+
         if not os.path.exists(meta_path):
             structure = Structure.from_file(path)
             sg = StructureGraph.with_local_env_strategy(structure, self.strategy)
-            logger.debug(f"{path}")
-            logger.debug(f"Calculating building blocks. ")
-            indices = get_bb_indices(sg)
-            logger.debug(f"BB finished. ")
-
-            nodes_indices = [item for sublist in indices["nodes"] for item in sublist]
-            linker_scaffold_indices = [item for sublist in indices["linker_scaffold"] for item in sublist]
-            linker_all_indices = [item for sublist in indices["linker_all"] for item in sublist]
-            linker_functional_indices = [item for sublist in indices["linker_functional"] for item in sublist]
-            linker_connecting_indices = [item for sublist in indices["linker_connecting"] for item in sublist]
 
             x = self._get_node_features(structure)
             edge_idx, edge_attr = self._get_edge_index_and_lengths(sg)
@@ -50,11 +44,6 @@ class MOFDataset:
                 x=x, 
                 edge_index=torch.Tensor(edge_idx), 
                 edge_attr=edge_attr, 
-                nodes=nodes_indices, 
-                linker_scaffold=linker_scaffold_indices,
-                linker_all=linker_all_indices,
-                linker_functional=linker_functional_indices,
-                linker_connecting=linker_connecting_indices
                         )
             torch.save(data, meta_path)
         else:
@@ -90,7 +79,7 @@ class MOFDataset:
         features_to_WL = {}
         for i, item in enumerate(data.x.flatten()):
             features_to_WL.update({i: item})
-        return graph, features_to_WL, data.nodes, data.linker_scaffold
+        return graph, features_to_WL, #data.nodes, data.linker_scaffold
 
 
 def _get_distance(

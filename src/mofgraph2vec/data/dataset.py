@@ -9,6 +9,8 @@ class VecDataset(Dataset):
         self.target = target
         df_vectors = pd.read_csv(vector_file).set_index("type")
         df_labels = pd.read_csv(label_file).set_index(MOF_id)
+        
+        df_vectors.drop_duplicates(inplace=True)
 
         self.vectors = torch.from_numpy(df_vectors.loc[mofnames].values.astype(np.float32)).to(device)
         self.labels = torch.from_numpy(df_labels.loc[mofnames][self.target].values.astype(np.float32).reshape(-1,len(self.target))).to(device)

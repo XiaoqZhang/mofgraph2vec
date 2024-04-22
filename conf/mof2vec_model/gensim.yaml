@@ -1,5 +1,5 @@
 gensim: 
-  vector_size: 128
+  vector_size: 1000
   window: 100
   min_count: 2
   dm: 1

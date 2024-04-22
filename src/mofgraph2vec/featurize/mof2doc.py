@@ -20,9 +20,11 @@ class MOF2doc:
     def __init__(
         self,
         cif_path: List[str],
-        embed_property: bool,
+        embed_label: bool,
         label_path: str,
-        embed_label: List[str],
+        descriptors_to_embed: List[str],
+        category_to_embed: List[str],
+        tags_to_embed: List[str],
         id_column: str,
         wl_step: int = 5,
         n_components: int = 20,
@@ -36,13 +38,27 @@ class MOF2doc:
         **kwarg
     ):     
         self.files = []
-        self.embed_property = embed_property
-        if self.embed_property:
+
+        self.embed_label = embed_label
+        if self.embed_label:
             self.df_label = pd.read_csv(label_path).set_index(id_column)
-            self.embed_label = ["binned_%s" %label for label in embed_label]
-            for label in embed_label:
-                binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.01, 0.05))
-                self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) for v in binned_values]
+            self.descriptors_to_embed = ["binned_%s" %label for label in descriptors_to_embed]
+            self.category_to_embed = category_to_embed
+            for label in descriptors_to_embed:
+                binned_values = pd.qcut(self.df_label.loc[:, label], q=10, labels=range(10))
+                #binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
+                self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if not pd.isna(v) else "UNKNOWN" for v in binned_values]
+                #self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if v=="high" else 0 for v in binned_values]
+        
+        if len(tags_to_embed) > 0:
+            self.tags_to_embed = ["binned_%s" %label for label in tags_to_embed]
+            for label in tags_to_embed:
+                binned_values = pd.qcut(self.df_label.loc[:, label], q=3, labels=["low", "medium", "high"])
+                #binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
+                self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if not pd.isna(v) else "UNKNOWN" for v in binned_values]
+        else:
+            self.tags_to_embed = None
+        
         for pt in cif_path:
             files_in_pt = glob(os.path.join(pt, "*.cif"))
             self.files.append(files_in_pt)
@@ -87,13 +103,14 @@ class MOF2doc:
             else:          
                 if self.composition:
                     com = str(Structure.from_file(cif).composition).split()
-                    opt = re.compile("([a-zA-Z]+)([0-9]+)")
-                    word = [x for c in com for x in list(opt.match(c).groups())]
+                    word = com
+                    #opt = re.compile("([a-zA-Z]+)([0-9]+)")
+                    #word = [x for c in com for x in list(opt.match(c).groups())]
                 else:
                     word = []
 
-                graph, feature, nodes_idx, linker_idx = ds_loader.to_WL_machine(cif)
-                machine = WeisfeilerLehmanMachine(graph, feature, nodes_idx, linker_idx, self.wl_step, self.hash, self.writing_style, self.mode)
+                graph, feature = ds_loader.to_WL_machine(cif) #, nodes_idx, linker_idx = ds_loader.to_WL_machine(cif)
+                machine = WeisfeilerLehmanMachine(graph, feature, None, None, self.wl_step, self.hash, self.writing_style, self.mode)
                 word += machine.extracted_features
 
                 feature_affinity = {}
@@ -112,13 +129,21 @@ class MOF2doc:
                 # embed edges
                 word += list(np.unique(["%s=%s" %(feature_block[i], feature_block[j]) for i, j in graph.edges]))
                 # embed binned labels
-                if self.embed_property:
-                    word += list(self.df_label.loc[name, self.embed_label].values)
-            
-            if name == "RSM0001":
-                logger.info(f"{word}")
-            
-            doc = TaggedDocument(words=word, tags=[name])
+                if self.embed_label:
+                    word += list([bin for bin in self.df_label.loc[name, self.descriptors_to_embed] if bin!="UNKNOWN"])
+                    word += list([bin for bin in self.df_label.loc[name, self.category_to_embed] if not bin is np.nan])
+                    
+                tag_label = [name]
+                if not self.tags_to_embed is None:
+                    tag_label += list([bin for bin in self.df_label.loc[name, self.tags_to_embed] if bin!="UNKNOWN"])
+
+            doc = TaggedDocument(words=word, tags=tag_label)
+                
+            if name == "DB1-Zn2O8-irmof14_A-irmof16_A_No82_repeat":
+                logger.debug(f"{doc}")
+            if name == "CUXJEM_clean":
+                logger.debug(f"{doc}")
+
             self.documents.append(doc)
 
         return self.documents

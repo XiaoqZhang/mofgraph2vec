@@ -1,9 +1,9 @@
-pretraining: true
-embedding_model_path: #../../data/embedding_model/embedding_model.pt
-task: ["logKH_CO2"]
-MOF_id: "cif.label"
-label_path: "../../data/data.csv"
-embedding_path: #../../dev/test/tmp/embedding_dv.csv # same as gensim storage path
+pretraining: False # ture: instantiate and train an embedding model
+embedding_model_path: #wandb/offline-run-20230919_215940-6vnzz2mv/tmp/embedding_model.pt
+task: ["outputs.logKH_CH4"]
+MOF_id: "info.name"
+label_path: "../../data/arc-core-xq.csv"
+embedding_path: wandb/offline-run-20231031_084625-6c2hprja/tmp/embedding_dv.csv # same as gensim storage path
 train_frac: 0.8
 valid_frac: 0.1
 test_frac: 0.1

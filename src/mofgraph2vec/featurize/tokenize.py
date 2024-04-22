@@ -53,6 +53,7 @@ class WeisfeilerLehmanMachine:
             feature_storage = get_new_features(feature_storage, node)
             if self.mode == "all":
                 new_features = get_new_features(new_features, node)
+            """
             if self.mode == "scaffold":
                 if (node in self.nodes_idx) or (node in self.linker_idx):
                     new_features = get_new_features(new_features, node)
@@ -62,7 +63,7 @@ class WeisfeilerLehmanMachine:
             if self.mode == "linker":
                 if node in self.linker_idx:
                     new_features = get_new_features(new_features, node)
-        
+            """
         if self.writing_style == "paragraph":
             new_subgraph = list(Counter(list(new_features.values())))
             self.extracted_features += new_subgraph

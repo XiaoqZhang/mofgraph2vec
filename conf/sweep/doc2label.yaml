@@ -1,7 +1,7 @@
-count: 300
+count: 80
 id: null
 config:
-  method: random
+  method: bayes
   metric:
     name: test_mse
     goal: minimize
@@ -10,12 +10,12 @@ config:
     min_iter: 5
   parameters:
     doc2label_model.n_estimators: 
-      min: 100
-      max: 500
+      min: 30
+      max: 200
       distribution: int_uniform
     doc2label_model.max_depth: # 1
-      min: 5
-      max: 10
+      min: 3
+      max: 8
       distribution: int_uniform
     doc2label_model.reg_alpha:
       min: 0

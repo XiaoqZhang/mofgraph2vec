@@ -8,13 +8,19 @@ config:
   early_terminate:
     type: hyperband
     min_iter: 5
-  parameters:
+  parameters: 
     mof2vec_model.gensim.window:
-      values: [10, 50, 100]
+      min: 10
+      max: 300
+      distribution: int_uniform
     mof2vec_model.gensim.min_count:
-      values: [0, 2, 4, 6, 8]
+      min: 0
+      max: 15
+      distribution: int_uniform
     mof2vec_model.gensim.sample: 
-      values: [1.0, 0.1, 0.01, 0.001, 0.0001]
+      min: -4
+      max: 0
+      distribution: log_uniform
     mof2vec_model.gensim.alpha:
       min: -3
       max: -1
