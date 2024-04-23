@@ -13,7 +13,7 @@ from mofgraph2vec.featurize.cif2graph import MOFDataset
 from mofgraph2vec.featurize.tokenize import WeisfeilerLehmanMachine
 from gensim.models.doc2vec import TaggedDocument
 from mofgraph2vec.featurize.topo2vec import TaggedVector
-from pymatgen.core import Structure, Element
+from pymatgen.core import Structure
 from loguru import logger
 
 class MOF2doc:
@@ -113,21 +113,6 @@ class MOF2doc:
                 machine = WeisfeilerLehmanMachine(graph, feature, None, None, self.wl_step, self.hash, self.writing_style, self.mode)
                 word += machine.extracted_features
 
-                feature_affinity = {}
-                for i, ele in feature.items():
-                    feature_affinity.update({i: "g%s" %Element(ele).group})
-                    #feature_affinity.update({i: "%.2f" %Element(ele).electron_affinity})
-                machine_affinity = WeisfeilerLehmanMachine(graph, feature_affinity, nodes_idx, linker_idx, 1, self.hash, self.writing_style, self.mode)
-                word += machine_affinity.extracted_features
-                
-                feature_block = {}
-                for i, ele in feature.items():
-                    feature_block.update({i: Element(ele).block})
-                machine_block = WeisfeilerLehmanMachine(graph, feature_block, nodes_idx, linker_idx, 1, self.hash, self.writing_style, self.mode)
-                word += machine_block.extracted_features
-
-                # embed edges
-                word += list(np.unique(["%s=%s" %(feature_block[i], feature_block[j]) for i, j in graph.edges]))
                 # embed binned labels
                 if self.embed_label:
                     word += list([bin for bin in self.df_label.loc[name, self.descriptors_to_embed] if bin!="UNKNOWN"])

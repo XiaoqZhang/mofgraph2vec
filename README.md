@@ -15,17 +15,18 @@ $ pip install -e .
 ## Getting started
 ### Train the model
 
+- Put the CIF files and a `.csv` file with geometric feature values of your database in `data/cifs/`
 - Change the configurations in `conf/`
 - Navigate to `experiments/workflow`
-- Run the model by `$ python train.py`
+- Run the model by `$ python train.py`. The first time of featurization may take some time. 
 
 ### Load the model
 
-- The pre-trained model for ARC-MOF and QMOF databases are provided
+- The pre-trained model for ARC-MOF and QMOF databases are provided in `data/pretrained_models`
 
 ### Similarity analysis
 
-- Examples are given in `dev/similarity.ipynb`
+- Examples are given in `dev/example.ipynb`
 
 ## License
 

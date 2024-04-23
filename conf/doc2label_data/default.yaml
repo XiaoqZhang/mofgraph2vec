@@ -1,0 +1,12 @@
+pretraining: True
+embedding_model_path: # 
+task: #
+MOF_id: #
+label_path: #
+embedding_path: # 
+train_frac: 0.8
+valid_frac: 0.1
+test_frac: 0.1
+batch_size: 512
+num_workers: 6
+seed: 2234
