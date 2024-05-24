@@ -1,12 +1,12 @@
 data:
   _target_: mofgraph2vec.featurize.mof2doc.MOF2doc
-  cif_path: # 
+  cif_path: [ "../data/cifs/arc/"]
   embed_label: True
-  label_path: #
-  descriptors_to_embed: # 
-  category_to_embed: #
-  tags_to_embed: #
-  id_column: #
+  label_path: "../data/arc-core-xq-1101.csv"
+  descriptors_to_embed: ["Di", "Df", "Dif"]
+  category_to_embed: ["Crystalnet"]
+  tags_to_embed: []
+  id_column: "info.name"
   wl_step: 2
   n_components: 20
   use_hash: false

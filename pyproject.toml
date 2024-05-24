@@ -1,0 +1,11 @@
+[project]
+name = "mofgraph2vec"
+version = "0.1.0"
+description = "Unsupervised learning Metal-Organic Frameworks (MOFs)"
+
+[build-system]
+requires = ["setuptools >= 65.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

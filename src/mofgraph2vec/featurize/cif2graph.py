@@ -3,12 +3,10 @@ import os
 import numpy as np
 import yaml
 from typing import Tuple
-from loguru import logger
 
 from pymatgen.core.structure import Structure, Lattice
 from pymatgen.analysis.graphs import StructureGraph
 from pymatgen.analysis.local_env import CutOffDictNN
-from mofdscribe.featurizers.chemistry._fragment import get_bb_indices
 
 import torch
 from torch_geometric.data import Data

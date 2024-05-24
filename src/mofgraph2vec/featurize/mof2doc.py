@@ -8,13 +8,11 @@ from collections import Counter
 import numpy as np
 import pandas as pd
 from typing import Optional, List
-from mofgraph2vec.data.spliter import quantile_binning
 from mofgraph2vec.featurize.cif2graph import MOFDataset
 from mofgraph2vec.featurize.tokenize import WeisfeilerLehmanMachine
 from gensim.models.doc2vec import TaggedDocument
 from mofgraph2vec.featurize.topo2vec import TaggedVector
 from pymatgen.core import Structure
-from loguru import logger
 
 class MOF2doc:
     def __init__(
@@ -46,15 +44,12 @@ class MOF2doc:
             self.category_to_embed = category_to_embed
             for label in descriptors_to_embed:
                 binned_values = pd.qcut(self.df_label.loc[:, label], q=10, labels=range(10))
-                #binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
                 self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if not pd.isna(v) else "UNKNOWN" for v in binned_values]
-                #self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if v=="high" else 0 for v in binned_values]
         
         if len(tags_to_embed) > 0:
             self.tags_to_embed = ["binned_%s" %label for label in tags_to_embed]
             for label in tags_to_embed:
                 binned_values = pd.qcut(self.df_label.loc[:, label], q=3, labels=["low", "medium", "high"])
-                #binned_values = quantile_binning(self.df_label.loc[:, label].values.reshape(-1,), np.arange(0, 1.1, 0.1))
                 self.df_label["binned_%s" %label] = ["%s_%s" %(label, v) if not pd.isna(v) else "UNKNOWN" for v in binned_values]
         else:
             self.tags_to_embed = None
@@ -123,12 +118,6 @@ class MOF2doc:
                     tag_label += list([bin for bin in self.df_label.loc[name, self.tags_to_embed] if bin!="UNKNOWN"])
 
             doc = TaggedDocument(words=word, tags=tag_label)
-                
-            if name == "DB1-Zn2O8-irmof14_A-irmof16_A_No82_repeat":
-                logger.debug(f"{doc}")
-            if name == "CUXJEM_clean":
-                logger.debug(f"{doc}")
-
             self.documents.append(doc)
 
         return self.documents

@@ -20,6 +20,8 @@ experiments/workflow/lightning_logs
 experiments/workflow/outputs
 experiments/workflow/wandb
 experiments/workflow/sweep_results
+experiments/outputs
+experiments/wandb
 
 # python cache
 dev/*.json

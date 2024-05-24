@@ -1,12 +1,13 @@
-n_estimators: 300
-max_depth: 4
-gamma: 
-reg_alpha: 
-reg_lambda: 0.8
-subsample: 
-colsample_bytree: 
-min_child_weight: 
-learning_rate: 0.1
-max_delta_step: 2
+grid_search: True
+params:
+  n_estimators: [200, 300, 400]
+  max_depth: [3, 4, 5]
+  gamma: #[0, 0.1, 0.2]
+  reg_alpha: #[0, 0.1, 0.2]
+  reg_lambda: #[0.6, 0.7, 0.8]
+  subsample: #[0.6, 0.7, 0.8]
+  colsample_bytree: #[0.6, 0.7, 0.8]
+  min_child_weight: #[1, 2, 3]
+  learning_rate:  [0.1, 1, 0.01] #[0.1, 0.2, 0.3]
+  max_delta_step: #[1, 2, 3]
 n_jobs: -2
-random_state: 2234

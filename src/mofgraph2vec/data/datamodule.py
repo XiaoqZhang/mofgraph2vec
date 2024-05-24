@@ -1,12 +1,9 @@
 from loguru import logger
 from typing import Optional
-import torch
 import pandas as pd
 import numpy as np
 from mofgraph2vec.data.spliter import train_valid_test_split
-from torch.utils.data import DataLoader
 from mofgraph2vec.data.dataset import VecDataset
-from torch_geometric.data.lightning import LightningDataset
 
 class DataModuleFactory:
     def __init__(
@@ -18,13 +15,10 @@ class DataModuleFactory:
         train_frac: float=0.8,
         valid_frac: float=0.1,
         test_frac: float=0.1,
-        batch_size: int=64,
         num_workers: Optional[int] = None,
-        device: Optional[torch.device] = "cpu",
         seed: Optional[int] = 1234, 
         **kwargs
     ):
-        self.device = device
         self.num_workers = num_workers
 
         if not (train_frac + valid_frac + test_frac == 1.0):
@@ -32,7 +26,6 @@ class DataModuleFactory:
         
         self.task = task
         self.MOF_id = MOF_id
-        self.batch_size = batch_size
         
         self.label_path = label_path
         self.embedding_path = embedding_path
@@ -55,13 +48,6 @@ class DataModuleFactory:
 
 
         # fit transformers
-        """
-        train_valid_names = np.concatenate([self.train_names, self.valid_names])
-        df_feat = df_feat.set_index("type")
-        x_to_transform = df_feat[df_feat.index.isin(train_valid_names)].values
-        #self.transform = MinMaxScaler().fit(x_to_transform)
-        #self.target_transform = MinMaxScaler().fit(df_label.iloc[train_valid_idx][self.task].values.reshape(-1,1))
-        """
         self.transform = None
         self.target_transform = None
 
@@ -78,7 +64,6 @@ class DataModuleFactory:
             label_file=self.label_path, 
             transform=self.transform, 
             target_transform=self.target_transform,
-            device=self.device
         )
 
     def get_valid_dataset(self, **kwargs):
@@ -92,7 +77,6 @@ class DataModuleFactory:
             label_file=self.label_path, 
             transform=self.transform, 
             target_transform=self.target_transform,
-            device=self.device
         )
 
     def get_test_dataset(self, **kwargs):
@@ -106,22 +90,17 @@ class DataModuleFactory:
             label_file=self.label_path, 
             transform=self.transform, 
             target_transform=self.target_transform,
-            device=self.device
         )
 
-    def get_datamodule(self) -> LightningDataset:
-        return LightningDataset(
-            train_dataset=self.get_train_dataset(),
-            val_dataset=self.get_valid_dataset(),
-            test_dataset=self.get_test_dataset(),
-            batch_size=self.batch_size,
+    def get_train_valid_dataset(self, **kwargs):
+        if self.valid_names is None:
+            return None
+        return VecDataset(
+            target=self.task,
+            MOF_id=self.MOF_id, 
+            mofnames=self.train_names+self.valid_names, 
+            vector_file=self.embedding_path, 
+            label_file=self.label_path, 
+            transform=self.transform, 
+            target_transform=self.target_transform,
         )
-
-    def train_dataloader(self):
-        return DataLoader(self.get_train_dataset(), batch_size=self.batch_size, num_workers=self.num_workers)
-    
-    def valid_dataloader(self):
-        return DataLoader(self.get_valid_dataset(), batch_size=self.batch_size, num_workers=self.num_workers)
-     
-    def test_dataloader(self):
-        return DataLoader(self.get_test_dataset(), batch_size=self.batch_size, num_workers=self.num_workers)

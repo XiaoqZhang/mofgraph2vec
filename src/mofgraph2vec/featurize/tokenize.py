@@ -1,7 +1,6 @@
 # update node hash by gathering information from neighborhoods
 import hashlib
 from collections import Counter
-from loguru import logger
 
 class WeisfeilerLehmanMachine:
     """
@@ -25,7 +24,6 @@ class WeisfeilerLehmanMachine:
         self.hash = use_hash
         self.writing_style = writing_style
         self.mode = mode
-        #self.length = len(Counter(self.extracted_features).values())
         self.step = 0
         self.do_recursions()
 
@@ -53,17 +51,6 @@ class WeisfeilerLehmanMachine:
             feature_storage = get_new_features(feature_storage, node)
             if self.mode == "all":
                 new_features = get_new_features(new_features, node)
-            """
-            if self.mode == "scaffold":
-                if (node in self.nodes_idx) or (node in self.linker_idx):
-                    new_features = get_new_features(new_features, node)
-            if self.mode == "nodes":
-                if node in self.nodes_idx:
-                    new_features = get_new_features(new_features, node)
-            if self.mode == "linker":
-                if node in self.linker_idx:
-                    new_features = get_new_features(new_features, node)
-            """
         if self.writing_style == "paragraph":
             new_subgraph = list(Counter(list(new_features.values())))
             self.extracted_features += new_subgraph
@@ -72,7 +59,6 @@ class WeisfeilerLehmanMachine:
                 insert_pos = self.step + 1 + index * (self.step+2)
                 self.extracted_features.insert(insert_pos, new_features[index])
         self.step += 1
-        #self.length = len(Counter(new_features.values()).values())
         return feature_storage
 
     def do_recursions(self):
