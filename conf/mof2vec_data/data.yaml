@@ -1,10 +1,9 @@
 data:
   _target_: mofgraph2vec.featurize.mof2doc.MOF2doc
-  cif_path: [ "../data/cifs/core_md/"]
-  embed_label: False
-  label_path: "../data/arc-core-xq-1101.csv"
-  descriptors_to_embed: ["Di", "Df", "Dif"]
-  category_to_embed: [] # ["Crystalnet"]
+  cif_path: [ "../example_data/cifs/example/"]
+  embed_label: True
+  label_path: "../example_data/example_geometry.csv"
+  descriptors_to_embed: ["Di", "Df", "Dif", "Density"]
+  category_to_embed: ["Crystalnet"]
   id_column: "info.name"
   wl_step: 2
-  n_components: 20

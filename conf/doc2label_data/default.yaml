@@ -1,11 +1,9 @@
 pretraining: True
 embedding_model_path: # 
-task: ['xq.co2_n2_wc']
+embedding_path: # 
+label_path: "../example_data/example_regression.csv"
+task: ['co2_n2_wc']
 MOF_id: 'info.name'
-label_path: "../data/arc-core-xq-1101.csv"
-embedding_path: #"wandb/offline-run-20240524_135404-v6itfake/tmp/embedding_dv.csv"
-train_frac: 0.7
-valid_frac: 0.1
+train_frac: 0.8
 test_frac: 0.2
 num_workers: 6
-seed: 2234

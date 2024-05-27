@@ -30,7 +30,7 @@ class MOFDataset:
 
         meta_folder = os.path.dirname(meta_path)
         if not os.path.exists(meta_folder):
-            os.mkdir(meta_folder)
+            os.makedirs(meta_folder)
 
         if not os.path.exists(meta_path):
             structure = Structure.from_file(path)

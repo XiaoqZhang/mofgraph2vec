@@ -13,9 +13,9 @@ def run_regression(
     dm = DataModuleFactory(**config.doc2label_data)
 
     # Load the data
-    train_valid_ds = dm.get_train_valid_dataset()
-    x_train = train_valid_ds.vectors
-    y_train = train_valid_ds.labels
+    train_ds = dm.get_train_dataset()
+    x_train = train_ds.vectors
+    y_train = train_ds.labels
 
     test_ds = dm.get_test_dataset()
     x_test = test_ds.vectors

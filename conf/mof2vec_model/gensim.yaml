@@ -7,5 +7,3 @@ gensim:
   workers: 6
   alpha: 1.8e-2
   epochs: 100
-
-evaluate_patience: 5

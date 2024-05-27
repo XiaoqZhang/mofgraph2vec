@@ -2,11 +2,11 @@ grid_search: False
 params:
   n_estimators: 300
   max_depth: 4
-  reg_alpha: #[0, 0.1, 0.2]
-  reg_lambda: #[0.6, 0.7, 0.8]
-  subsample: #[0.6, 0.7, 0.8]
-  colsample_bytree: #[0.6, 0.7, 0.8]
-  min_child_weight: #[1, 2, 3]
-  learning_rate:  0.1 #[0.1, 0.2, 0.3]
-  max_delta_step: #[1, 2, 3]
+  reg_alpha: 
+  reg_lambda:
+  subsample: 
+  colsample_bytree: 
+  min_child_weight: 
+  learning_rate:  0.1 
+  max_delta_step: 
 n_jobs: -2

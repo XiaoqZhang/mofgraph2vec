@@ -12,11 +12,11 @@ defaults:
     - mof2vec.yaml
 
 logger:
-  project: mof2vec
-  entity: xiaoqiz
-  mode: offline
+  project: # wandb project
+  entity: # wandb entity
+  mode: # offline or online
   tags: 
 
 seed: 5432
 sweep: false
-mode: mof2vec # available choices: mof2vec, doc2label, workflow
+mode: workflow # available choices: mof2vec, doc2label, workflow

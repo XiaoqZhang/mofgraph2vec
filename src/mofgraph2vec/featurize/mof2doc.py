@@ -20,7 +20,6 @@ class MOF2doc:
         category_to_embed: List[str],
         id_column: str,
         wl_step: int = 5,
-        n_components: int = 20,
         embed_cif: Optional[bool] = False,
         subsample: Optional[int] = None,
         seed: Optional[int] = 1234,
@@ -46,7 +45,6 @@ class MOF2doc:
             self.files: List[str] = random.sample(self.files, int(subsample*len(self.files)))
 
         self.wl_step = wl_step
-        self.n_components = n_components
         self.seed = seed
 
         self.embed_cif = embed_cif
