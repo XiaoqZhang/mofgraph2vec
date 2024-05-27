@@ -77,7 +77,7 @@ class MOFDataset:
         features_to_WL = {}
         for i, item in enumerate(data.x.flatten()):
             features_to_WL.update({i: item})
-        return graph, features_to_WL, #data.nodes, data.linker_scaffold
+        return graph, features_to_WL
 
 
 def _get_distance(

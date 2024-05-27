@@ -2,6 +2,23 @@
 name = "mofgraph2vec"
 version = "0.1.0"
 description = "Unsupervised learning Metal-Organic Frameworks (MOFs)"
+dependencies = [
+    "numpy",
+    "pandas",
+    "pymatgen >= 2023.3",
+    "scikit-learn",
+    "gensim == 4.3.1",
+    "wandb >= 0.14.0",
+    "xgboost==1.7.5",
+    "hydra-core",
+    "ipykernel",
+    "ipython",
+    "jinja2",
+    "nbformat",
+    "loguru",
+    "torch == 2.0.0",
+    "torch_geometric == 2.3.0"
+]
 
 [build-system]
 requires = ["setuptools >= 65.0.0", "wheel"]
@@ -9,3 +26,4 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
