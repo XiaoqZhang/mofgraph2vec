@@ -1,0 +1,9 @@
+pretraining: True
+embedding_model_path: # 
+embedding_path: # 
+label_path: "../example_data/example_regression.csv"
+task: ['co2_n2_wc']
+MOF_id: 'info.name'
+train_frac: 0.8
+test_frac: 0.2
+num_workers: 6

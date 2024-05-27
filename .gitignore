@@ -1,4 +1,5 @@
 # data
+data
 data/cifs
 data/meta*
 data/embedding_example/*
@@ -11,6 +12,7 @@ data/features/RSM/*.csv
 data/features/*.csv
 data/bbs/*
 data/bbs_qmof/*
+data/pretrained*
 
 results/*
 
@@ -19,6 +21,8 @@ experiments/workflow/lightning_logs
 experiments/workflow/outputs
 experiments/workflow/wandb
 experiments/workflow/sweep_results
+experiments/outputs
+experiments/wandb
 
 # python cache
 dev/*.json

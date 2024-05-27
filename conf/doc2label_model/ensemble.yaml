@@ -1,13 +1,12 @@
-#_target_: mofgraph2vec.model.regressor.Regressor
-n_estimators: 500
-max_depth: 5
-gamma: 
-reg_alpha: 
-reg_lambda: 0.8
-subsample: 
-colsample_bytree: 
-min_child_weight: 
-learning_rate: 0.1
-max_delta_step: 2
+grid_search: False
+params:
+  n_estimators: 300
+  max_depth: 4
+  reg_alpha: 
+  reg_lambda:
+  subsample: 
+  colsample_bytree: 
+  min_child_weight: 
+  learning_rate:  0.1 
+  max_delta_step: 
 n_jobs: -2
-random_state: 2234

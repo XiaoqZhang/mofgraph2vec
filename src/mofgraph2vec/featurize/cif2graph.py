@@ -3,12 +3,10 @@ import os
 import numpy as np
 import yaml
 from typing import Tuple
-from loguru import logger
 
 from pymatgen.core.structure import Structure, Lattice
 from pymatgen.analysis.graphs import StructureGraph
 from pymatgen.analysis.local_env import CutOffDictNN
-from mofdscribe.featurizers.chemistry._fragment import get_bb_indices
 
 import torch
 from torch_geometric.data import Data
@@ -32,7 +30,7 @@ class MOFDataset:
 
         meta_folder = os.path.dirname(meta_path)
         if not os.path.exists(meta_folder):
-            os.mkdir(meta_folder)
+            os.makedirs(meta_folder)
 
         if not os.path.exists(meta_path):
             structure = Structure.from_file(path)
@@ -79,7 +77,7 @@ class MOFDataset:
         features_to_WL = {}
         for i, item in enumerate(data.x.flatten()):
             features_to_WL.update({i: item})
-        return graph, features_to_WL, #data.nodes, data.linker_scaffold
+        return graph, features_to_WL
 
 
 def _get_distance(

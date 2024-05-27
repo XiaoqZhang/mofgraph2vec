@@ -5,20 +5,18 @@ defaults:
   - mof2vec_model:
     - gensim.yaml
   - doc2label_data: 
-    - arc.yaml 
+    - default.yaml 
   - doc2label_model:
     - ensemble.yaml
-  - trainer:
-    - default.yaml
   - sweep:
     - mof2vec.yaml
 
 logger:
-  project: mof2vec #feature-engineering
-  entity: xiaoqiz
-  mode: offline
+  project: # wandb project
+  entity: # wandb entity
+  mode: # offline or online
   tags: 
 
 seed: 5432
 sweep: false
-mode: doc2label # available choices: mof2vec, doc2label, workflow
+mode: workflow # available choices: mof2vec, doc2label, workflow
