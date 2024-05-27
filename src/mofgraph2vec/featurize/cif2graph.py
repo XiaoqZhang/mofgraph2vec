@@ -21,6 +21,7 @@ class MOFDataset:
         self,
         strategy: str="vesta",
     ) -> None:
+        """ Parse CIF files and create graph data. """
         if strategy == "vesta":
             self.strategy = CutOffDictNN(cut_off_dict=_VESTA_CUTOFFS)
 
@@ -83,22 +84,7 @@ class MOFDataset:
 def _get_distance(
     lattice: Lattice, frac_coords_0: np.array, frac_coords_1: np.array, jimage: Tuple[int, int, int]
 ) -> float:
-    """Get the distance between two fractional coordinates taking into account periodic boundary conditions.
-    Parameters
-    ----------
-    lattice : Lattice
-        pymatgen Lattice object
-    frac_coords_0 : np.array
-        fractional coordinates of the first atom
-    frac_coords_1 : np.array
-        fractional coordinates of the second atom
-    jimage : Tuple[int, int, int]
-        image of the second atom
-    Returns
-    -------
-    float
-        Distance between the two atoms
-    """
+    """ Get the distance between two fractional coordinates taking into account periodic boundary conditions. """
     jimage = np.array(jimage)
     mapped_vec = lattice.get_cartesian_coords(jimage + frac_coords_1 - frac_coords_0)
     return np.linalg.norm(mapped_vec)

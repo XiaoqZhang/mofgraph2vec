@@ -3,22 +3,8 @@ from typing import Any
 
 
 def put(d: dict, keys: str, item: Any):
-    """Set a value in a nested dictionary.
-
+    """ Set a value in a nested dictionary.
     Taken from https://stackoverflow.com/questions/12414821/checking-a-nested-dictionary-using-a-dot-notation-string-a-b-c-d-e-automatica
-
-    Parameters
-    ----------
-    d : dict
-        Dictionary to set value in.
-    keys : str
-        Key to set value for.
-    item : Any
-        Value to set.
-
-    Returns
-    -------
-    None.
     """
     if "." in keys:
         key, rest = keys.split(".", 1)
@@ -31,19 +17,7 @@ def put(d: dict, keys: str, item: Any):
 
 def get(d: dict, keys: str):
     """Get a value from a nested dictionary.
-
     Taken from https://stackoverflow.com/questions/12414821/checking-a-nested-dictionary-using-a-dot-notation-string-a-b-c-d-e-automatica
-
-    Parameters
-    ----------
-    d : dict
-        Dictionary to get value from.
-    keys : str
-        Key to get value for.
-
-    Returns
-    -------
-    Any
     """
     if "." in keys:
         key, rest = keys.split(".", 1)

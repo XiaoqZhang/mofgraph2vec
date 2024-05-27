@@ -1,7 +1,7 @@
 import pandas as pd
 
 class VecDataset():
-    def __init__(self, target, MOF_id, mofnames, vector_file, label_file, transform=None, target_transform=None, device="cpu"):
+    def __init__(self, target, MOF_id, mofnames, vector_file, label_file, transform=None, target_transform=None):
 
         self.target = target
         df_vectors = pd.read_csv(vector_file).set_index("type")

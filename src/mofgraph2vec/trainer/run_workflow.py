@@ -10,6 +10,7 @@ from mofgraph2vec.embedding.embedding import run_embedding
 from mofgraph2vec.model.regression import run_regression
 
 def train(config: DictConfig, sweep: bool=False):
+    """ Load the config and run the workflow. """
 
     assert config.mode in ["mof2vec", "doc2label", "workflow"]
     
