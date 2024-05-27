@@ -15,13 +15,7 @@ def save_embedding(
         documents: List[TaggedDocument], 
         doc_dimensions: int, 
 ):
-    """
-    Function to save the embedding.
-    :param output_path: Path to the embedding csv.
-    :param model: The embedding model object.
-    :param files: The list of files.
-    :param dimensions: The embedding dimension parameter.
-    """
+    """ Function to save the MOF embeddings. """
     output_dv = os.path.join(output_path, "embedding_dv.csv")
     out_dv = []
     for id in range(len(documents)):

@@ -10,6 +10,7 @@ from mofgraph2vec.utils.loss import get_numpy_regression_metrics
 def run_regression(
     config: DictConfig
 ):
+    """ Run regression model. """
     dm = DataModuleFactory(**config.doc2label_data)
 
     # Load the data

@@ -10,6 +10,7 @@ from mofgraph2vec.trainer.run_workflow import train
 
 
 def sweep(config):
+    """ Run wandb hyperparameter sweeping based on hydra configs. """
     sweep_config = OmegaConf.to_container(config.sweep.config)
     train_wrapper_curried = partial(train, config=deepcopy(config), sweep=True)
     if config.sweep.id:

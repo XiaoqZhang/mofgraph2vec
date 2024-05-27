@@ -25,6 +25,7 @@ class MOF2doc:
         seed: Optional[int] = 1234,
         **kwarg
     ):     
+        """ Load CIF files and embed them into documents. """
         self.files = []
 
         self.embed_label = embed_label

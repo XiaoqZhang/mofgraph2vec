@@ -1,16 +1,8 @@
 from collections import Counter
 
 class WeisfeilerLehmanMachine:
-    """
-    Weisfeiler Lehman feature extractor class.
-    """
+    """ Weisfeiler Lehman extractor class. """
     def __init__(self, graph, features, iterations):
-        """
-        Initialization method which also executes feature extraction.
-        :param graph: The networkx graph object.
-        :param features: Feature table.
-        :param iterations: Number of WL iterations.
-        """
         self.iterations = iterations
         self.graph = graph
         self.features = features
@@ -20,10 +12,7 @@ class WeisfeilerLehmanMachine:
         self.do_recursions()
 
     def do_a_recursion(self):
-        """
-        The method does a single WL recursion.
-        :return new_features: The table with extracted WL features.
-        """
+        """ The method does a single WL recursion. """
         def get_new_features(feature_set, node):
             nebs = self.graph.neighbors(node)
             degs = [self.features[int(neb)] for neb in nebs]
@@ -44,8 +33,6 @@ class WeisfeilerLehmanMachine:
         return feature_storage
 
     def do_recursions(self):
-        """
-        The method does a series of WL recursions.
-        """
+        """ The method does a series of WL recursions. """
         for _ in range(self.iterations):
             self.features = self.do_a_recursion()

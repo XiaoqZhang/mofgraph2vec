@@ -11,6 +11,7 @@ def run_embedding(
     log_dir: str,
     pretraining: bool
 ):
+    """ Run MOF embedding. """
     # Load MOF document data
     doc = instantiate(config.mof2vec_data.data, seed=config.seed)
     documents = doc.get_documents()
