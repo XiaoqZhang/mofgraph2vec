@@ -22,13 +22,13 @@ $ python -m pip install -e .
 - Navigate to the folder `experiments/`.
 - Run the model by `$ python train.py`. The first time of featurization may take some time. 
 
-### Load the model
+### Load the pre-trained models
 
-- The pre-trained model for ARC-MOF and QMOF databases are provided in `data/pretrained_models`
+- The pre-trained models for ARC-MOF and QMOF databases are attached in Releases. 
 
 ### Similarity analysis
 
-- Examples are given in `dev/example.ipynb`
+- Examples are given in `dev/example.ipynb`. 
 
 ## Configuration parameters
 You can easily tune the model parameters in `conf` folder. 
