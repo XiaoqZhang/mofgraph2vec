@@ -15,7 +15,15 @@ def save_embedding(
         documents: List[TaggedDocument], 
         doc_dimensions: int, 
 ):
-    """ Function to save the MOF embeddings. """
+    """save the embedding vectors
+
+    Args:
+        pretraining (bool): if the embedding is pretrained or not
+        output_path (str): the path to save the embedding
+        model (Doc2Vec): Doc2Vec model
+        documents (List[TaggedDocument]): the list of tagged documents
+        doc_dimensions (int): the number of dimensions of the document embedding
+    """
     output_dv = os.path.join(output_path, "embedding_dv.csv")
     out_dv = []
     for id in range(len(documents)):

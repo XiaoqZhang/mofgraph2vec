@@ -2,6 +2,17 @@ import pandas as pd
 
 class VecDataset():
     def __init__(self, target, MOF_id, mofnames, vector_file, label_file, transform=None, target_transform=None):
+        """_summary_
+
+        Args:
+            target (str): the name of the target column
+            MOF_id (str): the name of the MOF id column
+            mofnames (List[str]): the list of MOF cif names
+            vector_file (str): the path to the embedding .csv file
+            label_file (str): the path to the label .csv file
+            transform (sklearn.preprocessing.BaseEstimator, optional): the sklearn transformer for the embedding space. Defaults to None.
+            target_transform (sklearn.preprocessing.BaseEstimtor, optional): the sklearn transformer for the target. Defaults to None.
+        """
 
         self.target = target
         df_vectors = pd.read_csv(vector_file).set_index("type")

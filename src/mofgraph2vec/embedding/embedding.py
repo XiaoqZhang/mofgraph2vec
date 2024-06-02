@@ -11,7 +11,13 @@ def run_embedding(
     log_dir: str,
     pretraining: bool
 ):
-    """ Run MOF embedding. """
+    """run the embedding pipeline
+
+    Args:
+        config (DictConfig): configuration for the gensim Doc2Vec model
+        log_dir (str): the directory to save the embedding
+        pretraining (bool): whether to pretrain a model or load a pretrained model
+    """
     # Load MOF document data
     doc = instantiate(config.mof2vec_data.data, seed=config.seed)
     documents = doc.get_documents()

@@ -6,4 +6,3 @@ task: ['co2_n2_wc']
 MOF_id: 'info.name'
 train_frac: 0.8
 test_frac: 0.2
-num_workers: 6

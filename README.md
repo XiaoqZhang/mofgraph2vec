@@ -87,7 +87,6 @@ More parameters can be added. Find the details in [gensim.models.doc2vec.Doc2Vec
 - `MOF_id`: The column that contains MOF names. 
 - `train_frac`: The training data size. 
 - `test_frac`: The test data size. 
-- `num_workers`: Specify the number of workers to train the regression model. 
 
 ### doc2label_model
 

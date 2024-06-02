@@ -14,11 +14,23 @@ class DataModuleFactory:
         embedding_path: str,
         train_frac: float=0.8,
         test_frac: float=0.2,
-        num_workers: Optional[int] = None,
         seed: Optional[int] = 1234, 
         **kwargs
     ):
-        self.num_workers = num_workers
+        """Data loader for MOF embeddingss
+
+        Args:
+            task (str): the name of the target column
+            MOF_id (str): the name of the MOF id column
+            label_path (str): the path to the .csv file
+            embedding_path (str): the path to the cif files
+            train_frac (float, optional): the training size of the downstream task. Defaults to 0.8.
+            test_frac (float, optional): the test size of the downstream. Defaults to 0.2.
+            seed (Optional[int], optional): random seed. Defaults to 1234.
+
+        Raises:
+            ValueError: Fractions must sum to 1.0
+        """
 
         if not (train_frac + test_frac == 1.0):
             raise ValueError("Fractions must sum to 1.0")

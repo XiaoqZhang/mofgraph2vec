@@ -20,12 +20,21 @@ class MOF2doc:
         category_to_embed: List[str],
         id_column: str,
         wl_step: int = 5,
-        embed_cif: Optional[bool] = False,
-        subsample: Optional[int] = None,
         seed: Optional[int] = 1234,
         **kwarg
     ):     
-        """ Load CIF files and embed them into documents. """
+        """convert MOF CIF files to documents for doc2vec
+
+        Args:
+            cif_path (List[str]): the list of cif file paths
+            embed_label (bool): whether to embed the labels
+            label_path (str): the path to the label .csv file
+            descriptors_to_embed (List[str]): the list of descriptors to embed
+            category_to_embed (List[str]): the list of categories to embed
+            id_column (str): the column name of the id
+            wl_step (int, optional): the order of neighbors to extract. Defaults to 5.
+            seed (Optional[int], optional): random seed. Defaults to 1234.
+        """
         self.files = []
 
         self.embed_label = embed_label
