@@ -25,6 +25,7 @@ $ python -m pip install -e .
 ### Load the pre-trained models
 
 - The pre-trained models for ARC-MOF and QMOF databases are attached in Releases. 
+- Example of loading the pre-trained models is provided in `dev/example.ipynb`. 
 
 ### Similarity analysis
 
