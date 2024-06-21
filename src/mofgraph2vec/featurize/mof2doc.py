@@ -50,14 +50,9 @@ class MOF2doc:
             files_in_pt = glob(os.path.join(pt, "*.cif"))
             self.files.append(files_in_pt)
         self.files = [file for folder in self.files for file in folder]
-        if subsample is not None and subsample < 1:
-            random.seed(seed)
-            self.files: List[str] = random.sample(self.files, int(subsample*len(self.files)))
 
         self.wl_step = wl_step
         self.seed = seed
-
-        self.embed_cif = embed_cif
 
     def get_documents(self):
         ds_loader = MOFDataset(strategy="vesta")
@@ -74,8 +69,9 @@ class MOF2doc:
 
             # embed binned labels
             if self.embed_label:
-                word += list([bin for bin in self.df_label.loc[name, self.descriptors_to_embed] if bin!="UNKNOWN"])
-                word += list([bin for bin in self.df_label.loc[name, self.category_to_embed] if not bin is np.nan])
+                if name in self.df_label.index:
+                    word += list([bin for bin in self.df_label.loc[name, self.descriptors_to_embed] if bin!="UNKNOWN"])
+                    word += list([bin for bin in self.df_label.loc[name, self.category_to_embed] if not bin is np.nan])
 
             doc = TaggedDocument(words=word, tags=[name])
             self.documents.append(doc)
