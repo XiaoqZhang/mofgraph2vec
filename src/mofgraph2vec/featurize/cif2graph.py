@@ -30,12 +30,12 @@ class MOFDataset:
             self.strategy = CutOffDictNN(cut_off_dict=_VESTA_CUTOFFS)
 
     def from_cif(self, path: str):
-        meta_path = path.replace("cifs", "meta")
-        meta_path = meta_path.replace(".cif", ".pt")
-
-        meta_folder = os.path.dirname(meta_path)
+        meta_folder = os.path.join(os.path.dirname(path), "../meta")
         if not os.path.exists(meta_folder):
             os.makedirs(meta_folder)
+
+        metaname = os.path.basename(path).replace(".cif", ".pt")
+        meta_path = os.path.join(meta_folder, metaname)
 
         if not os.path.exists(meta_path):
             structure = Structure.from_file(path)
